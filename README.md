@@ -1,4 +1,4 @@
-# hands_on_labs_public
+# Fivetran Partner Hands on Lab Worksheets
 
 Public repository of hands-on lab worksheets for the technical trainings Fivetran offers to
 partners — Systems Integrators (SIs) and Global Systems Integrators (GSIs). Each worksheet
@@ -18,7 +18,7 @@ worksheet:
 - [`technical_foundations/`](technical_foundations/technical_foundations_hands_on_lab.md) — Technical Foundations
 - [`transformations/`](transformations/transformations_hands_on_lab.md) — Transformations
 
-## Source of truth
+## Source of Truth
 
 These worksheets are copies published from Fivetran's internal training content repository,
 which also builds the accompanying slide decks and exams. This repo exists to give partners a
