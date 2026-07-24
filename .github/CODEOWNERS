@@ -1,0 +1,7 @@
+# CODEOWNERS — governs the required code-owner review on protected branches.
+#
+# Keep this list tight: anyone listed here can satisfy the required review that
+# gates merges into `main`. Adding a user grants real approval authority.
+#
+# Global owner: all files require review from @angel-hernandez91.
+* @angel-hernandez91
