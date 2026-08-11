@@ -331,7 +331,7 @@ breaking headlines from sources across the web through a JSON API.
    - Select "I am an individual," agree to the terms, and submit.
    - Copy the displayed API key and save it — you'll use it in `configuration.json`.
 
-2. Set up your development environment as in **Part 2** (new folder, virtual
+2. Set up your development environment as in **Part 3** (new folder, virtual
    environment, SDK install).
    - Create a new working directory
    - Create a new python virtual environment
