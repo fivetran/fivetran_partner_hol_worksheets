@@ -129,7 +129,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 3. Search for **Google Cloud SQL for PostgreSQL** and click **Set up**.
 4. Select the destination you created. 
    - **Make sure you don't use someone else's destination** — check that the name matches yours.
-5. The name you provide in the **Destination schema prefix** field becomes the name of
+5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use the format `<firstname>_<lastname>_pg`.
 
    > Write this value down. You'll need it in Part 4, because Fivetran combines it with
