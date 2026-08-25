@@ -99,8 +99,13 @@ Keep the 1Password link open; you'll copy several values from it during the lab.
    - **Uncheck** *Use Key Authentication (Advanced)*.
    - **Password**
 6. Leave **Step 3 — Configure Advanced Settings** as-is.
-7. Click **Connect** (bottom right), then **Confirm**.
-8. Let the setup tests run. When they pass, click **Finish**.
+7. In **Step 4 - Configure Processing Region and Storage Backend**, Select:
+   - **Data Processing Location** US
+   - **Fivetran Processing Cloud Provider** GCP
+   - **GCP Region** us-central1
+   - **General object storage backend** Fivetran-managed storage
+9. Click **Connect** (bottom right), then **Confirm**.
+10. Let the setup tests run. When they pass, click **Finish**.
 
 ✅ **Checkpoint:** You're on the Sources overview screen and your Snowflake source shows as
 connected.
