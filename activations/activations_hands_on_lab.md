@@ -153,6 +153,7 @@ WHERE p.user_id IS NULL;
 
 5. Click **Show preview** at the bottom. When the query finishes, click **Create Dataset**.
 6. In the **Type** box, click **Edit** and ensure **`USER_ID`** is selected as the unique ID.
+7. In the **Columns** tab, find the **State** column and check the box under **Enumerated**. You will need this for your **Segment**.
 
 ✅ **Checkpoint:** You land on the dataset preview page showing your query results.
 
@@ -168,7 +169,7 @@ WHERE p.user_id IS NULL;
 4. Click **+ Add condition**.
 5. Add the second condition:
    - Select the **State** column.
-   - Operator **is**, value **Michigan**.
+   - Operator **is**, value **Michigan**, which should be a value from a drop-down menu.
 6. Click **Preview Results** (top right). Calculation takes ~1 minute.
 7. Click the refresh button in the **Current Size** preview to confirm.
 
