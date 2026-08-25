@@ -151,8 +151,8 @@ LEFT JOIN CENSUS_HOL_DATABASE.BRAZE_ANALYTICS.PURCHASES p
 WHERE p.user_id IS NULL;
 ```
 
-5. Ensure **`USER_ID`** is selected as the unique ID.
-6. Click **Show preview** at the bottom. When the query finishes, click **Create Dataset**.
+5. Click **Show preview** at the bottom. When the query finishes, click **Create Dataset**.
+6. In the **Type** box, click **Edit** and ensure **`USER_ID`** is selected as the unique ID.
 
 ✅ **Checkpoint:** You land on the dataset preview page showing your query results.
 
