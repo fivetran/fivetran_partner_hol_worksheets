@@ -99,8 +99,13 @@ Keep the 1Password link open; you'll copy several values from it during the lab.
    - **Uncheck** *Use Key Authentication (Advanced)*.
    - **Password**
 6. Leave **Step 3 — Configure Advanced Settings** as-is.
-7. Click **Connect** (bottom right), then **Confirm**.
-8. Let the setup tests run. When they pass, click **Finish**.
+7. In **Step 4 - Configure Processing Region and Storage Backend**, Select:
+   - **Data Processing Location** US
+   - **Fivetran Processing Cloud Provider** GCP
+   - **GCP Region** us-central1
+   - **General object storage backend** Fivetran-managed storage
+9. Click **Connect** (bottom right), then **Confirm**.
+10. Let the setup tests run. When they pass, click **Finish**.
 
 ✅ **Checkpoint:** You're on the Sources overview screen and your Snowflake source shows as
 connected.
@@ -146,8 +151,9 @@ LEFT JOIN CENSUS_HOL_DATABASE.BRAZE_ANALYTICS.PURCHASES p
 WHERE p.user_id IS NULL;
 ```
 
-5. Ensure **`USER_ID`** is selected as the unique ID.
-6. Click **Show preview** at the bottom. When the query finishes, click **Create Dataset**.
+5. Click **Show preview** at the bottom. When the query finishes, click **Create Dataset**.
+6. In the **Type** box, click **Edit** and ensure **`USER_ID`** is selected as the unique ID.
+7. In the **Columns** tab, find the **State** column and check the box under **Enumerated**. You will need this for your **Segment**.
 
 ✅ **Checkpoint:** You land on the dataset preview page showing your query results.
 
@@ -163,7 +169,7 @@ WHERE p.user_id IS NULL;
 4. Click **+ Add condition**.
 5. Add the second condition:
    - Select the **State** column.
-   - Operator **is**, value **Michigan**.
+   - Operator **is**, value **Michigan**, which should be a value from a drop-down menu.
 6. Click **Preview Results** (top right). Calculation takes ~1 minute.
 7. Click the refresh button in the **Current Size** preview to confirm.
 
