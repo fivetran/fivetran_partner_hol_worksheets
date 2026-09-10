@@ -1,6 +1,6 @@
 # Hands-on Lab: Connector SDK AI Plugin
 
-*Updated July 2026. Verified against the current Fivetran Connector SDK documentation.*
+*Updated September 2026. Verified against the current Fivetran Connector SDK documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to
 prepare and follow along. Please read through the requirements first. If you can't meet
