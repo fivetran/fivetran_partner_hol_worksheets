@@ -152,15 +152,17 @@ You have been provided with a Linux Workstation accessible in your web browser. 
     ```bash
     code .
     ```
-13. Navigate to **Terminal** and click **New Terminal** and select **Trust Folder & Continue**
+13. If you are prompted to log in for VS Code, just close that pop up. NO LOGIN is actually required. 
 
-14. To create the Connector SDK project scaffolding and install the Claude AI Plugin run the command:
+14.  Navigate to the **"..."** menu in VS Code, then find **Terminal** and click **New Terminal** and select **Trust Folder & Continue**
+
+15. To create the Connector SDK project scaffolding and install the Claude AI Plugin run the command:
 
     ```bash
     fivetran init
     ```
 
-15. Enter **1** to select the Claude Code Plugin. `fivetran init` automatically detects which AI model providers are installed on your system
+16. Enter **1** to select the Claude Code Plugin. `fivetran init` automatically detects which AI model providers are installed on your system
 
 ✅ **Checkpoint:** You're successfully added your API keys to the project. And installed the Claude AI Plugin
 
@@ -182,7 +184,7 @@ You have been provided with a Linux Workstation accessible in your web browser. 
     echo export NEWS_API_KEY=your_api_key_here >> ~/.profile
     ```
 
-3. In the VS Code Explorer double click `configuration.json` to open it and paste in the following and save:
+3. In the VS Code Explorer double click `configuration.json` to open it and paste in the following and save via File > Save:
 
    ```json
    {
@@ -199,41 +201,41 @@ You have been provided with a Linux Workstation accessible in your web browser. 
     ```
 5. Use `Shift + Tab` to cycle through the permissions mode until you see **auto mode on**, this will save us some time here so we don't have to constantly approve Claude's requests
 
-6. Run the following command to use the `build-connector` skill provided the Connector SDK AI Plugin.
+6. Run the following to use the `build-connector` skill provided the Connector SDK AI Plugin along with the prompt
     - Claude will load the skill and do some thinking based on what we have in the `configuration.json` it may figure out that we're trying to build a connector for the News API
 
-    ```bash
+    ```
     /fivetran-connector-sdk:build-connector
-    ```
-7. Let Claude finish thinking and make sure you select the option to `Chat about this` or anything along those lines because we want to be specific about how we do this. To do so we want to provide the following prompt:
 
-    ```
     Build a connector for the News API. Documentation: https://newsapi.org/docs.
     Use the endpoints: Everything, Top Headlines, and Sources, to create 3 tables.
     Use a 7 day lookback from today to start pulling data for Everything and Top Headlines. 
-    The configuration.json contains the filters I want to use.
-    NewsAPI uses an API Key for authentication. It is loaded as an environment variable called NEWS_API_KEY in ~/.profile. Ensure it is included in the configuration.json as Fivetran will need it.
+
+    The configuration.json contains the filters I want to use for Everything and Top Headlines. Use the country filter for Sources.
+
+    NewsAPI uses an API Key for authentication. It is loaded as an environment variable called NEWS_API_KEY in ~/.profile. Encrypt it and ensure it is included in the configuration.json as Fivetran will need it.
+    
     Gather all the information required to build the connector and then test it. Once that is done, stop. I will verify the data myself. Do not deploy the connector into Fivetran until I give the approval to so.
     ```
 
-8. Claude will perform the research needed and start to build out the code in `connector.py` and also run the `fivetran debug` command to test the connector. This can take a few minutes, so just wait.
+7. Claude will perform the research needed and start to build out the code in `connector.py` and also run the `fivetran debug` command to test the connector. This can take a few minutes, so just wait.
 
-9. Open up the **files** directory in the VS Code Explorer, find `warehouse.db`, right click it, and select **Copy Path**
+8. Open up the **files** directory in the VS Code Explorer, find `warehouse.db`, right click it, and select **Copy Path**
 
-10. Preview the data by navigating to the **Application Finder** in the bottom desktop menu, click to open it, search for **DBeaver** then double click to open it.
+9. Preview the data by navigating to the **Application Finder** in the bottom desktop menu, click to open it, search for **DBeaver** then double click to open it.
     - It will take a moment to load, but once loaded go through the onboarding wizard
         - Select the **Simple** view
         - Deselect/decline any other options when prompted
 
-11. Create a **New Connection** in DBeaver, search for DuckDB, select it, and then paste in the copied path to `warehouse.db`
+10. Create a **New Connection** in DBeaver, search for DuckDB, select it, and then paste in the copied path to `warehouse.db`
     - Click **Test Connection** and select **yes** when prompted to download the DuckDB drivers
     - Confirm and then click Finish
 
-12. Click the drop down next to `warehouse.db` in the Connection Explorer and navigate down to `warehouse > tester`
+11. Click the drop down next to `warehouse.db` in the Connection Explorer and navigate down to `warehouse > tester`
     - You should see 3 tables: `everything`, `top_headlines`, and `sources`
     - Double click on any of those tables to preview the data
 
-13. Once you are done confirming the data looks right, we can give Claude the "okay" to deploy into Fivetran with the following prompt:
+12. Once you are done confirming the data looks right, we can give Claude the "okay" to deploy into Fivetran with the following prompt:
     - Replace `firstname_lastname` with your actual first and last name
     - The destination you choose should match the name of the Destination you created in Part 2. 
         - The name below assumes you followed the naming convention in Part 2. 
@@ -245,7 +247,7 @@ You have been provided with a Linux Workstation accessible in your web browser. 
     Destination Name: firstname_lastname_snowflake.
     Once deployed start the initial sync.
     ```
-14. Navigate back to the Fivetran UI and refresh the page to find your connector. Ideally it should be running the historical sync, but if any errors occur check the UI and iterate with Claude to resolve them
+13. Navigate back to the Fivetran UI and refresh the page to find your connector. Ideally it should be running the historical sync, but if any errors occur check the UI and iterate with Claude to resolve them
 ---
 
 ## What you did
