@@ -1,6 +1,6 @@
-# Hands-on Lab: Transformations
+# Hands-on Lab: Transformations (Workstation)
 
-*Updated July 2026. Verified against the current Fivetran Transformations documentation.*
+*Updated September 2026. Verified against the current Fivetran Transformations documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and complete the lab. In this lab you will build a complete Fivetran + dbt Core transformation end to end: stand up a Snowflake destination, sync the Fivetran Platform Connector, build and version a dbt project, install a Fivetran data model package, orchestrate it from Fivetran on an Integrated schedule, and view the transformed data in Snowflake. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
@@ -12,12 +12,11 @@ Build an end-to-end Fivetran + dbt Core transformation: create a Snowflake **des
 
 ## Requirements
 
-- **Python 3.10 – 3.12** (dbt Core 1.11 requires Python 3.10+; 3.10–3.12 are the safest)
-- Code editor (VS Code, Sublime, Notepad++, etc.)
 - Web browser (Chrome)
-- Terminal (macOS Terminal or Windows PowerShell)
-- Git 2.38+ ([git-scm.com/downloads](https://git-scm.com/downloads))
 - A GitHub account
+
+Everything else (Python, Git, VS Code, and the terminal) is pre-installed on the Linux
+workstation provided for this lab.
 
 ## Housekeeping
 
@@ -27,6 +26,9 @@ Build an end-to-end Fivetran + dbt Core transformation: create a Snowflake **des
   Fivetran account before the lab.
 - Confirm you received the invite. It is sent to the email you used to register and
   originates from **notifications@fivetran.com**.
+- You'll be provided a **Linux workstation** accessible in your web browser. The **Gateway URL**,
+  **Guacamole Username**, and **Guacamole Password** are provided by your instructor via a
+  1Password link.
 
 ## What you'll do in this lab
 
@@ -38,6 +40,9 @@ In this lab you will:
 4. Set up a Fivetran Platform Connector
 5. Create a transformation for the Fivetran Platform Connector
 6. View the transformed data in Snowflake
+
+You have been provided with a Linux workstation accessible in your web browser. Throughout,
+all the necessary commands are given for **Linux** and run on the workstation.
 
 ---
 
@@ -106,132 +111,122 @@ In this lab you will:
 
 ## Part 4: Setting up the dbt project
 
-1. Open your system terminal.
-2. Create a directory called `dbt_hands_on_lab` and navigate into it:
+1. Use the **Gateway URL**, **Guacamole Username**, and **Guacamole Password** from the
+   1Password link to access your workstation.
+2. Once you have logged in, click the **Terminal** icon on the bottom menu.
+
+   > **Tip:** In the workstation terminal, paste with **CTRL + SHIFT + V**.
+
+3. Create a directory called `dbt_hands_on_lab` and navigate into it:
 
    ```bash
    mkdir dbt_hands_on_lab
    cd dbt_hands_on_lab
    ```
 
-3. Create a Python virtual environment:
+4. Open the directory in VS Code:
 
    ```bash
-   # macOS / Linux
+   code .
+   ```
+
+   - If you get prompted to choose a password for a keyring, just hit **Cancel** (you may
+     have to click it twice).
+   - If you are prompted to log in to VS Code, close that pop-up. No login is required.
+
+5. Navigate to the **"..."** menu in VS Code, find **Terminal**, click **New Terminal**,
+   and select **Trust Folder & Continue**. The rest of the lab runs in this VS Code
+   terminal.
+
+6. Create a Python virtual environment:
+
+   ```bash
    python3 -m venv dbt_venv
-
-   # Windows (PowerShell)
-   py -m venv dbt_venv
    ```
 
-4. Activate the virtual environment:
+7. Activate the virtual environment:
 
    ```bash
-   # macOS / Linux
    source dbt_venv/bin/activate
-
-   # Windows (PowerShell)
-   dbt_venv\Scripts\Activate.ps1
    ```
 
-5. Install the dbt Snowflake adapter (this also installs dbt-core):
+8. Install the dbt Snowflake adapter (this also installs dbt-core):
 
    ```bash
-   # macOS / Linux
    pip3 install dbt-snowflake
-
-   # Windows (PowerShell)
-   pip install dbt-snowflake
    ```
 
-6. Verify your dbt installation:
+9. Verify your dbt installation:
 
    ```bash
    dbt --version
    ```
 
-7. Save the Snowflake private key to a file. dbt authenticates with a key pair and needs
-   the key on disk. The 1Password item contains only the key text, so you'll create the
-   file yourself.
+10. Save the Snowflake private key to a file. dbt authenticates with a key pair and needs
+    the key on disk. The 1Password item contains only the key text, so you'll create the
+    file yourself.
 
-   1. Make sure you're still in the `dbt_hands_on_lab` directory.
-   2. Create an empty file named `snowflake_key.p8` and open it in a text editor:
+    1. In the VS Code terminal, create an empty file named `snowflake_key.p8`:
 
-      ```bash
-      # macOS / Linux
-      touch snowflake_key.p8
-      open -e snowflake_key.p8      # macOS (TextEdit); on Linux use your editor of choice
+       ```bash
+       touch snowflake_key.p8
+       ```
 
-      # Windows (PowerShell)
-      New-Item snowflake_key.p8
-      notepad snowflake_key.p8
-      ```
+    2. In the VS Code Explorer, double-click `snowflake_key.p8` to open it.
+    3. Paste the full private key from the 1Password link into the file, including the
+       `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines, then save
+       via **File > Save**.
+    4. Back in the VS Code terminal, restrict the file so only your user can read it:
 
-   3. Paste the full private key from the 1Password link into the file, including the
-      `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines, then save
-      and close the editor.
-   4. Restrict the file so only your user can read it:
+       ```bash
+       chmod 600 snowflake_key.p8
+       ```
 
-      ```bash
-      # macOS / Linux
-      chmod 600 snowflake_key.p8
+    5. Note the full path to the file — you'll enter it in the next step:
 
-      # Windows (PowerShell) — remove inherited permissions, then grant only your user
-      icacls snowflake_key.p8 /inheritance:r /grant:r "$env:USERNAME:R"
-      ```
+       ```bash
+       echo "$(pwd)/snowflake_key.p8"
+       ```
 
-   5. Note the full path to the file — you'll enter it in the next step:
+    > **Keep the key outside the dbt project.** Leave `snowflake_key.p8` in
+    > `dbt_hands_on_lab`, not inside the `dbt_hol` project you create next. The `dbt_hol`
+    > folder becomes a GitHub repository later in this lab, and the key must never be
+    > committed.
 
-      ```bash
-      # macOS / Linux
-      echo "$(pwd)/snowflake_key.p8"
-
-      # Windows (PowerShell)
-      (Resolve-Path snowflake_key.p8).Path
-      ```
-
-   > **Keep the key outside the dbt project.** Leave `snowflake_key.p8` in
-   > `dbt_hands_on_lab`, not inside the `dbt_hol` project you create next. The `dbt_hol`
-   > folder becomes a GitHub repository later in this lab, and the key must never be
-   > committed.
-
-8. Create a new dbt project. This walks you through prompts that set up the connection
+11. Create a new dbt project. This walks you through prompts that set up the connection
    between your local dbt deployment and Snowflake.
 
-   ```bash
-   dbt init dbt_hol
-   ```
+    ```bash
+    dbt init dbt_hol
+    ```
 
-   > **NOTE:** If you hit errors during `dbt init`, run it via the full venv path:
-   > ```bash
-   > # macOS / Linux
-   > ./dbt_venv/bin/dbt init dbt_hol
-   > # Windows (PowerShell)
-   > .\dbt_venv\Scripts\dbt.exe init dbt_hol
-   > ```
+    > **NOTE:** If you hit errors during `dbt init`, run it via the full venv path:
+    > ```bash
+    > ./dbt_venv/bin/dbt init dbt_hol
+    > ```
 
-   Respond to the prompts. The credentials needed can be found in the 1Password link
-   - **Which database would you like to use?** — select **snowflake** (enter `1`)
-   - **account** — 
-   - **user** — 
-   - **authentication type** — select **keypair** (enter `2`)
-   - **private_key_path** — the full path to the `snowflake_key.p8` file you created in
-     the previous step
-   - **private_key_passphrase** — leave blank and press Enter (the key has no passphrase)
-   - **role**
-   - **warehouse** 
-   - **database** 
-   - **schema** — `<firstname>_<lastname>_transformations`
-   - **threads** — `8`
+    Respond to the prompts. The credentials needed can be found in the 1Password link
+    - **Which database would you like to use?** — select **snowflake** (enter `1`)
+    - **account** — 
+    - **user** — 
+    - **authentication type** — select **keypair** (enter `2`)
+    - **private_key_path** — the full path to the `snowflake_key.p8` file you created in
+      the previous step
+    - **private_key_passphrase** — leave blank and press Enter (the key has no passphrase)
+    - **role**
+    - **warehouse** 
+    - **database** 
+    - **schema** — `<firstname>_<lastname>_transformations`
+    - **threads** — `8`
 
-9. Navigate into the project and confirm it initialized correctly:
+12. Navigate into the project and confirm it initialized correctly:
 
-   ```bash
-   cd dbt_hol
-   dbt debug
-   ```
+    ```bash
+    cd dbt_hol
+    dbt debug
+    ```
 
-   A successful run ends with **All checks passed!**
+    A successful run ends with **All checks passed!**
 
 > **Checkpoint:** Your local `dbt_hol` project is initialized, connected to Snowflake, and `dbt debug` reports all checks passed.
 
@@ -258,10 +253,10 @@ In this lab you will:
    - Click **Generate token** and save it to a temporary location — you'll need it when
      you push for the first time.
 6. Back in your repository, make sure **HTTPS** is selected and copy the first block of
-   quick-setup commands. Paste and run them in your terminal (inside `dbt_hol`).
+   quick-setup commands. Paste and run them in the VS Code terminal (inside `dbt_hol`).
 7. For the remaining two commands, you must modify the `git remote add origin` line to
-   include your token. Paste them into a text editor and prepend your token before
-   `github.com`. The format is:
+   include your token. Paste them into a new VS Code editor tab and prepend your token
+   before `github.com`. The format is:
 
    ```
    git remote add origin https://<your_token>@github.com/<your_user>/dbt_hol.git
@@ -286,16 +281,10 @@ In this lab you will:
 1. Create a `packages.yml` file in the root of your dbt project:
 
    ```bash
-   # macOS / Linux
    touch packages.yml
-   open .
-
-   # Windows (PowerShell)
-   New-Item packages.yml
-   ii .
    ```
 
-2. Open `packages.yml` in your text editor.
+2. In the VS Code Explorer, expand `dbt_hol` and double-click `packages.yml` to open it.
 3. Go to
    [hub.getdbt.com/fivetran/fivetran_log/latest/](https://hub.getdbt.com/fivetran/fivetran_log/latest/).
 4. Copy the code under **Installation** and paste it into your `packages.yml`. It looks
@@ -313,8 +302,8 @@ In this lab you will:
    dbt deps
    ```
 
-6. Open `dbt_project.yml` in your text editor and add the following `vars` block near
-   the end of the file, then save (replace `<firstname>_<lastname>`):
+6. In the VS Code Explorer, open `dbt_project.yml` and add the following `vars` block near
+   the end of the file, then save via **File > Save** (replace `<firstname>_<lastname>`):
 
    ```yaml
    vars:
@@ -400,35 +389,26 @@ In this lab you will:
 
 ## Troubleshooting notes
 
-**`dbt debug` shows a git `[ERROR]` on Windows** — Git is either not installed or not on
-your PATH. Install Git from [git-scm.com/download/win](https://git-scm.com/download/win)
-(use default options, which add Git to PATH). Close and reopen your terminal, then rerun
-`dbt debug`. If Git is installed but still not found, add it to PATH manually: System
-Properties → Environment Variables → edit the `Path` System variable → add
-`C:\Program Files\Git\bin` → save and reopen your terminal.
+**`dbt` command not found in a new terminal** — each new VS Code terminal starts without
+the virtual environment. Re-activate it from the `dbt_hands_on_lab` directory:
+
+```bash
+source dbt_venv/bin/activate
+```
 
 **Errors during `dbt init` or `dbt --version`** — point to the venv's interpreter/dbt
 directly:
 
 ```bash
-# macOS / Linux
 ./dbt_venv/bin/dbt --version
 ./dbt_venv/bin/dbt debug --profiles-dir ~/.dbt
-
-# Windows (PowerShell)
-.\dbt_venv\Scripts\dbt.exe --version
-.\dbt_venv\Scripts\dbt.exe debug --profiles-dir $HOME\.dbt
 ```
 
 **Wrong Python / dbt version** — dbt Core 1.11 requires Python 3.10 or newer. If you see
 version errors, confirm your virtual environment uses Python 3.10–3.12:
 
 ```bash
-# macOS / Linux
 python3 --version
-
-# Windows (PowerShell)
-py --version
 ```
 
 A healthy environment looks like: dbt Core 1.11.x and the Snowflake adapter 1.11.x, both

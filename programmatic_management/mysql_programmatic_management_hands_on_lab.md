@@ -1,6 +1,6 @@
-# Hands-on Lab: Programmatic Management
+# Hands-on Lab: Programmatic Management (MySQL)
 
-*Updated July 2026. Verified against the current Fivetran Programmatic Management documentation.*
+*Updated September 2026. Verified against the current Fivetran Programmatic Management documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to build an
 end-to-end Fivetran pipeline **programmatically** using the REST API and Postman. Please read through
@@ -26,7 +26,7 @@ the object model from Module 1 onto real API calls.
    - **Do not** set up a new account or trial — you'll receive an invite to a dedicated account before the lab.
 - Confirm you received the invite. It's sent to the email you registered with and comes from
   `notifications@fivetran.com`.
-- The lab uses a **Snowflake** data warehouse (destination) and a **Postgres** database (source).
+- The lab uses a **Snowflake** data warehouse (destination) and a **MySQL** database (source).
 
 ## What you'll do in this lab
 
@@ -35,7 +35,7 @@ the object model from Module 1 onto real API calls.
 - Configure Postman by importing the Fivetran REST API collection and setting up authorization.
 - Create a group with the REST API.
 - Create a Snowflake destination with the REST API.
-- Create a Postgres connection and trigger an initial sync with the REST API.
+- Create a MySQL connection and trigger an initial sync with the REST API.
 - Retrieve the sync status and connection details with the REST API.
 
 ## Part 0: Credentials
@@ -44,7 +44,7 @@ the object model from Module 1 onto real API calls.
    - Provided by your instructor via a 1Password link. The destination uses **key pair
      authentication**, so the link includes a private key rather than a password.
       - Select **SaaS** as the deployment model wherever the setup form asks.
-- **Postgres**
+- **MySQL**
    - Provided by your instructor via a 1Password link.
 
 > Terminology note: Fivetran renamed "connector" to **connection** across the UI, docs, and REST API.
@@ -190,16 +190,16 @@ the object model from Module 1 onto real API calls.
 1. Open the **Connection Management** folder and select **Create a Connection**.
 2. Click the **Body** tab and delete the existing JSON payload.
 3. Paste in the payload below. (Generated from the REST API reference for *Create a Connection* with
-   `postgres` as the type, minimized for this lab.)
+   `mysql` as the type, minimized for this lab.)
    - Replace `<your_group_id>` with the `id` from Part 4, Step 6.
    - In `schema_prefix`, replace `firstname_lastname` with your actual first and last name.
-   - Replace `POSTGRES_PASSWORD` with the password from the 1Password link.
-   - Replace `POSTGRES_HOSTNAME` with the hostname from the 1Password link.
+   - Replace `MYSQL_PASSWORD` with the password from the 1Password link.
+   - Replace `MYSQL_HOSTNAME` with the hostname from the 1Password link.
 
    ```json
    {
      "group_id": "<your_group_id>",
-     "service": "postgres",
+     "service": "mysql",
      "trust_certificates": true,
      "trust_fingerprints": true,
      "run_setup_tests": true,
@@ -217,14 +217,13 @@ the object model from Module 1 onto real API calls.
      "destination_schema_names": "FIVETRAN_NAMING",
      "config": {
        "connection_type": "Directly",
-       "update_method": "QUERY_BASED",
+       "update_method": "TELEPORT",
        "auth_method": "PASSWORD",
-       "database": "industry",
-       "password": "POSTGRES_PASSWORD",
-       "port": 5432,
-       "host": "POSTGRES_HOSTNAME",
+       "password": "MYSQL_PASSWORD",
+       "port": 3306,
+       "host": "MYSQL_HOSTNAME",
        "user": "fivetran_hol_agriculture",
-       "schema_prefix": "firstname_lastname_postgres"
+       "schema_prefix": "firstname_lastname_mysql"
      }
    }
    ```

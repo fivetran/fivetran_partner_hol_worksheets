@@ -1,6 +1,6 @@
-# Hands-on Lab: Technical Foundations
+# Hands-on Lab: Technical Foundations (MySQL)
 
-*Updated July 2026. Verified against the current Fivetran Technical Foundations documentation.*
+*Updated September 2026. Verified against the current Fivetran Technical Foundations documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
@@ -29,7 +29,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 
 - Credentials provided by your instructor (see Part 0).
 
-**PostgreSQL database**
+**MySQL database**
 
 - Credentials provided by your instructor (see Part 0).
 
@@ -54,7 +54,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 - Provided by your instructor via a 1Password link. The Fivetran destination uses **key pair authentication**, so the link includes a private key rather than a password.
    - When you paste these credentials into the destination setup form, make sure you select **SaaS** as the deployment model.
 
-### PostgreSQL
+### MySQL
 
 - Provided by your instructor via a 1Password link.
 
@@ -97,18 +97,18 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 
 ## Part 3: Creating a connection
 
-> In current Fivetran terminology, a **connector** is the reusable source type (for example, PostgreSQL), and a **connection** is the configured instance you set up from it. You can create many connections from the same connector.
+> In current Fivetran terminology, a **connector** is the reusable source type (for example, MySQL), and a **connection** is the configured instance you set up from it. You can create many connections from the same connector.
 
 1. Navigate to the **Connections** tab and, in the top-right corner, click **Add connection**.
-2. Search for **PostgreSQL**, hover over the connector tile, and click **Set up**.
+2. Search for **MySQL**, hover over the connector tile, and click **Set up**.
 3. Select the destination you created in Part 2 (make sure you don't use someone else's destination), then click **Select**.
-4. The value you enter in the **Destination schema prefix** field becomes the name of your connection. Use the format `<firstname>_<lastname>_postgres`, replacing `<firstname>` and `<lastname>` with your actual first and last names.
+4. The value you enter in the **Destination schema prefix** field becomes the name of your connection. Use the format `<firstname>_<lastname>_mysql`, replacing `<firstname>` and `<lastname>` with your actual first and last names.
 5. Select **Fivetran Naming**
-5. Populate the setup form with the provided PostgreSQL credentials.
+5. Populate the setup form with the provided MySQL credentials.
 6. For **Authentication Method**, select **Connect with username and password**.
 7. Leave **Connection Method** at its default value, **Connect directly**.
-8. For **Update Method**, select **Query-Based**.
-   - *Context:* PostgreSQL's older XMIN and Fivetran Teleport Sync methods have been sunset and replaced by **Query-Based** change data capture. The other available method is **Logical replication** (using the `pgoutput` plugin). Existing Teleport/XMIN connections keep working.
+8. For **Update Method**, select **Fivetran Teleport Sync**.
+   - *Context:* MySQL supports two incremental sync methods. **Binary Log** reads MySQL's row-based binary logs to capture changes; it requires binary logging enabled in ROW format with at least 24 hours of log retention. **Fivetran Teleport Sync** needs only a read-only SQL connection — it compares row hashes between syncs to detect inserts, updates, and deletes, so it requires no source-side configuration. We use Teleport in this lab because it works without any database changes.
 9. For destination naming, select **Fivetran naming** (the default, which standardizes schema, table, and column names). The alternative, **Source naming**, preserves original UTF-8 names but is not compatible with Quickstart transformations.
 10. Click **Save & Test**.
 11. When prompted, confirm the TLS certificate by selecting the certificate and clicking **Confirm**.
@@ -150,7 +150,7 @@ Now we'll learn how to manage **Notifications**. In Fivetran, a notification is 
 1. Navigate to your user in the bottom-left and click the drop-down.
 2. Click **Notifications** to open the Notifications page.
 3. On the **Connections** tab, the **Active Notification Subscriptions** section lists all connections you currently receive notifications for.
-4. Remove notifications for the PostgreSQL connection by selecting its checkbox and clicking **Remove selected**.
+4. Remove notifications for the MySQL connection by selecting its checkbox and clicking **Remove selected**.
 5. To add notifications for a connection, click **+ Add**, select the connection(s) you want, and click **Apply changes**. Add back the connection you just removed.
 6. You can do the same for transformations by clicking the **Transformations** tab and repeating the process.
 7. You can also control which account-level notifications you receive. Click the **Account** tab.

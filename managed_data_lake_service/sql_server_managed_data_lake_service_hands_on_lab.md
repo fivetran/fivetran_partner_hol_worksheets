@@ -1,6 +1,6 @@
-# Hands-on Lab: Managed Data Lake Service
+# Hands-on Lab: Managed Data Lake Service (SQL Server)
 
-*Updated July 2026. Verified against the current Fivetran Managed Data Lake Service
+*Updated September 2026. Verified against the current Fivetran Managed Data Lake Service
 documentation and the "Query Fivetran-managed Apache Iceberg tables from Snowflake"
 tutorial.*
 
@@ -45,7 +45,7 @@ catalog-linked database — the recommended, documented path.
 - Provided by your instructor via a 1Password link.
    - When entering these credentials into any setup form, make sure you select **SaaS** as the deployment model.
 
-### Postgres
+### SQL Server
 
 - Provided by your instructor via a 1Password link.
 
@@ -131,20 +131,20 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 
 1. Navigate to the **Connections** tab.
 2. Click **Add Connection**.
-3. Search for **PostgreSQL** and click **Set up**.
+3. Search for **SQL Server** and click **Set up**.
 4. Select the destination you created. 
    - **Make sure you don't use someone else's destination** — check that the name matches yours.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
-   your connector. Use the format `<firstname>_<lastname>_pg`.
+   your connector. Use the format `<firstname>_<lastname>_sql_server`.
 
    > Write this value down. You'll need it in Part 4, because Fivetran combines it with
    > the source schema name to form the catalog namespace.
 
-6. Populate the setup form with the provided PostgreSQL credentials.
+6. Populate the setup form with the provided SQL Server credentials.
 7. For **Authentication Method**, select **Connect with username and password**.
 8. For **Connection method**, make sure **Connect directly** is selected.
-9. For **Update Method**, select **Query-Based**.
-   - *Context:* PostgreSQL's older XMIN and Fivetran Teleport Sync methods have been sunset and replaced by **Query-Based** change data capture. The other available method is **Logical replication** (using the `pgoutput` plugin).
+9. For **Update Method**, select **Fivetran Teleport Sync**.
+   - *Context:* SQL Server supports four incremental sync methods. **Change Tracking** records which rows changed (but not the changed data), requires primary keys, and must be enabled on the database and each table. **Change Data Capture** records every change in shadow history tables and works with or without primary keys. **Binary Log Reader** reads the transaction log files directly (SQL Server 2016 and later) and requires CDC to be enabled for supplemental logging. **Fivetran Teleport Sync** needs only a read-only SQL connection — it compares row hashes between syncs to detect changes, so it requires no source-side configuration. We use Teleport in this lab because it works without any database changes.
 10. Click **Save & Test**.
 11. Confirm the TLS certificate when prompted.
 12. Wait for the setup tests to complete, then click **Continue**.
@@ -159,7 +159,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 
 **Checkpoint:** the connection shows a completed initial sync of the `agriculture` schema.
 Fivetran has written each table's data to
-`gs://mdls-gcs-hands-on-lab/<firstname>_<lastname>_mdls/<firstname>_<lastname>_pg_agriculture/<table>/`
+`gs://mdls-gcs-hands-on-lab/<firstname>_<lastname>_mdls/<firstname>_<lastname>_sql_server_agriculture/<table>/`
 (for example `.../coffee_prices/`) as Parquet files, with both Iceberg metadata and a Delta transaction log. 
    - Both formats are always written — there is no format selector.
 
@@ -238,12 +238,12 @@ CREATE DATABASE catalog_db_renegade_kindle
     CATALOG = 'fivetran_catalog_renegade_kindle'
   );
 ```
-1. You will need to replace `{fivetran_delivered_schema_name}` with name of your connector followed by `agriculture`, so if you've been following the naming conventions it will look something like `firstname_lastname_pg_agriculture`
+1. You will need to replace `{fivetran_delivered_schema_name}` with name of your connector followed by `agriculture`, so if you've been following the naming conventions it will look something like `firstname_lastname_sql_server_agriculture`
 
 > **How the namespace is formed:** Fivetran combines the **destination schema prefix**
 > you set in Part 3 with the **source schema name** (`agriculture`). So a connector named
-> `angel_hernandez_pg` syncing the `agriculture` schema produces the namespace
-> `angel_hernandez_pg_agriculture`. This trips people up — the namespace is not just the
+> `angel_hernandez_sql_server` syncing the `agriculture` schema produces the namespace
+> `angel_hernandez_sql_server_agriculture`. This trips people up — the namespace is not just the
 > connector name.
 
 2. Execute the statement. A successful run returns a status message confirming the
@@ -270,7 +270,7 @@ statement.
 
 ```sql
 SELECT *
-FROM your_database_name.<firstname>_<lastname>_pg_agriculture.coffee_prices
+FROM your_database_name.<firstname>_<lastname>_sql_server_agriculture.coffee_prices
 LIMIT 100;
 ```
 
@@ -323,7 +323,7 @@ then create each Iceberg table explicitly:
 CREATE ICEBERG TABLE IF NOT EXISTS <database>.<schema>.coffee_prices
   EXTERNAL_VOLUME = '<external_volume_name>'
   CATALOG = 'fivetran_catalog_int'
-  CATALOG_NAMESPACE = '<firstname>_<lastname>_pg_agriculture'
+  CATALOG_NAMESPACE = '<firstname>_<lastname>_sql_server_agriculture'
   CATALOG_TABLE_NAME = 'coffee_prices'
   AUTO_REFRESH = TRUE;
 ```
@@ -344,7 +344,7 @@ That difference is the whole reason the first approach is recommended.
 | GCS setup test fails on read/write access | Service accounts not yet added to the bucket | Ask the instructor to confirm the service account has access to the lab GCS bucket |
 | Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
 | Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |
-| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is connector name **+ source schema**, e.g. `first_last_pg_agriculture` — not just the connector name |
+| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is connector name **+ source schema**, e.g. `first_last_sql_server_agriculture` — not just the connector name |
 | Tables appear but a query returns no rows | Initial sync hadn't finished when the catalog last refreshed | Wait 30 seconds and re-run; the catalog polls on an interval |
 | `WAREHOUSE` parameter rejected | Snowflake warehouse name used instead of the Fivetran group ID | The `WAREHOUSE` field on the catalog integration takes your Fivetran **group ID** |
 | You see other participants' tables | `ALLOWED_NAMESPACES` omitted | Recreate the database with `ALLOWED_NAMESPACES` scoped to your namespace |
@@ -354,7 +354,7 @@ That difference is the whole reason the first approach is recommended.
 ## What you did
 
 You configured a Managed Data Lake Service destination on Google Cloud Storage, synced
-a PostgreSQL table into it as Apache Iceberg with a Delta transaction log alongside it,
+a SQL Server table into it as Apache Iceberg with a Delta transaction log alongside it,
 and queried it from Snowflake through a catalog-linked database reading the Fivetran
 Catalog — a managed Apache Polaris implementation speaking the Iceberg REST protocol.
 

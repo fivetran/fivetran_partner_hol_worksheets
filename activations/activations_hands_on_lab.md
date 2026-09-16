@@ -51,7 +51,8 @@ Use **Fivetran Activations** to connect a Snowflake **source** and a Braze **des
 
 ## Part 0: Credentials
 
-- **Snowflake** — Provided by your instructor via a 1Password link.
+- **Snowflake** — Provided by your instructor via a 1Password link. The Snowflake user uses
+  **key pair authentication**, so the link includes a private key rather than a password.
 - **Braze** — Provided by your instructor via a 1Password link.
 
 Keep the 1Password link open; you'll copy several values from it during the lab.
@@ -96,8 +97,8 @@ Keep the 1Password link open; you'll copy several values from it during the lab.
    - **Snowflake Account Name** 
    - **Query Execution Warehouse**
    - **User** 
-   - **Uncheck** *Use Key Authentication (Advanced)*.
-   - **Password**
+   - **Check** *Use Key Authentication (Advanced)*.
+   - **Private Key** — paste in the provided private key.
 6. Leave **Step 3 — Configure Advanced Settings** as-is.
 7. In **Step 4 - Configure Processing Region and Storage Backend**, Select:
    - **Data Processing Location** US

@@ -1,6 +1,6 @@
-# Hands-on Lab: Operations Management
+# Hands-on Lab: Operations Management (MySQL)
 
-*Updated July 2026. Verified against the current Fivetran Operations Management documentation.*
+*Updated September 2026. Verified against the current Fivetran Operations Management documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet is the practical companion to the Operations Management training. You'll build the access model hands-on: a destination, a connection created via the REST API, and then a team, a user, and a custom role. SSO/SAML and Customer-Managed Keys are covered as guided walkthroughs in the deck rather than in this lab, because they require an identity provider and a cloud KMS that we can't provision in a shared lab environment. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
@@ -23,7 +23,7 @@ Build the Fivetran Operations Management access model end to end: create a **Des
 - Confirm you received the invite. It was sent to the email you used to register and
   originates from `notifications@fivetran.com`.
 - **Snowflake data warehouse** — provided by your instructor via a 1Password link.
-- **Postgres database** — provided by your instructor via a 1Password link.
+- **MySQL database** — provided by your instructor via a 1Password link.
 
 ## What you'll do in this lab
 
@@ -44,7 +44,7 @@ In this lab you will:
       - Select **SaaS** as the deployment model when entering these
      credentials into the setup form. 
 
-**Postgres**
+**MySQL**
    - Provided by your instructor via a 1Password link.
 
 ---
@@ -125,9 +125,9 @@ Take the code below and replace the placeholders:
 
 - `YOUR_BASE64_ENCODED_API_KEY` → the API key you copied
 - `YOUR_GROUP_ID` → the Destination Group ID you copied
-- `YOUR_CONNECTION_NAME` → your first and last name followed by `_postgres`
-- `POSTGRES_HOSTNAME` → the actual Postgres hostname shared with you
-- `POSTGRES_PASSWORD` → the actual Postgres password shared with you
+- `YOUR_CONNECTION_NAME` → your first and last name followed by `_mysql`
+- `MYSQL_HOSTNAME` → the actual MySQL hostname shared with you
+- `MYSQL_PASSWORD` → the actual MySQL password shared with you
 
 **macOS / Linux (Terminal):**
 
@@ -138,7 +138,7 @@ curl -X POST "https://api.fivetran.com/v1/connections" \
   -H "Content-Type: application/json" \
   -d '{
     "group_id": "YOUR_GROUP_ID",
-    "service": "postgres",
+    "service": "mysql",
     "trust_certificates": true,
     "trust_fingerprints": true,
     "run_setup_tests": true,
@@ -151,12 +151,11 @@ curl -X POST "https://api.fivetran.com/v1/connections" \
     "destination_schema_names": "FIVETRAN_NAMING",
     "config": {
       "connection_type": "Directly",
-      "update_method": "QUERY_BASED",
-      "host": "POSTGRES_HOSTNAME",
-      "port": 5432,
-      "database": "industry",
+      "update_method": "TELEPORT",
+      "host": "MYSQL_HOSTNAME",
+      "port": 3306,
       "user": "fivetran_hol_agriculture",
-      "password": "POSTGRES_PASSWORD",
+      "password": "MYSQL_PASSWORD",
       "schema_prefix": "YOUR_CONNECTION_NAME"
     }
   }'
@@ -170,7 +169,7 @@ it as `curl.exe` (not the `curl` alias) so the flags work as written:
 $body = @'
 {
   "group_id": "YOUR_GROUP_ID",
-  "service": "postgres",
+  "service": "mysql",
   "trust_certificates": true,
   "trust_fingerprints": true,
   "run_setup_tests": true,
@@ -183,12 +182,11 @@ $body = @'
   "destination_schema_names": "FIVETRAN_NAMING",
   "config": {
     "connection_type": "Directly",
-    "update_method": "QUERY_BASED",
-    "host": "POSTGRES_HOSTNAME",
-    "port": 5432,
-    "database": "industry",
+    "update_method": "TELEPORT",
+    "host": "MYSQL_HOSTNAME",
+    "port": 3306,
     "user": "fivetran_hol_agriculture",
-    "password": "POSTGRES_PASSWORD",
+    "password": "MYSQL_PASSWORD",
     "schema_prefix": "YOUR_CONNECTION_NAME"
   }
 }

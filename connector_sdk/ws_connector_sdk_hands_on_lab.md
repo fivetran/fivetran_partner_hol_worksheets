@@ -1,6 +1,6 @@
-# Hands-on Lab: Connector SDK
+# Hands-on Lab: Connector SDK (Workstation)
 
-*Updated July 2026. Verified against the current Fivetran Connector SDK documentation.*
+*Updated September 2026. Verified against the current Fivetran Connector SDK documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to
 prepare and follow along. Please read through the requirements first. If you can't meet
@@ -16,15 +16,10 @@ environment, test a sample connector locally with `fivetran debug`, deploy it wi
 
 ## Requirements
 
-- **Python 3.10–3.14** (we'll use **3.13**, the SDK default). Python 3.9 is no longer supported.
-- A code editor (VS Code, Sublime, Notepad++, etc.)
-    - We recommend VS Code for this lab
 - A web browser (Chrome)
 
-## Optional
-
-- A SQL workbench (DBeaver)
-- The DuckDB CLI
+Everything else (Python, VS Code, the terminal, and DBeaver) is pre-installed on the Linux
+workstation provided for this lab.
 
 ## Housekeeping
 
@@ -34,6 +29,9 @@ environment, test a sample connector locally with `fivetran debug`, deploy it wi
 - Confirm you received the invite. It's sent to the email you used to register and
   comes from `notifications@fivetran.com`.
     - If you did not receive one, you likely already have a Fivetran account. So you can proceed with logging in with your email and password.
+- You'll be provided a **Linux workstation** accessible in your web browser. The **Gateway URL**,
+  **Guacamole Username**, and **Guacamole Password** are provided by your instructor via a
+  1Password link.
 
 ## What you'll do in this lab
 
@@ -43,8 +41,8 @@ environment, test a sample connector locally with `fivetran debug`, deploy it wi
 4. Deploy a test connector to review the flow
 5. Create and deploy a connector for a custom API
 
-Throughout, commands are given for **macOS/Linux** and **Windows**. Run the one that
-matches your system.
+You have been provided with a Linux workstation accessible in your web browser. Throughout,
+all the necessary commands are given for **Linux** and run on the workstation.
 
 ---
 
@@ -97,44 +95,39 @@ matches your system.
 
 ## Part 3: Setting up the Python environment
 
-1. Open your system's terminal.
+1. Use the **Gateway URL**, **Guacamole Username**, and **Guacamole Password** from the
+   1Password link to access your workstation.
 
-2. Create a directory called `connector_sdk` and move into it:
+2. Once you have logged in, click the **Terminal** icon on the bottom menu.
+
+   > **Tip:** In the workstation terminal, paste with **CTRL + SHIFT + V**.
+
+3. Create a directory called `connector_sdk` and move into it:
 
    ```bash
    mkdir connector_sdk
    cd connector_sdk
    ```
 
-3. Create a Python virtual environment:
+4. Create a Python virtual environment:
 
-   **macOS/Linux**
    ```bash
    python3 -m venv sdk
    ```
-   **Windows (PowerShell)**
-   ```powershell
-   py -m venv sdk
-   ```
 
-4. Activate the virtual environment:
+5. Activate the virtual environment:
 
-   **macOS/Linux**
    ```bash
    source sdk/bin/activate
    ```
-   **Windows (PowerShell)**
-   ```powershell
-   sdk\Scripts\Activate.ps1
-   ```
 
-5. Install the Fivetran Connector SDK:
+6. Install the Fivetran Connector SDK:
 
    ```bash
-   pip install fivetran-connector-sdk
+   pip3 install fivetran-connector-sdk
    ```
 
-6. Confirm the install and see the available commands:
+7. Confirm the install and see the available commands:
 
    ```bash
    fivetran version
@@ -144,60 +137,58 @@ matches your system.
    You should see the installed version and the commands `init`, `debug`, `deploy`,
    `package`, `reset`, and `version`.
 
-7. Back in the Fivetran dashboard, click your **username > API Key**.
+8. Back in the Fivetran dashboard, click your **username > API Key**.
 
-8. Click **Generate new API key**. If prompted, confirm — this invalidates any old key
+9. Click **Generate new API key**. If prompted, confirm — this invalidates any old key
    and generates a new one.
 
-9. Copy the **Base64-encoded API key**.
+10. Copy the **Base64-encoded API key**.
 
-10. Open your Connector SDK project in VS Code
+11. Open your Connector SDK project in VS Code:
+
     ```bash
     code .
     ```
-11. Navigate to **Terminal** and click **New Terminal**
 
-12. Create a `test.env` file in the root of your project:
+    - If you get prompted to choose a password for a keyring, just hit **Cancel** (you may
+      have to click it twice).
+    - If you are prompted to log in to VS Code, close that pop-up. No login is required.
 
-    **macOS/Linux**
+12. Navigate to the **"..."** menu in VS Code, find **Terminal**, click **New Terminal**,
+    and select **Trust Folder & Continue**. The rest of the lab runs in this VS Code
+    terminal.
+
+13. The new terminal starts without your virtual environment. Activate it again:
+
+    ```bash
+    source sdk/bin/activate
+    ```
+
+14. Create a `test.env` file in the root of your project:
+
     ```bash
     touch test.env
     ```
-    **Windows (PowerShell)**
-    ```powershell
-    New-Item test.env
-    ```
-13. Open the `test.env` file in your code editor
 
-14. Add the following to `test.env`, pasting in the API key you copied:
+15. In the VS Code Explorer, double-click `test.env` to open it.
+
+16. Add the following to `test.env`, pasting in the API key you copied, then save via
+    **File > Save**:
 
     ```
     FIVETRAN_API_KEY=<paste-your-base64-api-key-here>
     ```
 
-15. Load the env file into your terminal session:
+17. Load the env file into your terminal session:
 
-    **macOS/Linux**
     ```bash
     export $(grep -v '^#' test.env | xargs)
     ```
-    **Windows (PowerShell)**
-    ```powershell
-    Get-Content test.env | Where-Object { $_ -notmatch '^#' -and $_ -match '=' } | ForEach-Object {
-      $name, $value = $_ -split '=', 2
-      Set-Item -Path "env:$name" -Value $value
-    }
-    ```
 
-16. Confirm the key loaded:
+18. Confirm the key loaded:
 
-    **macOS/Linux**
     ```bash
     echo $FIVETRAN_API_KEY
-    ```
-    **Windows (PowerShell)**
-    ```powershell
-    echo $env:FIVETRAN_API_KEY
     ```
 
 > **Tip:** `fivetran init` can scaffold a whole project for you (including a runnable
@@ -212,20 +203,15 @@ matches your system.
 
 1. Create the connector files:
 
-   **macOS/Linux**
    ```bash
    touch connector.py configuration.json
-   ```
-   **Windows (PowerShell)**
-   ```powershell
-   New-Item connector.py; New-Item configuration.json
    ```
 
 2. Open the Fivetran **Connector SDK Quickstart** examples on GitHub:
    [Hello Example](https://github.com/fivetran/connector_sdk/blob/main/examples/quickstart/hello/connector.py)
 
-3. Copy the `connector.py` code from the example and paste it into your `connector.py`,
-   then save.
+3. Copy the `connector.py` code from the example. In the VS Code Explorer, double-click
+   `connector.py`, paste the code in, and save via **File > Save**.
 
 4. Run the debug command to execute your code locally. The first run downloads the
    connector tester, so give it a moment:
@@ -239,34 +225,33 @@ matches your system.
 
 5. List the generated files. You'll see a new `files` directory (and a `__pycache__`):
 
-   **macOS/Linux**
    ```bash
    ls
    ls files
    ```
-   **Windows (PowerShell)**
-   ```powershell
-   dir
-   dir files
-   ```
 
 6. You'll see `state.json` and `warehouse.db` in `files`. Look at the saved state:
 
-   **macOS/Linux**
    ```bash
    cat files/state.json
    ```
-   **Windows (PowerShell)**
-   ```powershell
-   type files\state.json
-   ```
 
-7. Preview the extracted data in `warehouse.db` with DBeaver or DuckDB (if you don't have either, that's okay the instructor will demonstrate):
-   - Open DBeaver and create a new connection.
-   - Search for and select **DuckDB**.
-   - Browse to and select `files/warehouse.db`, then open it.
-   - Click **Finish** (you may be prompted to install the DuckDB driver).
-   - Expand the `warehouse.db` object in the DBeaver navigator and preview the table.
+7. In the VS Code Explorer, expand the **files** directory, right-click `warehouse.db`, and
+   select **Copy Path**.
+
+8. Preview the extracted data in DBeaver. Open the **Application Finder** in the bottom
+   desktop menu, search for **DBeaver**, and double-click to open it.
+   - It takes a moment to load. When the onboarding wizard appears, select the **Simple**
+     view and decline any other options.
+
+9. Create a **New Connection** in DBeaver, search for **DuckDB**, select it, and paste the
+   copied path to `warehouse.db` into the path field.
+   - Click **Test Connection** and select **Yes** when prompted to download the DuckDB
+     driver.
+   - Confirm, then click **Finish**.
+
+10. Expand `warehouse.db` in the Connection Explorer and navigate to `warehouse > tester`.
+    Double-click the table to preview the data.
 
 > **Note:** DuckDB allows only one connection to the database file at a time. If you run
 > `fivetran debug` while `warehouse.db` is open in DBeaver, you'll get a "Could not set
@@ -336,10 +321,11 @@ breaking headlines from sources across the web through a JSON API.
    - Create a new working directory
    - Create a new python virtual environment
    - Install the Connector SDK
-   - You're credentials should still be in your terminal session, but you can create a new file to drop your API Keys in
+   - Your `FIVETRAN_API_KEY` should still be set in your terminal session. If you open a
+     new terminal, re-run the `export` command from Part 3 against your `test.env` file.
 
-3. Create `configuration.json` and paste in the following, replacing the placeholder
-   with your NewsAPI key:
+3. Create `configuration.json`, open it in the VS Code Explorer, and paste in the following,
+   replacing the placeholder with your NewsAPI key:
 
    ```json
    {
@@ -349,7 +335,7 @@ breaking headlines from sources across the web through a JSON API.
    }
    ```
 
-4. Create `connector.py` and paste in the code skeleton below. Your job is to fill in each numbered step. Use the
+4. Create `connector.py`, open it in the VS Code Explorer, and paste in the code skeleton below. Your job is to fill in each numbered step. Use the
    [Connector SDK technical reference](https://fivetran.com/docs/connector-sdk/technical-reference)
    to complete it.
 
