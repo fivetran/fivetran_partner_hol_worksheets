@@ -1,6 +1,6 @@
-# Hands-on Lab: Hybrid Deployment
+# Hands-on Lab: Hybrid Deployment (SQL Server)
 
-*Updated July 2026. Verified against the current Fivetran Hybrid Deployment documentation.*
+*Updated September 2026. Verified against the current Fivetran Hybrid Deployment documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
@@ -29,7 +29,7 @@ Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM
 - You'll be provided: 
    - An assigned **VM** for the Hybrid Deployment agent
    - A **Snowflake** data warehouse
-   - A **PostgreSQL** database.
+   - A **SQL Server** database.
 
 ## What you'll do in this lab
 
@@ -58,7 +58,7 @@ Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM
 - Credentials: Provided by your instructor via a 1Password link. The destination uses
   **key pair authentication**, so the link includes a private key rather than a password.
 
-**PostgreSQL**
+**SQL Server**
 - Credentials: Provided by your instructor via a 1Password link.
 
 ---
@@ -167,15 +167,16 @@ docker container logs container_id --follow
 ## Part 3: Creating a connector
 
 1. Go to the **Connections** tab and click **Add connector**.
-2. Search for **PostgreSQL** and click **Set up**.
+2. Search for **SQL Server** and click **Set up**.
 3. Select the destination you created (make sure it's **yours**, not someone else's).
-4. In **Destination schema prefix**, use `<firstname>_<lastname>_postgres` — this
+4. In **Destination schema prefix**, use `<firstname>_<lastname>_sql_server` — this
    becomes your connection name.
-5. Populate the setup form with the provided PostgreSQL credentials.
+5. Populate the setup form with the provided SQL Server credentials.
 6. For **Authentication Method**, select **Connect with username and password**.
 7. Under **Hybrid Deployment**, ensure **your** agent is selected.
 8. Leave **Require TLS** unchecked.
-9. For **Update Method**, select **Query-Based**.
+9. For **Update Method**, select **Fivetran Teleport Sync**.
+   - *Context:* SQL Server supports four incremental sync methods. **Change Tracking** records which rows changed (but not the changed data), requires primary keys, and must be enabled on the database and each table. **Change Data Capture** records every change in shadow history tables and works with or without primary keys. **Binary Log Reader** reads the transaction log files directly (SQL Server 2016 and later) and requires CDC to be enabled for supplemental logging. **Fivetran Teleport Sync** needs only a read-only SQL connection — it compares row hashes between syncs to detect changes, so it requires no source-side configuration. We use Teleport in this lab because it works without any database changes.
 10. For **Destination schema names**, select **Fivetran naming**.
 11. Click **Save & Test** and wait for the setup tests to pass, then click **Continue**.
 12. Fivetran fetches all tables, schemas, and columns. 
@@ -184,7 +185,7 @@ docker container logs container_id --follow
 13. For handling schema changes, select **Allow all**.
 14. Click **Start Initial Sync**. While it runs, continue to Part 4.
 
-> **Checkpoint:** Your PostgreSQL connector is created and its initial sync of the `agriculture` schema completes successfully.
+> **Checkpoint:** Your SQL Server connector is created and its initial sync of the `agriculture` schema completes successfully.
 
 ---
 

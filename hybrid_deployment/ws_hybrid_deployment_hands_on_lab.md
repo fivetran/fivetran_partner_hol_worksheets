@@ -1,6 +1,6 @@
-# Hands-on Lab: Hybrid Deployment
+# Hands-on Lab: Hybrid Deployment (Workstation)
 
-*Updated July 2026. Verified against the current Fivetran Hybrid Deployment documentation.*
+*Updated September 2026. Verified against the current Fivetran Hybrid Deployment documentation.*
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
@@ -8,17 +8,16 @@ Thank you for registering for our hands-on lab. This worksheet has everything yo
 
 ## Objective
 
-Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM**, stand up a Hybrid **destination** and **connector**, then run an initial sync where data never leaves your network — before confirming the agent install directory and editing `config.json` to enable per-job logging.
+Create a **Hybrid Deployment agent** in Fivetran and install it on your provided **Linux workstation**, stand up a Hybrid **destination** and **connector**, then run an initial sync where data never leaves your network — before confirming the agent install directory and editing `config.json` to enable per-job logging.
 
 ## Requirements
 
-- **An SSH client**
-  - macOS / Linux: the built-in **Terminal** (`ssh`)
-  - Windows: **Windows Terminal / PowerShell** (built-in OpenSSH `ssh`) or **PuTTY**
 - **A web browser** — Chrome or Firefox
-- **Basic Linux command familiarity** (all VM commands are Linux, regardless of your
-  laptop's OS)
-- Outbound access on Port 22 from your machine / corporate VPN
+- **Basic Linux command familiarity** (all commands in this lab run in the workstation's
+  Linux terminal)
+
+Everything else (Docker and the terminal) is pre-installed on the Linux workstation provided
+for this lab.
 
 ## Housekeeping
 
@@ -27,14 +26,16 @@ Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM
 - The invite goes to the email you registered with, from `notifications@fivetran.com`.
   Confirm you received it.
 - You'll be provided: 
-   - An assigned **VM** for the Hybrid Deployment agent
+   - A **Linux workstation**, accessible in your web browser, where you'll install the
+     Hybrid Deployment agent. The **Gateway URL**, **Guacamole Username**, and
+     **Guacamole Password** are provided by your instructor via a 1Password link.
    - A **Snowflake** data warehouse
    - A **PostgreSQL** database.
 
 ## What you'll do in this lab
 
 1. Create a Hybrid Deployment agent in Fivetran
-2. Install the agent on the provided VM
+2. Install the agent on the provided Linux workstation
 3. Create a destination in Fivetran that uses your agent
 4. Create and sync a connector
 5. Confirm the install directory you learned about in the training
@@ -42,15 +43,15 @@ Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM
 
 > Module 3 of the training covers the install directory structure in detail (`conf/`, `data/`,
 > `data/_samples/`, `logs/`, `tmp/`, `stats/`, `hdagent.sh`, `hd-debug.sh`). In this lab you'll
-> confirm it on your own VM and then change one configuration parameter.
+> confirm it on your own workstation and then change one configuration parameter.
 
 ---
 
 ## Part 0: Credentials
 
-**Hybrid Deployment VM**
-- VM IP: provided via email
-- SSH username / password: Provided by your instructor via a 1Password link.
+**Linux workstation**
+- Gateway URL, Guacamole username, and Guacamole password: provided by your instructor via a
+  1Password link.
 
 **Snowflake**
 - Select **Hybrid** as the deployment model when entering these credentials in the setup
@@ -77,38 +78,16 @@ Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM
 1. Log in with your existing Fivetran credentials (use **Forgot your password?** if needed).
 2. Switch to the `HYBRID_DEPLOYMENT_HANDS_ON_LAB` account via the account drop-down in the top left.
 
-### Access your Hybrid Deployment VM
-Log into the VM over SSH with the SSH command and password you were assigned.
-   - The command can be found in your welcome email
-      - If you cannot find it, let your instructor know and they will provide it to you
-      - DO NOT use someone else's SSH command as they are unique to you
-   - The password can be found in the 1Password credentials link
+### Access your Linux workstation
+1. Use the **Gateway URL**, **Guacamole Username**, and **Guacamole Password** from the
+   1Password link to access your workstation.
+   - DO NOT use someone else's workstation credentials — they are unique to you.
+2. Once you have logged in, click the **Terminal** icon on the bottom menu.
 
-**macOS / Linux (Terminal):**
+> **Tip:** In the workstation terminal, paste with **CTRL + SHIFT + V**.
 
-```bash
-ssh <username>@<vm-ip>
-```
-
-**Windows (PowerShell / Windows Terminal — built-in OpenSSH):**
-
-```powershell
-ssh <username>@<vm-ip>
-```
-
-**Windows (PuTTY):** enter `<vm-ip>` as the Host Name, keep port `22`, click **Open**,
-then enter `<username>` and the password when prompted.
-
-- When prompted `Are you sure you want to continue connecting?`, enter **yes**.
-- Enter the provided password when prompted 
-   - It will not appear or be visible when you paste it.
-   - This is normal
-   - Do not paste it more than once or press any other buttons besides ENTER
-- On success you'll see the VM welcome screen.
-
-> All commands from here run **on the VM** (Linux), so they're identical whether your
-> laptop is macOS, Linux, or Windows. The only OS difference is the SSH client you used to
-> connect above.
+> All commands from here run in the **workstation terminal** (Linux). This lab is
+> terminal-only — you won't need VS Code or any other application on the workstation.
 
 ---
 
@@ -127,10 +106,11 @@ then enter `<username>` and the password when prompted.
 8. Name the agent `<firstname>_<lastname>_agent`, then click **Generate agent token**.
 9. Copy the **Install and start agent** command, then click **Save**.
 
-   > The token is shown **once**. Copy the whole command now — you'll paste it into the VM.
+   > The token is shown **once**. Copy the whole command now — you'll paste it into the
+   > workstation terminal.
 
-10. Switch back to your VM terminal and run the command. It looks like this (your token
-    will be filled in):
+10. Switch back to your workstation terminal and run the command (paste with
+    **CTRL + SHIFT + V**). It looks like this (your token will be filled in):
 
 ```bash
 TOKEN="YOUR_TOKEN_HERE" RUNTIME=docker bash -c "$(curl -sL "https://raw.githubusercontent.com/fivetran/hybrid_deployment/main/install.sh")"
@@ -160,7 +140,7 @@ docker container logs container_id --follow
 
 16. Click **View destination** to continue.
 
-> **Checkpoint:** Your agent's controller container is running on the VM and your Snowflake destination has passed its setup tests.
+> **Checkpoint:** Your agent's controller container is running on the workstation and your Snowflake destination has passed its setup tests.
 
 ---
 
@@ -191,7 +171,7 @@ docker container logs container_id --follow
 ## Part 4: Confirm the install directory
 
 In the training (Module 3) you learned what the installer creates under `$HOME/fivetran`.
-Let's confirm it on your own VM. (For the full explanation of each directory, refer back to
+Let's confirm it on your own workstation. (For the full explanation of each directory, refer back to
 the training — here we're just verifying it exists and peeking at the config file.)
 
 1. Exit the live log view: press **Ctrl + C**.
@@ -208,7 +188,7 @@ ls
 3. View the configuration file. 
    - By default it holds only the `token` needed to connect
    securely to Fivetran's cloud
-   - And also the SE Linux configuration toggle, which is automatically set based on the VM settings
+   - And also the SE Linux configuration toggle, which is automatically set based on the workstation settings
 
 ```bash
 cat conf/config.json
@@ -277,7 +257,7 @@ cd ~/fivetran
 
 7. In the Fivetran dashboard, click **Sync Now** on your connector. Since there's no new
    data, it completes in a few seconds.
-8. Back on the VM, look in the `logs` directory — per-job log files are now written to disk:
+8. Back in the workstation terminal, look in the `logs` directory — per-job log files are now written to disk:
    - The **random_id** will be different for everyone
    - It's unique to your Hybrid Deployment agent
 
@@ -334,8 +314,8 @@ ls stats
 
 ## What you did
 
-You created a Hybrid Deployment agent, installed it on your own VM, stood up a Hybrid
-destination and connector, ran a sync where **data never left the VM's network** (only
+You created a Hybrid Deployment agent, installed it on your own Linux workstation, stood up a Hybrid
+destination and connector, ran a sync where **data never left the workstation's network** (only
 metadata and logs went to Fivetran), confirmed the install directory, enabled a custom
 configuration parameter and watched it take effect, and generated a diagnostics bundle. This
 is the same workflow you'll guide a customer through in a real Hybrid Deployment.

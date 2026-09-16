@@ -25,6 +25,9 @@ environment, create a connector locally with the AI Plugin, test it locally, and
 - Confirm you received the invite. It's sent to the email you used to register and
   comes from `notifications@fivetran.com`.
     - If you did not receive one, you likely already have a Fivetran account. So you can proceed with logging in with your email and password.
+- You'll be provided a **Linux workstation** accessible in your web browser. The **Gateway URL**,
+  **Guacamole Username**, and **Guacamole Password** are provided by your instructor via a
+  1Password link.
 
 ## What you'll do in this lab
 
@@ -75,7 +78,7 @@ You have been provided with a Linux Workstation accessible in your web browser. 
 5. For the **Table Type** select **Snowflake Native Tables**.
 6. For the **Connection Method** select **Connect directly**.
 7. Enter the provided Snowflake credentials from the 1Password link the instructor provided.
-8. For the authentication method, select **PASSWORD** and paste in the provided password.
+8. For the authentication method, select **KEY PAIR** and paste in the provided private key.
 9. Click **Load Virtual Warehouses** and select **CONNECTOR_SDK_HOL_WAREHOUSE**.
 10. Leave the remaining fields at their default values. Do not make any changes.
 11. Click **Save & Test**.
@@ -91,7 +94,7 @@ You have been provided with a Linux Workstation accessible in your web browser. 
 
 ## Part 3: Setting up the Python environment
 
-1. Use the **Gateway URL**, **Guacamole Username**, and **Guacamole Password** to access your workstation
+1. Use the **Gateway URL**, **Guacamole Username**, and **Guacamole Password** from the 1Password link to access your workstation
 
 2. Once you have logged in click on the **Terminal** icon on the bottom menu
 
