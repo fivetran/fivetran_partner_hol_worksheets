@@ -31,6 +31,7 @@ worksheet. Some trainings also have variants:
   - Database variants: [MySQL](programmatic_management/mysql_programmatic_management_hands_on_lab.md), [SQL Server](programmatic_management/sql_server_programmatic_management_hands_on_lab.md), [Oracle](programmatic_management/oracle_programmatic_management_hands_on_lab.md)
 - [`technical_foundations/`](technical_foundations/technical_foundations_hands_on_lab.md) — Technical Foundations
   - Database variants: [MySQL](technical_foundations/mysql_technical_foundations_hands_on_lab.md), [SQL Server](technical_foundations/sql_server_technical_foundations_hands_on_lab.md), [Oracle](technical_foundations/oracle_technical_foundations_hands_on_lab.md)
+  - [AI variant](technical_foundations/technical_foundations_ai_hands_on_lab.md) — Parts 1–3 as above, then build a RAG chatbot with Snowflake Cortex and Streamlit
 - [`transformations/`](transformations/transformations_hands_on_lab.md) — Transformations
   - [Workstation variant](transformations/ws_transformations_hands_on_lab.md)
 
