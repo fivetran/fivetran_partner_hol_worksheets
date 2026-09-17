@@ -85,11 +85,12 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 3. Give the destination the name `<firstname>_<lastname>_snowflake`, replacing `<firstname>` and `<lastname>` with your actual first and last names. Click **Add**.
 4. Enter the provided Snowflake credentials.
 5. For the authentication method, select **Password** and paste in the provided password key.
-7. In the **Deployment model** section, select **SaaS**.
-8. Leave the remaining fields at their default values. Do not make any changes.
-9. Click **Save & Test**.
-10. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
-11. Click **View Destination** (or **Continue**) to proceed.
+  > **Note:** Snowflake is removing Password Auth on 9/21. If password passed authentication fails, switch to **Key Pair** and paste in the provided private key.
+6. In the **Deployment model** section, select **SaaS**.
+7. Leave the remaining fields at their default values. Do not make any changes.
+8. Click **Save & Test**.
+9. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
+10. Click **View Destination** (or **Continue**) to proceed.
 
 > **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 7.
 
