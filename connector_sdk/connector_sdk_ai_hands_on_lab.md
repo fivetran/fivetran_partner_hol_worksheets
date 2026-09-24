@@ -187,7 +187,7 @@ You have been provided with a Linux Workstation accessible in your web browser. 
     echo export NEWS_API_KEY=your_api_key_here >> ~/.profile
     ```
 
-3. In the VS Code Explorer double click `configuration.json` to open it and paste in the following and save via File > Save:
+3. In the VS Code Explorer double click `configuration.json` to open it, and replace what's currently in there with the following and save via File > Save:
 
    ```json
    {
