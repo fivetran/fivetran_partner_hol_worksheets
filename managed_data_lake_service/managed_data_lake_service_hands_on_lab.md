@@ -8,6 +8,8 @@ Thank you for registering for our hands-on lab. This worksheet provides all the
 information you need to prepare. Please read through the requirements first. If you can't
 meet them, let us know and we'll rebook you on another workshop.
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, a Google Cloud Storage bucket that your instructor grants Fivetran access to, a PostgreSQL source, and Snowflake as the query engine. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account, a bucket or container you control in any Managed Data Lake Service–supported cloud (Amazon S3, Azure Data Lake Storage, or Google Cloud Storage), any [Fivetran-supported source](https://fivetran.com/docs/connectors), and a query engine that can read your data lake tables. Skip the Housekeeping section and Parts 0–1. Where the worksheet has you wait for your instructor to allowlist access, grant Fivetran access to your own storage by following the setup guide for your cloud. Use the remaining parts as an example of what each step looks like, adapting setup details, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective

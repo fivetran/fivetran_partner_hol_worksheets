@@ -40,10 +40,9 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 1. Create a destination in Fivetran
 2. Create and sync a connection
 3. Deploy a Quickstart transformation
-4. Create teams
-5. Add users
-6. Configure permissions (roles)
-7. Manage notifications
+4. Manage notifications
+
+> User, team, and role management is covered in the Operations Management hands-on lab.
 
 ---
 
@@ -91,7 +90,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 9. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 10. Click **View Destination** (or **Continue**) to proceed.
 
-> **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 7.
+> **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 4.
 
 ---
 
@@ -103,7 +102,6 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 2. Search for **MySQL**, hover over the connector tile, and click **Set up**.
 3. Select the destination you created in Part 2 (make sure you don't use someone else's destination), then click **Select**.
 4. The value you enter in the **Destination schema prefix** field becomes the name of your connection. Use the format `<firstname>_<lastname>_mysql`, replacing `<firstname>` and `<lastname>` with your actual first and last names.
-5. Select **Fivetran Naming**
 5. Populate the setup form with the provided MySQL credentials.
 6. For **Authentication Method**, select **Connect with username and password**.
 7. Leave **Connection Method** at its default value, **Connect directly**.
@@ -157,7 +155,7 @@ Now we'll learn how to manage **Notifications**. In Fivetran, a notification is 
    - Here you'll find toggles for notifications such as **Monthly spend warning**, **Low spend warning**, and **System Outages**.
 8. To disable all notifications for your user, set the **Notifications enabled** toggle at the top of the page to **OFF**.
 9. As an Account Administrator, you can also manage notifications for other users and email recipients. Click **Switch Recipient**.
-10. Select the user you created back in Part 5.
+10. Select another user or email recipient in your account.
 11. Enable **System Outages** notifications for this user.
 12. When finished, click **Back to your notifications** to return to your own settings.
 
@@ -165,4 +163,4 @@ Now we'll learn how to manage **Notifications**. In Fivetran, a notification is 
 
 ## What you did
 
-You've completed the Fivetran Technical Foundations hands-on lab. You created a destination, set up and synced a connection, deployed a Quickstart transformation, and configured teams, users, roles, and notifications.
+You've completed the Fivetran Technical Foundations hands-on lab. You created a destination, set up and synced a connection, deployed a Quickstart transformation, and managed notifications.
