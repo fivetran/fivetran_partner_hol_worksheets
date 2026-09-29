@@ -4,6 +4,8 @@
 
 Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, a PostgreSQL source, and a Snowflake destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account and any [Fivetran-supported source](https://fivetran.com/docs/connectors) and [destination](https://fivetran.com/docs/destinations) you have access to. Skip the Housekeeping section and Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting setup details, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective
@@ -40,10 +42,9 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 1. Create a destination in Fivetran
 2. Create and sync a connection
 3. Deploy a Quickstart transformation
-4. Create teams
-5. Add users
-6. Configure permissions (roles)
-7. Manage notifications
+4. Manage notifications
+
+> User, team, and role management is covered in the Operations Management hands-on lab.
 
 ---
 
@@ -84,15 +85,14 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 2. Search for **Snowflake** and select it.
 3. Give the destination the name `<firstname>_<lastname>_snowflake`, replacing `<firstname>` and `<lastname>` with your actual first and last names. Click **Add**.
 4. Enter the provided Snowflake credentials.
-5. For the authentication method, select **Password** and paste in the provided password key.
-  > **Note:** Snowflake is removing Password Auth on 9/21. If password passed authentication fails, switch to **Key Pair** and paste in the provided private key.
+5. For the authentication method, select **Key Pair** and paste in the provided private key.
 6. In the **Deployment model** section, select **SaaS**.
 7. Leave the remaining fields at their default values. Do not make any changes.
 8. Click **Save & Test**.
 9. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 10. Click **View Destination** (or **Continue**) to proceed.
 
-> **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 7.
+> **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 4.
 
 ---
 
@@ -104,7 +104,6 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 2. Search for **PostgreSQL**, hover over the connector tile, and click **Set up**.
 3. Select the destination you created in Part 2 (make sure you don't use someone else's destination), then click **Select**.
 4. The value you enter in the **Destination schema prefix** field becomes the name of your connection. Use the format `<firstname>_<lastname>_postgres`, replacing `<firstname>` and `<lastname>` with your actual first and last names.
-5. Select **Fivetran Naming**
 5. Populate the setup form with the provided PostgreSQL credentials.
 6. For **Authentication Method**, select **Connect with username and password**.
 7. Leave **Connection Method** at its default value, **Connect directly**.
@@ -158,7 +157,7 @@ Now we'll learn how to manage **Notifications**. In Fivetran, a notification is 
    - Here you'll find toggles for notifications such as **Monthly spend warning**, **Low spend warning**, and **System Outages**.
 8. To disable all notifications for your user, set the **Notifications enabled** toggle at the top of the page to **OFF**.
 9. As an Account Administrator, you can also manage notifications for other users and email recipients. Click **Switch Recipient**.
-10. Select the user you created back in Part 5.
+10. Select another user or email recipient in your account.
 11. Enable **System Outages** notifications for this user.
 12. When finished, click **Back to your notifications** to return to your own settings.
 
@@ -166,4 +165,4 @@ Now we'll learn how to manage **Notifications**. In Fivetran, a notification is 
 
 ## What you did
 
-You've completed the Fivetran Technical Foundations hands-on lab. You created a destination, set up and synced a connection, deployed a Quickstart transformation, and configured teams, users, roles, and notifications.
+You've completed the Fivetran Technical Foundations hands-on lab. You created a destination, set up and synced a connection, deployed a Quickstart transformation, and managed notifications.

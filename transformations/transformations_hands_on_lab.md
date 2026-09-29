@@ -4,6 +4,8 @@
 
 Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and complete the lab. In this lab you will build a complete Fivetran + dbt Core transformation end to end: stand up a Snowflake destination, sync the Fivetran Platform Connector, build and version a dbt project, install a Fivetran data model package, orchestrate it from Fivetran on an Integrated schedule, and view the transformed data in Snowflake. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account and a Snowflake destination with instructor-provided credentials. If you're working through the lab on your own, use your own Fivetran partner account and any [Fivetran-supported destination](https://fivetran.com/docs/destinations) that supports dbt Core transformations. Skip the Housekeeping section and Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting the destination setup, dbt profile, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective

@@ -4,6 +4,8 @@
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, an assigned VM, a PostgreSQL source, and a Snowflake destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account with Hybrid Deployment enabled, a Linux machine or VM where you can run Docker or Podman, and any source and destination that support Hybrid Deployment. Skip the Housekeeping section and Parts 0–1 (other than connecting to your own machine), and use the remaining parts as an example of what each step looks like, adapting setup details, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective

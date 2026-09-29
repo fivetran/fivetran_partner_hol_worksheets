@@ -11,6 +11,8 @@ If you can't meet them, let us know and we'll rebook you on another workshop.
 > to it from the **Activations** tab in the Fivetran dashboard. A few backend identifiers in
 > this lab still literally contain "census".
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, a Snowflake activation source, and a Braze activation destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account with Activations enabled, any warehouse supported as an Activations source, and any Activations-supported destination you have access to (a sandbox or test instance is recommended). Skip the lab account and instructor-provided credentials in the Requirements section, along with Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting setup details, credentials, the dataset SQL, field mappings, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective

@@ -4,6 +4,8 @@
 
 Thank you for registering for our hands-on lab. This worksheet is the practical companion to the Operations Management training. You'll build the access model hands-on: a destination, a connection created via the REST API, and then a team, a user, and a custom role. SSO/SAML and Customer-Managed Keys are covered as guided walkthroughs in the deck rather than in this lab, because they require an identity provider and a cloud KMS that we can't provision in a shared lab environment. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, a PostgreSQL source, and a Snowflake destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account (you'll need Account Administrator access) and any [Fivetran-supported source](https://fivetran.com/docs/connectors) and [destination](https://fivetran.com/docs/destinations) you have access to. Skip the Housekeeping section and Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting setup details, credentials, the API request body, and naming to your own resources. Keep in mind that generating a new API key replaces your existing one, and invite only users who expect the invitation (such as a colleague or a test email address you control). If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective

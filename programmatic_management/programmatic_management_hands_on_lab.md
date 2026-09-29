@@ -6,6 +6,8 @@ Thank you for registering for our hands-on lab. This worksheet has everything yo
 end-to-end Fivetran pipeline **programmatically** using the REST API and Postman. Please read through
 the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
 
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, a PostgreSQL source, and a Snowflake destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account and any [Fivetran-supported source](https://fivetran.com/docs/connectors) and [destination](https://fivetran.com/docs/destinations) you have access to. Skip the Housekeeping section and Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting the request bodies, credentials, and naming to your own resources. You can use Postman or another HTTP client you're comfortable with. Keep in mind that generating a new API key replaces your existing one. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
 ---
 
 ## Objective
