@@ -85,10 +85,14 @@ matches your system.
 4. Enter the provided Snowflake credentials from the 1Password link the instructor provided.
 5. For the authentication method, select **KEY PAIR** and paste in the provided private key.
 6. In the **Deployment model** section, select **SaaS**.
-7. Leave the remaining fields at their default values. Do not make any changes.
-8. Click **Save & Test**.
-9. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
-10. Click **View Destination** (or **Continue**) to proceed.
+7. Click **Load Virtual Warehouses** and select the warehouse provided in your credentials.
+
+   > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
+
+8. Leave the remaining fields at their default values. Do not make any changes.
+9. Click **Save & Test**.
+10. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
+11. Click **View Destination** (or **Continue**) to proceed.
 
 > **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 7.
 

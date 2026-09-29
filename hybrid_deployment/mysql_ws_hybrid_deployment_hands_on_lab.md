@@ -134,11 +134,15 @@ docker container logs container_id --follow
 13. Back in Fivetran, under **The storage service you want to use**, select **Snowflake
     Internal Stage**.
 
-14. Leave everything else as the default value
+14. Click **Load Virtual Warehouses** and select the warehouse provided in your credentials.
 
-15. Click **Save & Test** and wait for the setup tests to pass.
+    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-16. Click **View destination** to continue.
+15. Leave everything else as the default value
+
+16. Click **Save & Test** and wait for the setup tests to pass.
+
+17. Click **View destination** to continue.
 
 > **Checkpoint:** Your agent's controller container is running on the workstation and your Snowflake destination has passed its setup tests.
 

@@ -94,9 +94,13 @@ find Billing & Usage.
 4. Enter the provided credentials. Select **KEY PAIR** for the Auth and paste in the
    provided private key.
 5. Select **SaaS Deployment** in the *Select deployment model* section.
-6. Leave the remaining fields as their default values — do not make any changes.
-7. Click **Save & Test** and wait for the setup tests to complete.
-8. On success, click **View Destination** to continue.
+6. Click **Load Virtual Warehouses** and select the warehouse provided in your credentials.
+
+   > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
+
+7. Leave the remaining fields as their default values — do not make any changes.
+8. Click **Save & Test** and wait for the setup tests to complete.
+9. On success, click **View Destination** to continue.
 
 **Checkpoint:** the destination shows a **Connected** status.
 
