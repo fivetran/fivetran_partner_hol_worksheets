@@ -80,6 +80,9 @@ You have been provided with a Linux Workstation accessible in your web browser. 
 7. Enter the provided Snowflake credentials from the 1Password link the instructor provided.
 8. For the authentication method, select **KEY PAIR** and paste in the provided private key.
 9. Click **Load Virtual Warehouses** and select **CONNECTOR_SDK_HOL_WAREHOUSE**.
+
+   > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
+
 10. Leave the remaining fields at their default values. Do not make any changes.
 11. Click **Save & Test**.
 12. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
