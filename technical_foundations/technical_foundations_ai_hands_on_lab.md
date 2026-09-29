@@ -214,13 +214,27 @@ That's it for transforming the data. Now you're ready to build the Streamlit app
 
 Streamlit in Snowflake makes creating and sharing data applications easy. You will build the chatbot entirely inside Snowsight, with no local setup.
 
-1. In the left navigation, select **Projects** > **Streamlit**.
-2. Click **+ Streamlit App** in the upper-right corner.
-3. Enter a name for your chat app (for example, `<firstname>_<lastname>_wine_assistant`).
-   - **Very important:** For the app location, choose the **database and schema containing your data** (the schema Fivetran created, where `VINEYARD_DATA_VECTORS` lives). Select a warehouse when prompted.
-   - Click **Create**.
+> **Why SQL instead of the + Streamlit App button?** New Streamlit apps created from the Snowsight UI now run on a *container runtime* backed by a shared compute pool, which may not have capacity during the lab. Creating the app with SQL lets you choose the **warehouse runtime**, which runs on the same warehouse you used in Part 4 and needs no compute pool.
+
+1. **Open a SQL worksheet with your Fivetran schema as context.** You can reuse the worksheet from Part 4. If you start a new one, set its context to the schema Fivetran created (where `VINEYARD_DATA_VECTORS` lives), exactly as you did in Part 4, step 3.
+2. **Create the app on the warehouse runtime.** Paste the SQL below, replace `<your_warehouse>` with the **Snowflake Warehouse** value from your 1Password item, and run both statements.
+
+    ```sql
+    /** Create the chatbot app on the warehouse runtime (no compute pool needed) **/
+    CREATE OR REPLACE STREAMLIT WINE_ASSISTANT
+      RUNTIME_NAME = 'SYSTEM$WAREHOUSE_RUNTIME'
+      QUERY_WAREHOUSE = <your_warehouse>
+      MAIN_FILE = 'streamlit_app.py';
+
+    /** Make the app editable in Snowsight **/
+    ALTER STREAMLIT WINE_ASSISTANT ADD LIVE VERSION FROM LAST;
+    ```
+
+    > **Note:** The second statement creates the app's *live version*, which is what Snowsight saves your edits into. Without it, saving code fails with `The provided location is not writable. Please specify a live version.` Run both statements with your lab role (the default role on your Snowflake user) so the app is owned by the same role you edit it with.
+
+3. **Open the app.** In the left navigation, select **Projects** > **Streamlit**, then click **WINE_ASSISTANT**. If the app opens in run mode, click **Edit** in the upper-right corner.
 4. **Get familiar with the editor and remove the default code.**
-   - The **upper-right** area contains application controls. The vertical three dots (**⋮**) open settings such as changing the warehouse. The main features here are **Run** and **Edit**. You won't see **Edit** right now because a new app opens in edit mode. The next time you open this app it will be in run mode, and **Edit** will appear.
+   - The **upper-right** area contains application controls. The vertical three dots (**⋮**) open settings such as changing the warehouse. The main features here are **Run** and **Edit**. Once you're in the editor, **Edit** is replaced by the editing controls. The next time you open this app it will be in run mode, and **Edit** will appear.
    - The **bottom-left** area has three toggles: the left navigation panel, the code panel, and the running application panel. Try turning each on and off. When editing, it's easiest to hide the left nav and the app panel so the code editor has the full screen.
    - Once you're comfortable, make sure the code panel is visible, click into the code, select all, and delete it. This is just placeholder code for a new app.
 5. **Paste the chatbot code.** Copy the Python code below into the empty editor.
@@ -240,17 +254,14 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
 
     # Change this list as needed to add/remove model capabilities.
     MODELS = [
-        "llama3.2-3b",
-        "claude-3-5-sonnet",
+        "claude-sonnet-4-5",
+        "claude-haiku-4-5",
+        "openai-gpt-5-mini",
+        "llama3.3-70b",
         "mistral-large2",
-        "llama3.1-8b",
-        "llama3.1-405b",
         "llama3.1-70b",
-        "mistral-7b",
-        "jamba-1.5-large",
-        "mixtral-8x7b",
-        "reka-flash",
-        "gemma-7b"
+        "llama3.1-8b",
+        "mistral-7b"
     ]
 
     # Change this value to control the number of tokens you allow the user to change to control RAG context. In
@@ -281,11 +292,11 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
           with and powered by Fivetran, Snowflake, Streamlit, and Cortex** and I use a custom, structured dataset!""")
         st.caption("""Let me help plan your trip to California wine country. Using the dataset you just moved into the Snowflake Data
           Cloud with Fivetran, I'll assist you with winery and vineyard information and provide visit recommendations from numerous
-          models available in Snowflake Cortex (including Claude 3.5 Sonnet). You can even pick the model you want to use or try out
+          models available in Snowflake Cortex (including Claude Sonnet 4.5). You can even pick the model you want to use or try out
           all the models. The dataset includes over **700 wineries and vineyards** across all CA wine-producing regions including the
           North Coast, Central Coast, Central Valley, South Coast and various AVAs sub-AVAs. Let's get started!""")
         user_question_placeholder = "Message your personal CA Wine Country Visit Assistant..."
-        st.sidebar.selectbox("Select a Snowflake Cortex model:", MODELS, key="model_name", index=3)
+        st.sidebar.selectbox("Select a Snowflake Cortex model:", MODELS, key="model_name", index=0)
         st.sidebar.checkbox('Use your Fivetran dataset as context?', key="dataset_context", help="""This turns on RAG where the
         data replicated by Fivetran and curated in Snowflake will be used to add to the context of the LLM prompt.""")
         if st.button('Reset conversation', key='reset_conversation_button'):
@@ -376,14 +387,14 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
         #
         # Calculate and return the token count for the model and prompt or response.
         #
-        token_count = 0
+        token_count = None
         try:
             token_cmd = f"""select SNOWFLAKE.CORTEX.COUNT_TOKENS(?, ?) as token_count;"""
             tc_data = session.sql(token_cmd, params=[st.session_state.model_name, prompt_or_response]).collect()
             token_count = tc_data[0][0]
         except Exception:
-            # Negative value just denoting that tokens could not be counted for some reason.
-            token_count = -9999
+            # None means COUNT_TOKENS does not support this model (for example, the Claude and OpenAI models).
+            token_count = None
 
         return token_count
 
@@ -398,7 +409,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
         time_for_remaining_tokens = total_duration - time_to_first_token  # Time for the remaining tokens
 
         # Calculate tokens per second rate
-        tokens_per_second = token_count / total_duration if total_duration > 0 else 1
+        tokens_per_second = token_count / total_duration if token_count is not None and total_duration > 0 else None
 
         # Ensure that time to first token is realistically non-zero
         if time_to_first_token < 0.01:  # Adjust the threshold as needed
@@ -422,7 +433,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
         end_time = time.time()
         time_to_first_token, time_for_remaining_tokens, tokens_per_second = calc_times(start_time, first_token_time, end_time, token_count)
 
-        return answer_df, time_to_first_token, time_for_remaining_tokens, tokens_per_second, int(token_count), chunks_used
+        return answer_df, time_to_first_token, time_for_remaining_tokens, tokens_per_second, token_count, chunks_used
 
     def main():
         #
@@ -438,7 +449,16 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
                     response = data[0][0]
                     # Add the response token count to the token total so we get a better prediction of the costs.
                     if response:
-                        token_count += get_model_token_count(response)
+                        response_token_count = get_model_token_count(response)
+                        if token_count is not None and response_token_count is not None:
+                            token_count += response_token_count
+                        else:
+                            token_count = None
+                        if token_count is None:
+                            token_summary = "token count not available for this model"
+                        else:
+                            token_summary = f"{token_count} tokens • {tokens_per_second:.2f} tokens/s"
+
                         # Conditionally append the token count line based on the checkbox
                         rag_delim = ", "
                         st.session_state.conversation_state.append(
@@ -448,7 +468,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
                         )
                         st.session_state.conversation_state.append(
                             (f":1234: Token Count for '{st.session_state.model_name}':",
-                             f"""<span style='color:#808080;'>{token_count} tokens • {tokens_per_second:.2f} tokens/s •
+                             f"""<span style='color:#808080;'>{token_summary} •
                              {time_to_first_token:.2f}s to first token + {time_for_remaining_tokens:.2f}s.</span>""")
                         )
                         # Append the new results.
@@ -481,11 +501,11 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
 6. **Understand the code before you run it.** Here's how it fits together:
 
    - **Imports and constants.** The top of the file imports the Streamlit, Snowpark, pandas, and time packages. The `MODELS` list populates the model drop-down in the sidebar, and `CHUNK_NUMBER` populates the "number of context chunks" drop-down. Both are at the top so they're easy to change.
-     > **Note:** The models listed are the ones that were available in Snowflake Cortex when the source guide was written. Model availability varies by Snowflake region and changes over time. If a model returns an error, pick another from the list, or edit `MODELS` to match what's available in your account (see the [Cortex LLM function docs](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions)).
+     > **Note:** The models listed were verified in the lab's Snowflake account in September 2026. Model availability varies by Snowflake region and changes over time. If a model returns an error, pick another from the list, or edit `MODELS` to match what's available in your account (see the [Cortex LLM function docs](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions)).
    - **Chunks and RAG.** The chunk number is how many winery records (chunks) will be retrieved from your vector table and inserted into the prompt sent to the LLM. Simple prompts about a few wineries need only a few chunks; complex itinerary prompts need more. If you start seeing hallucinations, or data you know is in your dataset comes back as "unknown", increase the chunk count. Each model has a token limit, so the values in `CHUNK_NUMBER` are capped to stay within safe bounds.
    - `build_layout` renders the main panel (where you type your prompt) and the sidebar (model, RAG toggle, chunk count). Streamlit renders objects top-to-bottom like HTML, so the order matters. This function returns the user's question.
    - `build_prompt` builds the assistant's persona and either the RAG or non-RAG prompt, depending on whether the "Use your Fivetran dataset as context?" checkbox is checked. In RAG mode, it embeds the question with the same `snowflake-arctic-embed-l-v2.0` model used in Part 4, ranks wineries by `VECTOR_COSINE_SIMILARITY`, and pastes the top N chunks into the prompt as context.
-   - `get_model_token_count` calls Cortex `COUNT_TOKENS` to estimate what Snowflake will charge for the prompt (and the response). See [Cortex cost considerations](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#cost-considerations).
+   - `get_model_token_count` calls Cortex `COUNT_TOKENS` to estimate what Snowflake will charge for the prompt (and the response). `COUNT_TOKENS` doesn't support every model (the Claude and OpenAI models aren't supported), so for those the app shows "token count not available for this model" instead of a number. See [Cortex cost considerations](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#cost-considerations).
    - `calc_times` computes timing stats so you can benchmark different models.
    - `run_prompt` is the controller: it formats the prompt, calls Cortex `COMPLETE`, and captures timings.
    - `main` is the entry point. It runs the prompt and displays results in reverse order so your most recent response is at the top.
@@ -509,7 +529,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
    - **Advanced Options > number of context chunks.** Sets how many records are added to the LLM context. This is the core of RAG. Remember each model has a token limit; the values in the list are safe for every model in the drop-down.
 
 3. **Review the response.** The newest response bubbles to the top, so scroll up if needed. Each response includes two extra lines:
-   - **Token Count** for the prompt plus response, with timings. This helps you understand the efficiency and cost of the model run.
+   - **Token Count** for the prompt plus response, with timings (for models `COUNT_TOKENS` doesn't support, only the timings are shown). This helps you understand the efficiency and cost of the model run.
    - **RAG Chunks/Records Used** lists the winery/vineyard names that were added to the context sent to the LLM. If no RAG records were sent, you'll see `none`. Only the names are shown here; the full `WINERY_INFORMATION` text was sent to the LLM.
 
 > **Notes:**
