@@ -161,7 +161,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 
 **Checkpoint:** the connection shows a completed initial sync of the `agriculture` schema.
 Fivetran has written each table's data to
-`gs://mdls-gcs-hands-on-lab/<firstname>_<lastname>_mdls/<firstname>_<lastname>_pg_agriculture/<table>/`
+`gs://<your_provisioned_bucket>/<firstname>_<lastname>_mdls/<firstname>_<lastname>_pg_agriculture/<table>/`
 (for example `.../coffee_prices/`) as Parquet files, with both Iceberg metadata and a Delta transaction log. 
    - Both formats are always written — there is no format selector.
 
