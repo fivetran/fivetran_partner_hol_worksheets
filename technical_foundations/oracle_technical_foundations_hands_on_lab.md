@@ -117,7 +117,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 12. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 13. Click **Continue**.
 14. Fivetran now fetches all tables, schemas, and columns for the database.
-15. The `fivetran_hol_agriculture` user has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
+15. The fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
 16. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
 17. Click **Start Initial Sync**. Wait for the initial (historical) sync to finish, then let at least one **incremental** sync complete. At least one incremental sync must complete for this lab.
 18. The sync will finish in about 1–2 minutes. A successful sync shows the connection status as **Active** with the synced tables and row counts.

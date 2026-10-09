@@ -151,7 +151,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 11. Confirm the TLS certificate when prompted.
 12. Wait for the setup tests to complete, then click **Continue**.
 13. Fivetran now fetches all tables, schemas, and columns for the provided database.
-14. The `fivetran_hol_agriculture` user has access to the `agriculture` schema, which
+14. The fivetran database user provided to you via 1Password has access to the `agriculture` schema, which
     includes the `coffee_prices` table you'll query later in this lab.
 15. Make sure the `agriculture` schema and all of its tables are selected.
 16. Click **Save & Continue**.
