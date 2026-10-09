@@ -224,7 +224,7 @@ the object model from Module 1 onto real API calls.
        "password": "SQL_SERVER_PASSWORD",
        "port": 1433,
        "host": "SQL_SERVER_HOSTNAME",
-       "user": "fivetran_hol_agriculture",
+       "user": "the fivetran database user provided to you via 1Password",
        "schema_prefix": "firstname_lastname_sql_server"
      }
    }

@@ -161,7 +161,7 @@ curl -X POST "https://api.fivetran.com/v1/connections" \
       "host": "POSTGRES_HOSTNAME",
       "port": 5432,
       "database": "industry",
-      "user": "fivetran_hol_agriculture",
+      "user": "the fivetran database user provided to you via 1Password",
       "password": "POSTGRES_PASSWORD",
       "schema_prefix": "YOUR_CONNECTION_NAME"
     }
@@ -193,7 +193,7 @@ $body = @'
     "host": "POSTGRES_HOSTNAME",
     "port": 5432,
     "database": "industry",
-    "user": "fivetran_hol_agriculture",
+    "user": "the fivetran database user provided to you via 1Password",
     "password": "POSTGRES_PASSWORD",
     "schema_prefix": "YOUR_CONNECTION_NAME"
   }

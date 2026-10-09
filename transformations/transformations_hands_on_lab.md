@@ -219,6 +219,7 @@ In this lab you will:
    Respond to the prompts. The credentials needed can be found in the 1Password link
    - **Which database would you like to use?** — select **snowflake** (enter `1`)
    - **account** — 
+      - For the account make sure you're just pasting in the identifier: `GQ81837-SALES_ENG_HANDS_ON_LAB`
    - **user** — 
    - **authentication type** — select **keypair** (enter `2`)
    - **private_key_path** — the full path to the `snowflake_key.p8` file you created in

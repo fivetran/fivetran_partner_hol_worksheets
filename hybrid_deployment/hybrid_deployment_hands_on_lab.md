@@ -185,7 +185,7 @@ docker container logs container_id --follow
 10. For **Destination schema names**, select **Fivetran naming**.
 11. Click **Save & Test** and wait for the setup tests to pass, then click **Continue**.
 12. Fivetran fetches all tables, schemas, and columns. 
-   - The `fivetran_hol_agriculture` user has access to the **agriculture** schema
+   - The fivetran database user provided to you via 1Password has access to the **agriculture** schema
    - Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue**.
 13. For handling schema changes, select **Allow all**.
 14. Click **Start Initial Sync**. While it runs, continue to Part 4.
