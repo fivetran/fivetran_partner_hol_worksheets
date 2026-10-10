@@ -89,10 +89,11 @@ matches your system.
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-8. Leave the remaining fields at their default values. Do not make any changes.
-9. Click **Save & Test**.
-10. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
-11. Click **View Destination** (or **Continue**) to proceed.
+8. For **Table Type** select **Snowflake Native Tables**.
+9. Leave the remaining fields at their default values. Do not make any changes.
+10. Click **Save & Test**.
+11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
+12. Click **View Destination** (or **Continue**) to proceed.
 
 > **Note:** Every destination you create automatically includes the free **Fivetran Platform Connection** (schema `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 7.
 
