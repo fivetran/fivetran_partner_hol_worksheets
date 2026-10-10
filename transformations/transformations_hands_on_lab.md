@@ -81,8 +81,9 @@ In this lab you will:
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-7. Leave the remaining fields at their defaults and click **Save & Test**.
-8. Wait for the setup tests to complete, then click **View Destination** to continue.
+7. For **Table Type** select **Snowflake Native Tables**.
+8. Leave the remaining fields at their defaults and click **Save & Test**.
+9. Wait for the setup tests to complete, then click **View Destination** to continue.
 
 > **Checkpoint:** Your Snowflake destination named `<firstname>_<lastname>_snowflake` is created and its setup tests have passed.
 

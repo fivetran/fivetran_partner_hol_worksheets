@@ -96,9 +96,10 @@ find Billing & Usage.
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-7. Leave the remaining fields as their default values — do not make any changes.
-8. Click **Save & Test** and wait for the setup tests to complete.
-9. On success, click **View Destination** to continue.
+7. For **Table Type** select **Snowflake Native Tables**.
+8. Leave the remaining fields as their default values — do not make any changes.
+9. Click **Save & Test** and wait for the setup tests to complete.
+10. On success, click **View Destination** to continue.
 
 **Checkpoint:** the destination shows a **Connected** status.
 
