@@ -39,8 +39,9 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 
 1. Create a destination in Fivetran
 2. Create and sync a connection
-3. Deploy a Quickstart transformation
-4. Manage notifications
+3. Create your own Fivetran Platform Connection
+4. Deploy a Quickstart transformation
+5. Manage notifications
 
 > User, team, and role management is covered in the Operations Management hands-on lab.
 
@@ -54,7 +55,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
    - **BigQuery Project ID**: the GCP project that hosts the lab's BigQuery datasets.
    - **BigQuery Service Account**: the email of the service account Fivetran uses to connect.
    - **BigQuery Service Account JSON**: the service account's private key. Copy the entire value, including the opening `{` and closing `}`.
-   - **BigQuery Dataset Prefix**: a prefix that is unique to your lab (for example, `bqp001_`). You'll use it when naming your connection in Part 3.
+   - **BigQuery Dataset Prefix**: a prefix that is unique to your lab (for example, `bqp001_`). You'll use it when naming your connections in Parts 3 and 4.
    - **BigQuery Location**: the data location of the lab's datasets (for example, `US`).
    - When you paste these credentials into the destination setup form, make sure you select **SaaS** as the deployment model.
 
@@ -100,7 +101,16 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful (including **Connection** and **Check Permissions**).
 12. Click **View Destination** (or **Continue**) to proceed.
 
-> **Note:** BigQuery has no separate database layer: each Fivetran schema is created as a **dataset** in the GCP project. Every destination you create automatically includes the free **Fivetran Platform Connection** (dataset `fivetran_metadata`), which loads metadata about your account, connections, and usage. You'll use it in Part 4.
+> **Note:** BigQuery has no separate database layer: each Fivetran schema is created as a **dataset** in the GCP project. Every destination you create automatically includes a free **Fivetran Platform Connection**, which loads metadata about your account, connections, and usage into a dataset named `fivetran_metadata`.
+
+Everyone in this lab shares the same BigQuery project, so every attendee's automatically created Platform Connection would load into the same `fivetran_metadata` dataset and overwrite each other's data. Before you add any other connection, delete the automatically created one. You'll create your own, uniquely named Platform Connection in Part 4.
+
+13. Navigate to the **Connections** tab.
+14. Find the **Fivetran Platform** connection with the schema `fivetran_metadata` that belongs to your destination (`<firstname>_<lastname>_bigquery`), and click it.
+
+    > **Note:** Make sure you select the connection for your own destination, not someone else's.
+
+15. Click the **Setup** tab, then click **Delete connection** and confirm the deletion.
 
 ---
 
@@ -134,7 +144,25 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 
 ---
 
-## Part 4: Creating transformations
+## Part 4: Creating your Fivetran Platform Connection
+
+The **Fivetran Platform Connection** (formerly the Fivetran Log Connector) is free and loads logs and metadata about your connections, destination, and usage. You'll create your own in this part, so its dataset is unique to you.
+
+> **Note:** A Platform Connection needs at least one other connection in the destination, which is why you create it after the PostgreSQL connection.
+
+1. Navigate to the **Connections** tab and, in the top-right corner, click **Add connection**.
+2. Search for **Fivetran Platform**, hover over the connector tile, and click **Set up**.
+3. Select the destination you created in Part 2, then click **Select**.
+4. In the **Destination schema** field, use the format `<dataset_prefix><firstname>_<lastname>_fivetran_log` (for example, `bqp001_jane_doe_fivetran_log`).
+5. Leave the **Account Level Connector** toggle set to **OFF**. When it's on, the connection syncs logs for every destination in the account, not only yours.
+6. Click **Save & Test**.
+7. Wait for the setup tests to complete, then click **Continue**.
+8. Leave the default schema selection unchanged, then click **Save & Continue** (or **Continue**).
+9. Click **Start Initial Sync** and wait for the sync to finish. A successful sync shows the connection status as **Active**.
+
+---
+
+## Part 5: Creating transformations
 
 Now we'll explore adding **Transformations**. For simplicity, we'll start with **Quickstart transformations** (no-code, pre-built data models that run in your destination).
 
@@ -142,16 +170,15 @@ Now we'll explore adding **Transformations**. For simplicity, we'll start with *
 
 1. Navigate to the **Transformations** tab.
 2. Quickstart data models can be added for any connection you configure that has a supported pre-built package.
-3. Select the **Fivetran Platform Connection** (schema `fivetran_metadata`) associated with your destination and click **Add & Run**.
-   - *Note:* The Fivetran Platform Connection was formerly called the Fivetran Log Connector.
-4. That's it. The Quickstart package for the Fivetran Platform Connection has been added and will run whenever your `fivetran_metadata` connection finishes syncing.
-5. Click into the **Fivetran Platform / `fivetran_metadata`** transformation to explore its **Run log**, **Data Models**, **Schedule**, and **Details**.
+3. Select the **Fivetran Platform Connection** you created in Part 4 (schema `<dataset_prefix><firstname>_<lastname>_fivetran_log`) and click **Add & Run**.
+4. That's it. The Quickstart package for the Fivetran Platform Connection has been added and will run whenever your Platform Connection finishes syncing.
+5. Click into the **Fivetran Platform** transformation for your connection to explore its **Run log**, **Data Models**, **Schedule**, and **Details**.
 
 > **Note:** Transformations are billed in monthly **model runs** (not MAR), and the first **5,000 model runs per month are free**. They are not supported on the Managed Data Lake Service.
 
 ---
 
-## Part 5: Managing notifications
+## Part 6: Managing notifications
 
 Now we'll learn how to manage **Notifications**. In Fivetran, a notification is an automatically generated email that informs you about important activity, such as connection failures and other errors. Notification settings are unique to your user.
 
@@ -173,4 +200,4 @@ Now we'll learn how to manage **Notifications**. In Fivetran, a notification is 
 
 ## What you did
 
-You've completed the Fivetran Technical Foundations hands-on lab. You created a destination, set up and synced a connection, deployed a Quickstart transformation, and managed notifications.
+You've completed the Fivetran Technical Foundations hands-on lab. You created a destination, set up and synced a connection, created your own Fivetran Platform Connection, deployed a Quickstart transformation, and managed notifications.
