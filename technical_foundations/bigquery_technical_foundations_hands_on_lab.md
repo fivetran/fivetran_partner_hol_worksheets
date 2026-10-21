@@ -98,15 +98,15 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 8. Leave **Use GCP Service Parameter** set to **OFF**.
 9. Leave the remaining fields at their default values. Do not make any changes.
 10. Click **Save & Test**.
-11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful (including **Connection** and **Check Permissions**).
+11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful (including **BigQuery Connection** and **BigQuery User Permissions**).
 12. Click **View Destination** (or **Continue**) to proceed.
 
-> **Note:** BigQuery has no separate database layer: each Fivetran schema is created as a **dataset** in the GCP project. Every destination you create automatically includes a free **Fivetran Platform Connection**, which loads metadata about your account, connections, and usage into a dataset named `fivetran_metadata`.
+> **Note:** BigQuery has no separate database layer: each Fivetran schema is created as a **dataset** in the GCP project. Fivetran may automatically add a free **Fivetran Platform Connection** to a new destination, which loads metadata about your account, connections, and usage into a dataset whose name starts with `fivetran_metadata`.
 
-Everyone in this lab shares the same BigQuery project, so every attendee's automatically created Platform Connection would load into the same `fivetran_metadata` dataset and overwrite each other's data. Before you add any other connection, delete the automatically created one. You'll create your own, uniquely named Platform Connection in Part 4.
+Everyone in this lab shares the same BigQuery project, so a Platform Connection with a default dataset name isn't clearly yours and can collide with another attendee's. In Part 4 you'll create your own, uniquely named Platform Connection instead. If Fivetran added one automatically, delete it before you add any other connection:
 
 13. Navigate to the **Connections** tab.
-14. Find the **Fivetran Platform** connection with the schema `fivetran_metadata` that belongs to your destination (`<firstname>_<lastname>_bigquery`), and click it.
+14. Look for a **Fivetran Platform** connection whose schema name starts with `fivetran_metadata` that belongs to your destination (`<firstname>_<lastname>_bigquery`). If there isn't one, skip to Part 3. If there is, click it.
 
     > **Note:** Make sure you select the connection for your own destination, not someone else's.
 
@@ -121,7 +121,7 @@ Everyone in this lab shares the same BigQuery project, so every attendee's autom
 1. Navigate to the **Connections** tab and, in the top-right corner, click **Add connection**.
 2. Search for **PostgreSQL**, hover over the connector tile, and click **Set up**.
 3. Select the destination you created in Part 2 (make sure you don't use someone else's destination), then click **Select**.
-4. The value you enter in the **Destination schema prefix** field becomes the name of your connection and of the BigQuery dataset it loads into. Use the format `<dataset_prefix><firstname>_<lastname>_postgres`, replacing `<dataset_prefix>` with the **BigQuery Dataset Prefix** from your credentials and `<firstname>` and `<lastname>` with your actual first and last names (for example, `bqp001_jane_doe_postgres`).
+4. The value you enter in the **Destination schema prefix** field becomes the name of your connection and of the BigQuery dataset it loads into. Use the format `<dataset_prefix><firstname>_<lastname>_postgres`, replacing `<dataset_prefix>` with the **BigQuery Dataset Prefix** from your credentials and `<firstname>` and `<lastname>` with your actual first and last names (for example, `bqp001_jane_doe_postgres`). Fivetran adds the source schema name to create the dataset, for example `bqp001_jane_doe_postgres_agriculture`.
 5. Populate the setup form with the provided PostgreSQL credentials.
 6. For **Authentication Method**, select **Connect with username and password**.
 7. Leave **Connection Method** at its default value, **Connect directly**.
@@ -171,7 +171,7 @@ Now we'll explore adding **Transformations**. For simplicity, we'll start with *
 1. Navigate to the **Transformations** tab.
 2. Quickstart data models can be added for any connection you configure that has a supported pre-built package.
 3. Select the **Fivetran Platform Connection** you created in Part 4 (schema `<dataset_prefix><firstname>_<lastname>_fivetran_log`) and click **Add & Run**.
-4. That's it. The Quickstart package for the Fivetran Platform Connection has been added and will run whenever your Platform Connection finishes syncing.
+4. That's it. The Quickstart package for the Fivetran Platform Connection has been added and will run whenever your Platform Connection finishes syncing. Its models are written to two new datasets next to your Platform Connection's dataset, ending in `_staging` and `_reports`.
 5. Click into the **Fivetran Platform** transformation for your connection to explore its **Run log**, **Data Models**, **Schedule**, and **Details**.
 
 > **Note:** Transformations are billed in monthly **model runs** (not MAR), and the first **5,000 model runs per month are free**. They are not supported on the Managed Data Lake Service.
