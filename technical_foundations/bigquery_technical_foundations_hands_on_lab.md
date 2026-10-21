@@ -135,7 +135,7 @@ Everyone in this lab shares the same BigQuery project, so a Platform Connection 
 14. Fivetran now fetches all tables, schemas, and columns for the database.
 15. The fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
 16. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
-17. Click **Start Initial Sync**. Wait for the initial (historical) sync to finish, then let at least one **incremental** sync complete. At least one incremental sync must complete for this lab.
+17. Click **Start Initial Sync** and wait for the initial (historical) sync to finish. Then manually trigger another sync rather than waiting for the default six-hour schedule. Wait for this **incremental** sync to complete before continuing.
 18. The sync will finish in about 1–2 minutes. A successful sync shows the connection status as **Active** with the synced tables and row counts.
 
 > **Checkpoint — sync schedule and sync modes:**
