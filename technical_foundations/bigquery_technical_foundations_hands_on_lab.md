@@ -172,7 +172,7 @@ Now we'll explore adding **Transformations**. For simplicity, we'll start with *
 2. Quickstart data models can be added for any connection you configure that has a supported pre-built package.
 3. Select the **Fivetran Platform Connection** you created in Part 4 (schema `<dataset_prefix><firstname>_<lastname>_fivetran_log`) and click **Add & Run**.
 4. That's it. The Quickstart package for the Fivetran Platform Connection has been added and will run whenever your Platform Connection finishes syncing. Its models are written to two new datasets next to your Platform Connection's dataset, ending in `_staging` and `_reports`.
-5. Click into the **Fivetran Platform** transformation for your connection to explore its **Run log**, **Data Models**, **Schedule**, and **Details**.
+5. Click into the **Fivetran Log/`<dataset_prefix><firstname>_<lastname>_fivetran_log`** transformation to explore its **Run log**, **Data Models**, **Schedule**, and **Details**.
 
 > **Note:** Transformations are billed in monthly **model runs** (not MAR), and the first **5,000 model runs per month are free**. They are not supported on the Managed Data Lake Service.
 
