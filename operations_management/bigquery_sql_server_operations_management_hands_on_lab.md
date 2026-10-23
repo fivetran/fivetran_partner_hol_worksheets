@@ -2,7 +2,7 @@
 
 *BigQuery edition — October 2026. Adapted from the corresponding lab worksheet; validate with the provisioned lab resources before delivery.*
 
-Thank you for registering for our hands-on lab. This worksheet is the practical companion to the Operations Management training. You'll build the access model hands-on: a destination, a connection created via the REST API, and then a team, a user, and a custom role. SSO/SAML and Customer-Managed Keys are covered as guided walkthroughs in the deck rather than in this lab, because they require an identity provider and a cloud KMS that we can't provision in a shared lab environment. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet is the practical companion to the Operations Management training. You'll build the access model hands-on: a destination, a connection created via the REST API, and then a team, a user, and a custom role. SSO/SAML and Customer-Managed Keys are covered as guided walkthroughs in the deck rather than in this lab, because they require an identity provider and a cloud KMS that we can't provision in a shared lab environment. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -57,7 +57,7 @@ In this lab you will:
 
 ### Access Fivetran (new users)
 
-1. Log into Fivetran at `https://fivetran.com/login`.
+1. Log in to Fivetran at `https://fivetran.com/login`.
 2. If you just signed up for the first time, use the username and password from your
    sign-up.
 3. As a new user you'll go through a new-user flow. When prompted to *Tell us about
@@ -82,7 +82,7 @@ Users & Permissions / Billing & Usage** — and discuss them from an administrat
 point of view. Follow along to get a lay of the land, paying special attention to where
 **Users & Permissions** lives, since that's where the rest of this lab happens.
 
-**Checkpoint:** you can locate Users & Permissions under Account Settings, and you can
+**Checkpoint:** You can locate Users & Permissions under Account Settings, and you can
 find Billing & Usage.
 
 ---
@@ -138,7 +138,7 @@ Take the code below and replace the placeholders:
 
 - `YOUR_BASE64_ENCODED_API_KEY` → the API key you copied
 - `YOUR_GROUP_ID` → the Destination Group ID you copied
-- `YOUR_CONNECTION_NAME` → your **BigQuery Dataset Prefix**, then your first and last name, followed by `_sql_server`
+- `YOUR_CONNECTION_NAME` → your **BigQuery Dataset Prefix**, then your first and last names, followed by `_sql_server`
 - `SQL_SERVER_HOSTNAME` → the actual SQL Server hostname shared with you
 - `SQL_SERVER_PASSWORD` → the actual SQL Server password shared with you
 - `SQL_SERVER_DATABASE` → the SQL Server database name shared with you
@@ -218,11 +218,11 @@ curl.exe -X POST "https://api.fivetran.com/v1/connections" `
 ### Run and verify
 
 1. Open a Terminal (macOS/Linux) or PowerShell (Windows) and run your prepared command.
-2. On success you'll receive a JSON response with `"code": "Success"` and the new
+2. On success, you'll receive a JSON response with `"code": "Success"` and the new
    connection's details.
 3. Verify by going to the **Connections** tab and searching for your connection name.
 
-**Checkpoint:** your connection appears in the Connections tab.
+**Checkpoint:** Your connection appears in the Connections tab.
 
 ---
 
@@ -234,11 +234,11 @@ Now you'll create a team for managing access to connections and destinations.
 2. Click **Users & Permissions**.
 3. Click the **Teams** tab, then click **+ Add Team**.
 4. In the **Team Name** field, enter `<firstname>_<lastname>_team` (replace with your
-   actual first and last name).
+   actual first and last names).
 5. For **Account role**, select **Destination Creator**.
 6. Click **Create team**.
 
-**Checkpoint:** your team appears in the Teams list with the Destination Creator role.
+**Checkpoint:** Your team appears in the Teams list with the Destination Creator role.
 
 > **Why it matters:** assigning the role to the team (not the person) means anyone you
 > add to this team inherits Destination Creator automatically — the scalable pattern
@@ -258,7 +258,7 @@ Now you'll create a team for managing access to connections and destinations.
 5. The user appears in the list with a team assigned. It shows **invite pending** until
    the user accepts the emailed invite.
 
-**Checkpoint:** the new user shows as invite pending with your team assigned.
+**Checkpoint:** The new user shows as invite pending with your team assigned.
 
 > **Why it matters:** the user has no directly assigned account role — all of their
 > access comes from the team. This is least privilege by inheritance.
@@ -284,7 +284,7 @@ require Enterprise or Business Critical — your lab account is provisioned for 
     teams or users.
 11. Edit your team and confirm you can now assign your custom role to it.
 
-**Checkpoint:** your custom role appears in the roles list and is selectable when
+**Checkpoint:** Your custom role appears in the roles list and is selectable when
 editing your team.
 
 > **Why it matters:** the custom role scopes connection creation to a single connector

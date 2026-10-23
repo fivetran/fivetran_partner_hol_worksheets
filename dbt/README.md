@@ -34,7 +34,7 @@ instructor-led; local DuckDB previews remain hands-on.
 | Transportation | [Worksheet](transportation/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](transportation/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](transportation/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](transportation/bigquery_manual_dbt_platform_hands_on_lab.md) |
 | Utilities | [Worksheet](utilities/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](utilities/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](utilities/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](utilities/bigquery_manual_dbt_platform_hands_on_lab.md) |
 | Weather | [Worksheet](weather/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](weather/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](weather/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](weather/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Newsapi | [Worksheet](newsapi/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](newsapi/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](newsapi/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](newsapi/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| NewsAPI | [Worksheet](newsapi/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](newsapi/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](newsapi/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](newsapi/bigquery_manual_dbt_platform_hands_on_lab.md) |
 
 ## Choosing and provisioning a template
 

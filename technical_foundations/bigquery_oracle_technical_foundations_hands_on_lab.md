@@ -2,7 +2,7 @@
 
 *BigQuery edition — October 2026. Adapted from the BigQuery reference and source-specific worksheet; validate with the provisioned lab resources before delivery.*
 
-Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -133,7 +133,7 @@ Everyone in this lab shares the same BigQuery project, so a Platform Connection 
 12. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 13. Click **Continue**.
 14. Fivetran now fetches all tables, schemas, and columns for the database.
-15. The fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
+15. The Fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
 16. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
 17. Click **Start Initial Sync**. Wait for the initial (historical) sync to finish, then click **Sync Now** and wait for one **incremental** sync to complete. At least one incremental sync must complete for this lab.
 18. The sync will finish in about 1–2 minutes. A successful sync shows the connection status as **Active** with the synced tables and row counts.

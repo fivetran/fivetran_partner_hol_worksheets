@@ -5,7 +5,7 @@
 Thank you for registering for our hands-on lab. This worksheet has everything you need to
 build a working activation pipeline in Fivetran Activations — from connecting a source and
 destination through running and observing a sync. Please read through the requirements first.
-If you can't meet them, let us know and we'll rebook you on another workshop.
+If you can't meet them, let us know and we'll rebook you for another workshop.
 
 > Note on naming: the product is **Fivetran Activations** (formerly Census). You'll navigate
 > to it from the **Activations** tab in the Fivetran dashboard. A few backend identifiers in
@@ -95,14 +95,14 @@ Keep the 1Password link open; you'll copy several values from it during the lab.
 4. In **Step 1**, select the **Basic Sync Engine**.
 5. In **Step 2 — Configure Credentials**, enter the Snowflake credentials from the 1Password link.
    - **Name:** `{firstname}_{lastname}_snowflake` (replace with your actual first and last
-     name).
+     names).
    - **Snowflake Account Name** 
    - **Query Execution Warehouse**
    - **User** 
    - **Check** *Use Key Authentication (Advanced)*.
    - **Private Key** — paste in the provided private key.
 6. Leave **Step 3 — Configure Advanced Settings** as-is.
-7. In **Step 4 - Configure Processing Region and Storage Backend**, Select:
+7. In **Step 4 - Configure Processing Region and Storage Backend**, select:
    - **Data Processing Location** US
    - **Fivetran Processing Cloud Provider** GCP
    - **GCP Region** us-central1

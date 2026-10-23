@@ -92,7 +92,7 @@ Use these files:
 
 - Build `fct_attractions_observations` at one row per `uk_air_passengers.id`. Use `ref('stg_attractions__uk_air_passengers')` and select the source key as `observation_id`.
 - Derive `group_key` from `c_year`: use `missing:` for null and `value:` plus its string value otherwise. Keep `group_name` as the display string, using `Unknown` for null. Distinguish a real value named Unknown from a missing value through the key.
-- Calculate `metric_value` from `passengers` using safe numeric conversion. Convert arithmetic inputs before calculating. Division by zero must produce null. This measures monthly passenger count.
+- Calculate `metric_value` from `passengers` using safe numeric conversion. Convert arithmetic inputs before calculating. Division by zero must produce null. This measures the monthly passenger count.
 - Preserve `synced_at`. Set `requires_review` to `metric_value >= review_threshold`, initially 7000000. Missing metrics and their flags stay null; never silently turn them into zero or false.
 - Build `mart_attractions_review_summary` from the fact at one row per `group_key`. Include group name, total observations, measured observations, missing metric count, review count, unweighted mean metric and review share. Divide review count by measured observations with a zero-safe denominator and decimal arithmetic.
 - Test unique/non-null observation IDs and group keys, observation-to-staging key relationships and non-null counts. Add a singular test for source/fact row preservation, summary row-count reconciliation, measured + missing = total and review count no greater than measured count. Legitimately missing metrics must remain visible, not fail a blanket non-null test.
@@ -187,7 +187,7 @@ Views can expose changed upstream values without rebuilding their definitions. R
 
 ### Create and run the job
 
-1. From your environment choose **Create job → Deploy job**, name it `attractions_build_<firstname>_<lastname>` and confirm the environment is yours.
+1. From your environment, choose **Create job → Deploy job**, name it `attractions_build_<firstname>_<lastname>` and confirm the environment is yours.
 2. Replace the unrestricted default build command with:
 
 ```bash

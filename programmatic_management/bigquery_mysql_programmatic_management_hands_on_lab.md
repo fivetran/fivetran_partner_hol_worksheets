@@ -4,7 +4,7 @@
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to build an
 end-to-end Fivetran pipeline **programmatically** using the REST API and Postman. Please read through
-the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -31,7 +31,7 @@ the object model from Module 1 onto real API calls.
 
 ## What you'll do in this lab
 
-- Access the provided resources by logging into the dedicated Fivetran account.
+- Access the provided resources by logging in to the dedicated Fivetran account.
 - Access and sign up for Postman.
 - Configure Postman by importing the Fivetran REST API collection and setting up authorization.
 - Create a group with the REST API.
@@ -65,7 +65,7 @@ the object model from Module 1 onto real API calls.
 
 ### Access Fivetran (new users)
 
-1. Log into Fivetran at `https://fivetran.com/login`. If you just signed up, use the username and
+1. Log in to Fivetran at `https://fivetran.com/login`. If you just signed up, use the username and
    password from your sign-up.
 2. You'll go through a new-user flow. When prompted to **Tell us about yourself**, click **Other**.
 3. When asked **What software do you currently use**, click **Skip**.
@@ -110,7 +110,7 @@ the object model from Module 1 onto real API calls.
      already exists, confirm — this invalidates the old key and generates a new pair.
    - **Copy the API Key and API Secret immediately** (or keep the window open). They can't be retrieved
      after you leave the page.
-   - In Postman, select the **Fivetran REST API** collection, open the **Variables** tab.
+   - In Postman, select the **Fivetran REST API** collection and open the **Variables** tab.
    - Paste the API Key onto the `api_key` line, and the API Secret onto the `api_secret` line — into
      **both** the *Initial Value* and *Current Value* columns.
    - Click **Save**. Postman handles the Base64 encoding and Basic auth header for you.
@@ -126,7 +126,7 @@ the object model from Module 1 onto real API calls.
 2. Select **Create a Group**. It opens on the **Params** tab by default.
 3. Click the **Body** tab.
 4. Supply a name in the JSON payload. Replace the `<string>` value with `firstname_lastname_bigquery`
-   (use your actual first and last name):
+   (use your actual first and last names):
 
    ```json
    {
@@ -196,7 +196,7 @@ the object model from Module 1 onto real API calls.
 3. Paste in the payload below. (Generated from the REST API reference for *Create a Connection* with
    `mysql` as the type, minimized for this lab.)
    - Replace `<your_group_id>` with the `id` from Part 4, Step 6.
-   - In `schema_prefix`, replace `<dataset_prefix>` with your BigQuery Dataset Prefix and `firstname_lastname` with your actual first and last name.
+   - In `schema_prefix`, replace `<dataset_prefix>` with your BigQuery Dataset Prefix and `firstname_lastname` with your actual first and last names.
    - Replace `MYSQL_PASSWORD` with the password from the 1Password link.
    - Replace `MYSQL_HOSTNAME` with the hostname from the 1Password link.
 

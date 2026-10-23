@@ -2,7 +2,7 @@
 
 *Updated September 2026. Verified against the current Fivetran Technical Foundations documentation.*
 
-Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -89,7 +89,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-8. For **Table Type** select **Snowflake Native Tables**.
+8. For **Table Type**, select **Snowflake Native Tables**.
 9. Leave the remaining fields at their default values. Do not make any changes.
 10. Click **Save & Test**.
 11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
@@ -118,7 +118,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync source data into
 12. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 13. Click **Continue**.
 14. Fivetran now fetches all tables, schemas, and columns for the database.
-15. The fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
+15. The Fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
 16. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
 17. Click **Start Initial Sync**. Wait for the initial (historical) sync to finish, then let at least one **incremental** sync complete. At least one incremental sync must complete for this lab.
 18. The sync will finish in about 1–2 minutes. A successful sync shows the connection status as **Active** with the synced tables and row counts.

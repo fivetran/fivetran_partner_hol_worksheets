@@ -186,7 +186,7 @@ Views can expose changed upstream values without rebuilding their definitions. R
 
 ### Create and run the job
 
-1. From your environment choose **Create job → Deploy job**, name it `retail_build_<firstname>_<lastname>` and confirm the environment is yours.
+1. From your environment, choose **Create job → Deploy job**, name it `retail_build_<firstname>_<lastname>` and confirm the environment is yours.
 2. Replace the unrestricted default build command with:
 
 ```bash

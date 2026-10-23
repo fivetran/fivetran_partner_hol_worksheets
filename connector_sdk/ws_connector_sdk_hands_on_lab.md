@@ -4,7 +4,7 @@
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to
 prepare and follow along. Please read through the requirements first. If you can't meet
-them, let us know and we'll rebook you on another workshop.
+them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -29,7 +29,7 @@ workstation provided for this lab.
 - Confirm you received the invite. It's sent to the email you used to register and
   comes from `notifications@fivetran.com`.
     - If you did not receive one, you likely already have a Fivetran account. So you can proceed with logging in with your email and password.
-- You'll be provided a **Linux workstation** accessible in your web browser. The **Gateway URL**,
+- You'll be provided with a **Linux workstation** accessible in your web browser. The **Gateway URL**,
   **Guacamole Username**, and **Guacamole Password** are provided by your instructor via a
   1Password link.
 
@@ -85,7 +85,7 @@ all the necessary commands are given for **Linux** and run on the workstation.
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-8. For **Table Type** select **Snowflake Native Tables**.
+8. For **Table Type**, select **Snowflake Native Tables**.
 9. Leave the remaining fields at their default values. Do not make any changes.
 10. Click **Save & Test**.
 11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
@@ -271,7 +271,7 @@ all the necessary commands are given for **Linux** and run on the workstation.
 Now that you've run the connector locally, push it into Fivetran with `fivetran deploy`.
 
 1. In the command below, replace `firstname_lastname` with your actual first and last
-   name. If you get an overwrite prompt, there's a name conflict — cancel and add a few
+   names. If you get an overwrite prompt, there's a name conflict — cancel and add a few
    random digits to the connection name.
 
    ```bash
@@ -285,7 +285,7 @@ Now that you've run the connector locally, push it into Fivetran with `fivetran 
    > For automated (CI/CD) deploys, add `--non-interactive` so the command doesn't stop
    > to ask about overwriting. (The older `--force` / `-f` flag is deprecated.)
 
-2. In the Fivetran dashboard, search for your connection using by your first and last name.
+2. In the Fivetran dashboard, search for your connection using your first and last names.
 
 3. Click your connection and start the initial sync. It should take about 30 seconds.
 
@@ -324,7 +324,7 @@ breaking headlines from sources across the web through a JSON API.
 2. Set up your development environment as in **Part 3** (new folder, virtual
    environment, SDK install).
    - Create a new working directory
-   - Create a new python virtual environment
+   - Create a new Python virtual environment
    - Install the Connector SDK
    - Your `FIVETRAN_API_KEY` should still be set in your terminal session. If you open a
      new terminal, re-run the `export` command from Part 3 against your `test.env` file.

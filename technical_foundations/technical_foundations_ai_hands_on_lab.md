@@ -2,7 +2,7 @@
 
 *Updated September 2026. Parts 1–3 are verified against the current Fivetran Technical Foundations documentation. Parts 4–7 are adapted from the Snowflake developer guide [Build a RAG-based, GenAI chatbot using Structured Data with Snowflake and Fivetran](https://www.snowflake.com/en/developers/guides/fivetran-vineyard-assistant-chatbot/#transform-the-wine-structured-dataset).*
 
-Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -88,7 +88,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync a structured win
    > offer several options. We recommend choosing **Passkey**. Complete the enrollment
    > before continuing.
 
-**Checkpoint:** you are signed into the `TECH_FOUNDATIONS_HANDS_ON_LAB` Fivetran account and into the Snowflake account, each in its own browser tab. Keep both open — you will move to Snowflake in Part 4.
+**Checkpoint:** You are signed in to the `TECH_FOUNDATIONS_HANDS_ON_LAB` Fivetran account and to the Snowflake account, each in its own browser tab. Keep both open — you will move to Snowflake in Part 4.
 
 ---
 
@@ -104,7 +104,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync a structured win
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-8. For **Table Type** select **Snowflake Native Tables**.
+8. For **Table Type**, select **Snowflake Native Tables**.
 9. Leave the remaining fields at their default values. Do not make any changes.
 10. Click **Save & Test**.
 11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
@@ -133,7 +133,7 @@ Set up a **Destination** and a **Connection** in Fivetran, sync a structured win
 12. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 13. Click **Continue**.
 14. Fivetran now fetches all tables, schemas, and columns for the database.
-15. The fivetran user has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
+15. The Fivetran user has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
     - The table you will use for the rest of this lab is `california_wine_country_visits`. Confirm it is included.
 16. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
 17. Click **Start Initial Sync**. Wait for the initial (historical) sync to finish.
@@ -151,14 +151,14 @@ Set up a **Destination** and a **Connection** in Fivetran, sync a structured win
 
 Now that Fivetran has landed the structured dataset into tables in Snowflake, it's time to convert that data into a format an LLM can read. LLMs don't work well with columnar data, so first you will transform each row into a single human-readable text chunk. Then you will transform each chunk into a **vector embedding**. Snowflake offers a managed vector search service (Cortex Search), but you'll do this manually in this lab so you understand every step.
 
-**You will work in the Snowflake Snowsight UI for the rest of the lab.** Switch to the Snowflake browser tab you signed into in Part 1.
+**You will work in the Snowflake Snowsight UI for the rest of the lab.** Switch to the Snowflake browser tab you signed in to in Part 1.
 
 > **Note:** The Cortex functions used in this lab require the `SNOWFLAKE.CORTEX_USER` database role. Your lab user already has it, so no setup is needed.
 
 1. **Review your data in Snowflake.** In the left navigation, select **Catalog** > **Databases**. Expand the database used by your Fivetran destination, then your schema (`<firstname>_<lastname>_postgres_agriculture`), and select the `CALIFORNIA_WINE_COUNTRY_VISITS` table. Click through the **Columns** and **Data Preview** tabs to get familiar with the data. This is the table you will transform into RAG context for the chatbot.
 2. **Create a new SQL worksheet.** Select **Projects** > **Workspaces**, then click the **+ Add new** and choose **SQL File**.
     - If you wish, you can name your worksheet something unique
-3. **Set the worksheet context.** In the top right of the worksheet click on **Choose Database** and select the database used by your Fivetran destination and also select the `APPS` schema.
+3. **Set the worksheet context.** In the top right of the worksheet, click on **Choose Database** and select the database used by your Fivetran destination and also select the `APPS` schema.
 4. **Paste the transformation SQL.** Copy the SQL below into the worksheet.
 
     ```sql
@@ -202,7 +202,7 @@ Now that Fivetran has landed the structured dataset into tables in Snowflake, it
 5. **Run the SQL.** Highlight all of the SQL and click the **Run** button (▶) in the upper-left corner. Both statements should complete successfully.
 6. **Preview the results.** Click on the **Databases** panel and find your database and the `APPS` schema, then click on the tables and select **Data Preview**:
    - `VINEYARD_DATA_SINGLE_STRING` — one row per winery, with all of its attributes concatenated into a single `WINERY_INFORMATION` text column.
-   - `VINEYARD_DATA_VECTORS` — the same rows plus a `WINERY_EMBEDDING` column holding a 1024-dimension vector generated by the `snowflake-arctic-embed-l-v2.0` embedding model.
+   - `VINEYARD_DATA_VECTORS` — the same rows plus a `WINERY_EMBEDDING` column holding a 1024-dimensional vector generated by the `snowflake-arctic-embed-l-v2.0` embedding model.
 
    Select either table and click the preview icon to view the transformations.
 
@@ -273,10 +273,10 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
 
     def build_layout():
         #
-        # Builds the layout for the app side and main panels and return the question from the dynamic text_input control.
+        # Builds the sidebar and main-panel layouts and returns the question from the dynamic text_input control.
         #
 
-        # Setup the state variables.
+        # Set up the state variables.
         # Resets text input ID to enable it to be cleared since currently there is no native clear.
         if 'reset_key' not in st.session_state:
             st.session_state.reset_key = 0
@@ -336,7 +336,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
 
     def build_prompt (question):
         #
-        # Format the prompt based on if the user chooses to use the RAG option or not.
+        # Format the prompt based on whether the user chooses to use RAG.
         #
 
         # Build the RAG prompt if the user chooses.  Defaulting the similarity to 0 -> 1 for better matching.
@@ -374,7 +374,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
               Answer:
               """
         else:
-            # Construct the generic version of the prompt without RAG to only go against what the LLM was trained.
+            # Construct the generic prompt without RAG, relying only on the LLM's training.
             new_prompt = f"""
               Act as a California winery visit expert for visitors to California wine country who want an incredible visit and
               tasting experience. You are a personal visit assistant named Snowflake CA Wine Country Visit Assistant. Provide
@@ -517,9 +517,9 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
 ## Part 6: Running the chatbot
 
 1. Click the **Run** button in the upper-right corner to run the application.
-    - Once you **California Wine Country Visit Assistant** you know you're code has executed
+    - Once you see **California Wine Country Visit Assistant**, you know your code has executed.
     - Click the back button in the upper left next to **Streamlit Apps**
-    - Click on **WINE_ASSISTANT** to relaunch the appilication in it's full live mode
+    - Click on **WINE_ASSISTANT** to relaunch the application in its full live mode
 2. **Get to know the interface.**
 
    **Content area (main panel):**
@@ -538,7 +538,7 @@ Streamlit in Snowflake makes creating and sharing data applications easy. You wi
    - **RAG Chunks/Records Used** lists the winery/vineyard names that were added to the context sent to the LLM. If no RAG records were sent, you'll see `none`. Only the names are shown here; the full `WINERY_INFORMATION` text was sent to the LLM.
 
 > **Notes:**
-> - The chatbot does **not** use previous responses to refine results. Every prompt is a fresh call to the LLM, possibly with a new set of RAG context.
+> - The chatbot does **not** use previous responses to refine results. Every prompt is a fresh call to the LLM, possibly with a new set of RAG context records.
 > - If you edit the code (for example, adding a model to the list), click **Run** again so Streamlit picks up the change.
 
 ---
