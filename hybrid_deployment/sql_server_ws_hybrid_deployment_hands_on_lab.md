@@ -2,7 +2,7 @@
 
 *Updated September 2026. Verified against the current Fivetran Hybrid Deployment documentation.*
 
-Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -95,7 +95,7 @@ for this lab.
 
 1. In Fivetran, go to the **Destinations** tab and click **Add destination**.
 2. Search for **Snowflake**.
-3. Name it `<firstname>_<lastname>_snowflake` (use your real first/last name), then click
+3. Name it `<firstname>_<lastname>_snowflake` (use your real first and last names), then click
    **Add**.
 4. Enter the provided credentials. 
    - For **Auth**, select **Key Pair** and paste the provided private key.
@@ -138,7 +138,7 @@ docker container logs container_id --follow
 
     > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-15. Leave everything else as the default value
+15. Leave all other settings at their default values.
 
 16. Click **Save & Test** and wait for the setup tests to pass.
 
@@ -164,7 +164,7 @@ docker container logs container_id --follow
 10. For **Destination schema names**, select **Fivetran naming**.
 11. Click **Save & Test** and wait for the setup tests to pass, then click **Continue**.
 12. Fivetran fetches all tables, schemas, and columns. 
-   - The fivetran database user provided to you via 1Password has access to the **agriculture** schema
+   - The Fivetran database user provided to you via 1Password has access to the **agriculture** schema
    - Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue**.
 13. For handling schema changes, select **Allow all**.
 14. Click **Start Initial Sync**. While it runs, continue to Part 4.
@@ -175,7 +175,7 @@ docker container logs container_id --follow
 
 ## Part 4: Confirm the install directory
 
-In the training (Module 3) you learned what the installer creates under `$HOME/fivetran`.
+In the training (Module 3), you learned what the installer creates under `$HOME/fivetran`.
 Let's confirm it on your own workstation. (For the full explanation of each directory, refer back to
 the training — here we're just verifying it exists and peeking at the config file.)
 
@@ -191,9 +191,9 @@ ls
    You should see `conf`, `data`, `logs`, `tmp`, `stats`, `hdagent.sh`, and `hd-debug.sh`.
 
 3. View the configuration file. 
-   - By default it holds only the `token` needed to connect
+   - By default, it holds only the `token` needed to connect
    securely to Fivetran's cloud
-   - And also the SE Linux configuration toggle, which is automatically set based on the workstation settings
+   - It also holds the SELinux configuration toggle, which is automatically set based on the workstation settings.
 
 ```bash
 cat conf/config.json
@@ -206,8 +206,8 @@ cat conf/config.json
 ```
 
 5. Reminder from the training: 
-  - `data/` is persistent storage used during processing (and its
-  - `_samples/` sub-directory holds hashed sample files for active-row/MAR calculations — never delete anything in `_samples/`). 
+  - `data/` is persistent storage used during processing. Its `_samples/` subdirectory
+    holds hashed sample files for active-row/MAR calculations — never delete anything in `_samples/`.
   - `tmp/` is transient. 
   - `logs/` holds the agent logs. 
   - `stats/` is where the `hd-debug.sh` diagnostics tool writes its support bundle. 

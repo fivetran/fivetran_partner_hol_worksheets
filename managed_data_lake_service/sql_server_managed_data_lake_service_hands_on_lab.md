@@ -6,7 +6,7 @@ tutorial.*
 
 Thank you for registering for our hands-on lab. This worksheet provides all the
 information you need to prepare. Please read through the requirements first. If you can't
-meet them, let us know and we'll rebook you on another workshop.
+meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -53,12 +53,12 @@ catalog-linked database — the recommended, documented path.
 
 ## Part 1: Accessing the provided resources
 
-1. Log into Fivetran at `https://fivetran.com/login`.
+1. Log in to Fivetran at `https://fivetran.com/login`.
    - If you just signed up for the first time, use the username and password you used
      for your sign-up.
    - If you already have a Fivetran account, use those credentials.
 2. Switch to the `MDLS_HANDS_ON_LAB` account via the drop-down menu in the top left.
-3. Log into Snowflake.
+3. Log in to Snowflake.
    - Click the link provided in **Part 0: Credentials**.
    - Enter the provided username and password and click **Sign in**.
 
@@ -67,7 +67,7 @@ catalog-linked database — the recommended, documented path.
    > offer several options. We recommend choosing **Passkey**. Complete the enrollment
    > before continuing.
 
-**Checkpoint:** you are signed into the `MDLS_HANDS_ON_LAB` Fivetran account and into
+**Checkpoint:** You are signed in to the `MDLS_HANDS_ON_LAB` Fivetran account and into
 the Snowflake account, each in its own browser tab. Keep both open — you will move
 between them in Part 4.
 
@@ -82,7 +82,7 @@ We'll begin by setting up a Managed Data Lake destination.
 3. Three Fivetran Managed Data Lake Service options appear immediately. Select the
    **Google Cloud Storage** option by clicking its **Set up** button.
 4. For the **Destination name**, enter `<firstname>_<lastname>_gcs`, replacing
-   `<firstname>` and `<lastname>` with your actual first and last name. Click **Add**.
+   `<firstname>` and `<lastname>` with your actual first and last names. Click **Add**.
 5. Enter the **Bucket name** provided via the 1Password credentials link.
 6. For the **GCS Prefix Path**, enter `<firstname>_<lastname>_mdls`, again replacing the
    placeholders with your name.
@@ -92,7 +92,12 @@ We'll begin by setting up a Managed Data Lake destination.
    > wrong means recreating the destination, so check your spelling now. This is one of
    > the delivery lessons from Module 02.
 
-7. Leave the **Update BigLake Metastore** option untoggled.
+7. In **GCS Bucket Region**, select the region of the bucket provided by your
+   instructor. Use the region in your 1Password lab details; if it is not listed,
+   confirm it with your instructor before continuing. This must match the bucket's
+   actual region. For a self-paced lab, select the region of your own GCS bucket.
+
+8. Leave the **Update BigLake Metastore** option untoggled.
 
    > **Note — catalog integrations are final.** Catalog integration settings cannot be
    > edited after the first successful sync into the data lake. In a real engagement you
@@ -100,25 +105,28 @@ We'll begin by setting up a Managed Data Lake destination.
    > customer will use. For this lab we're leaving BigLake off because we're querying
    > from Snowflake, which reads the Fivetran Catalog directly.
 
-8. Leave the remaining options at their defaults. Note that **Snapshot Retention
-   Period** defaults to one week — unlike the catalog toggles, this one *can* be changed
-   at any time later.
+9. Set **Write Delta Format** to **ON** for demonstration purposes. Iceberg is the
+   default format; Delta metadata is optional and must be explicitly enabled.
+   This toggle adds a Delta transaction log alongside the Iceberg metadata over the
+   same Parquet files. Snowflake continues to query **Iceberg** in this lab.
+   Set **Snapshot Retention Period** to one week and leave the remaining options
+   at their defaults.
 
-9. To access cloud storage locations we need to grant access to Fivetran to the cloud storage
-   environment. Pause here, so your instructor can allowlist your destinations. 
+10. To access cloud storage locations, Fivetran needs permission to access the cloud storage
+   environment. Pause here so your instructor can allowlist your destinations.
 
-10. Click **Save & Test**.
+11. Click **Save & Test**.
 
    > If you get an error connecting to the Google account, confirm with your instructor
    > that the service accounts have been correctly added.
 
-11. Let the setup tests run. For GCS these are **Input Validation** and **GCS Read and
+12. Let the setup tests run. For GCS these are **Input Validation** and **GCS Read and
     Write Access**. (A **BigLake Metastore Access** test also runs, but only if the
-    Update BigLake Metastore toggle is on — which we left off in step 7, so you will not
+    Update BigLake Metastore toggle is on — which we left off in step 8, so you will not
     see it.)
-12. Once the tests complete successfully, click **View Destination**.
+13. Once the tests complete successfully, click **View Destination**.
 
-**Checkpoint:** all setup tests show green, and your destination appears in the
+**Checkpoint:** All setup tests show green, and your destination appears in the
 Destinations list with your name. Every Managed Data Lake destination is provisioned
 with the **Fivetran Catalog** automatically — you did not have to configure it. You'll
 use it in Part 4.
@@ -149,7 +157,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 11. Confirm the TLS certificate when prompted.
 12. Wait for the setup tests to complete, then click **Continue**.
 13. Fivetran now fetches all tables, schemas, and columns for the provided database.
-14. The fivetran database user provided to you via 1Password has access to the `agriculture` schema, which
+14. The Fivetran database user provided to you via 1Password has access to the `agriculture` schema, which
     includes the `coffee_prices` table you'll query later in this lab.
 15. Make sure the `agriculture` schema and all of its tables are selected.
 16. Click **Save & Continue**.
@@ -157,16 +165,19 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 18. Click **Start Initial Sync**.
 19. Wait for the sync to complete.
 
-**Checkpoint:** the connection shows a completed initial sync of the `agriculture` schema.
+**Checkpoint:** The connection shows a completed initial sync of the `agriculture` schema.
 Fivetran has written each table's data to
 `gs://mdls-gcs-hands-on-lab/<firstname>_<lastname>_mdls/<firstname>_<lastname>_sql_server_agriculture/<table>/`
-(for example `.../coffee_prices/`) as Parquet files, with both Iceberg metadata and a Delta transaction log. 
-   - Both formats are always written — there is no format selector.
+(for example `.../coffee_prices/`) as Parquet files with Iceberg metadata. Because you
+enabled **Write Delta Format** in Part 2, a Delta transaction log is also present.
+   - Iceberg is written by default; Delta metadata is present because you enabled **Write Delta Format** for this demonstration.
 
-> **Instructor demo:** if you look at the GCS bucket, you can see the folder structure
+> **Instructor demo:** If you look at the GCS bucket, you can see the folder structure
 > Fivetran created: a `data/` folder holding the shared Parquet files, a `metadata/`
 > folder for the Iceberg snapshots and schemas, and a `_delta_log/` folder for the Delta
-> transaction log. One copy of the data, two sets of metadata pointing at it.
+> transaction log. The Delta metadata is present because we explicitly enabled it
+> for this demonstration. Both sets of metadata reference the same Parquet data;
+> Iceberg is written by default, while Delta is optional.
 
 ---
 
@@ -238,7 +249,7 @@ CREATE DATABASE catalog_db_renegade_kindle
     CATALOG = 'fivetran_catalog_renegade_kindle'
   );
 ```
-1. You will need to replace `{fivetran_delivered_schema_name}` with name of your connector followed by `agriculture`, so if you've been following the naming conventions it will look something like `firstname_lastname_sql_server_agriculture`
+1. You will need to replace `{fivetran_delivered_schema_name}` with the name of your connector followed by `agriculture`. If you've followed the naming convention, it will look like `firstname_lastname_sql_server_agriculture`
 
 > **How the namespace is formed:** Fivetran combines the **destination schema prefix**
 > you set in Part 3 with the **source schema name** (`agriculture`). So a connector named
@@ -256,13 +267,13 @@ integration was created.
 > Both are in the generated SQL; copy the whole statement rather than retyping it.
 
 ### 4.4 Verify the tables were discovered
-1. Replace `your_database_name` with the catalog linked database that was created in 4.3
+1. Replace `your_database_name` with the name of the catalog-linked database created in section 4.3.
 
 ```sql
 SHOW ICEBERG TABLES IN DATABASE your_database_name;
 ```
 
-**Checkpoint:** the `agriculture` tables, including `coffee_prices`, appear in the results. The catalog-linked database
+**Checkpoint:** The `agriculture` tables, including `coffee_prices`, appear in the results. The catalog-linked database
 auto-discovers tables as Fivetran adds them — you never write a `CREATE TABLE`
 statement.
 
@@ -274,7 +285,7 @@ FROM your_database_name.<firstname>_<lastname>_sql_server_agriculture.coffee_pri
 LIMIT 100;
 ```
 
-**Checkpoint:** rows are returned. You are querying Iceberg data sitting in a Google
+**Checkpoint:** Rows are returned. You are querying Iceberg data sitting in a Google
 Cloud Storage bucket, from Snowflake compute, with no copy and no second ETL.
 
 ### 4.6 Understand the refresh behavior
@@ -344,7 +355,7 @@ That difference is the whole reason the first approach is recommended.
 | GCS setup test fails on read/write access | Service accounts not yet added to the bucket | Ask the instructor to confirm the service account has access to the lab GCS bucket |
 | Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
 | Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |
-| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is connector name **+ source schema**, e.g. `first_last_sql_server_agriculture` — not just the connector name |
+| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is the connector name **+ source schema**, e.g. `first_last_sql_server_agriculture` — not just the connector name |
 | Tables appear but a query returns no rows | Initial sync hadn't finished when the catalog last refreshed | Wait 30 seconds and re-run; the catalog polls on an interval |
 | `WAREHOUSE` parameter rejected | Snowflake warehouse name used instead of the Fivetran group ID | The `WAREHOUSE` field on the catalog integration takes your Fivetran **group ID** |
 | You see other participants' tables | `ALLOWED_NAMESPACES` omitted | Recreate the database with `ALLOWED_NAMESPACES` scoped to your namespace |
@@ -354,11 +365,11 @@ That difference is the whole reason the first approach is recommended.
 ## What you did
 
 You configured a Managed Data Lake Service destination on Google Cloud Storage, synced
-a SQL Server table into it as Apache Iceberg with a Delta transaction log alongside it,
+a SQL Server table into it as Apache Iceberg with optional Delta metadata enabled for the demo,
 and queried it from Snowflake through a catalog-linked database reading the Fivetran
 Catalog — a managed Apache Polaris implementation speaking the Iceberg REST protocol.
 
-Along the way you saw three things that matter in a real delivery: the prefix path and
+Along the way, you saw three things that matter in a real delivery: the prefix path and
 catalog integrations are decisions you cannot undo, the catalog namespace is the
 connector name plus the source schema, and the catalog refresh interval introduces a lag
 that downstream scheduling has to account for.

@@ -4,7 +4,7 @@
 
 Thank you for registering for our hands-on lab. This worksheet has everything you need to
 prepare and follow along. Please read through the requirements first. If you can't meet
-them, let us know and we'll rebook you on another workshop.
+them, let us know and we'll rebook you for another workshop.
 
 > **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account and destination. If you're working through the lab on your own, use your own Fivetran partner account and any [Fivetran-supported destination](https://fivetran.com/docs/destinations) you have access to. Skip the Housekeeping section and Part 1, and use the remaining parts as an example of what each step looks like, adapting the destination setup and naming to your own resources. You can follow the NewsAPI example in Part 6 (it offers a free API key) or build a connector for another API you have access to. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
 
@@ -89,7 +89,7 @@ matches your system.
 
    > **Note:** Do not select the `SNOWFLAKE_LEARNING_WH` as it will not work for this lab.
 
-8. For **Table Type** select **Snowflake Native Tables**.
+8. For **Table Type**, select **Snowflake Native Tables**.
 9. Leave the remaining fields at their default values. Do not make any changes.
 10. Click **Save & Test**.
 11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
@@ -288,7 +288,7 @@ matches your system.
 Now that you've run the connector locally, push it into Fivetran with `fivetran deploy`.
 
 1. In the command below, replace `firstname_lastname` with your actual first and last
-   name. If you get an overwrite prompt, there's a name conflict — cancel and add a few
+   names. If you get an overwrite prompt, there's a name conflict — cancel and add a few
    random digits to the connection name.
 
    ```bash
@@ -302,7 +302,7 @@ Now that you've run the connector locally, push it into Fivetran with `fivetran 
    > For automated (CI/CD) deploys, add `--non-interactive` so the command doesn't stop
    > to ask about overwriting. (The older `--force` / `-f` flag is deprecated.)
 
-2. In the Fivetran dashboard, search for your connection using by your first and last name.
+2. In the Fivetran dashboard, search for your connection using your first and last names.
 
 3. Click your connection and start the initial sync. It should take about 30 seconds.
 
@@ -341,9 +341,9 @@ breaking headlines from sources across the web through a JSON API.
 2. Set up your development environment as in **Part 3** (new folder, virtual
    environment, SDK install).
    - Create a new working directory
-   - Create a new python virtual environment
+   - Create a new Python virtual environment
    - Install the Connector SDK
-   - You're credentials should still be in your terminal session, but you can create a new file to drop your API Keys in
+   - Your credentials should still be in your terminal session, but you can create a new file to drop your API keys in
 
 3. Create `configuration.json` and paste in the following, replacing the placeholder
    with your NewsAPI key:

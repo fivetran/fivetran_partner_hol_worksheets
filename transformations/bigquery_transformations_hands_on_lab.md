@@ -2,7 +2,7 @@
 
 *BigQuery edition — October 2026. Adapted from the corresponding lab worksheet; validate with the provisioned lab resources before delivery.*
 
-Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and complete the lab. In this lab you will build a complete Fivetran + dbt Core transformation end to end: stand up a BigQuery destination, sync the Fivetran Platform Connector, build and version a dbt project, install a Fivetran data model package, orchestrate it from Fivetran on an Integrated schedule, and review the transformed data in an instructor-led BigQuery demonstration. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and complete the lab. In this lab you will build a complete Fivetran + dbt Core transformation end to end: stand up a BigQuery destination, sync the Fivetran Platform Connector, build and version a dbt project, install a Fivetran data model package, orchestrate it from Fivetran on an Integrated schedule, and review the transformed data in an instructor-led BigQuery demonstration. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 > **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account and a BigQuery destination with instructor-provided credentials. If you're working through the lab on your own, use your own Fivetran partner account and any [Fivetran-supported destination](https://fivetran.com/docs/destinations) that supports dbt Core transformations. Skip the Housekeeping section and Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting the destination setup, dbt profile, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
 
@@ -59,7 +59,7 @@ The instructor provides a dbt service account that can read the landing data, ru
 
 ## Part 1: Accessing the provided resources
 
-**Log into Fivetran**
+**Log in to Fivetran**
 
 1. Go to [fivetran.com/login](https://fivetran.com/login).
 2. If you just signed up for the first time, use the username and password from your
@@ -269,7 +269,7 @@ Before adding the Platform Connection, sync at least one ordinary connection int
    - **Owner** — yourself
    - **Repository name** — your dbt project name, `dbt_hol`
    - **Description** — optional
-   - Leave everything else at default. **Do not** initialize with a README, .gitignore,
+   - Leave everything else at its default value. **Do not** initialize with a README, .gitignore,
      or license.
 4. Click **Create repository**.
 5. Set up authentication at

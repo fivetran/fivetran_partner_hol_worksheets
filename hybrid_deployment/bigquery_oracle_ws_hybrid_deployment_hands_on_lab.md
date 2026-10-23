@@ -2,7 +2,7 @@
 
 *BigQuery edition — October 2026. Adapted from the corresponding lab worksheet; validate with the provisioned lab resources before delivery.*
 
-Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 ---
 
@@ -30,7 +30,7 @@ for this lab.
      Hybrid Deployment agent. The **Gateway URL**, **Guacamole Username**, and
      **Guacamole Password** are provided by your instructor via a 1Password link.
    - A **BigQuery** data warehouse
-   - A **Oracle** database.
+   - An **Oracle** database.
 
 ## What you'll do in this lab
 
@@ -102,7 +102,7 @@ for this lab.
 
 1. In Fivetran, go to the **Destinations** tab and click **Add destination**.
 2. Search for **BigQuery**.
-3. Name it `<firstname>_<lastname>_bigquery` (use your real first/last name), then click
+3. Name it `<firstname>_<lastname>_bigquery` (use your real first and last names), then click
    **Add**.
 4. Enter the **BigQuery Project ID** from your credentials. After selecting Hybrid Deployment, paste the complete **BigQuery Service Account JSON** into **Service Account Private Key**.
 5. In **Select deployment model**, choose **Hybrid Deployment**, then click
@@ -173,7 +173,7 @@ docker container logs container_id --follow
 10. For **Destination schema names**, select **Fivetran naming**.
 11. Click **Save & Test** and wait for the setup tests to pass, then click **Continue**.
 12. Fivetran fetches all tables, schemas, and columns.
-   - The fivetran database user provided to you via 1Password has access to the **agriculture** schema
+   - The Fivetran database user provided to you via 1Password has access to the **agriculture** schema
    - Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue**.
 13. For handling schema changes, select **Allow all**.
 14. Click **Start Initial Sync**. While it runs, continue to Part 4.
@@ -184,7 +184,7 @@ docker container logs container_id --follow
 
 ## Part 4: Confirm the install directory
 
-In the training (Module 3) you learned what the installer creates under `$HOME/fivetran`.
+In the training (Module 3), you learned what the installer creates under `$HOME/fivetran`.
 Let's confirm it on your own workstation. (For the full explanation of each directory, refer back to
 the training — here we're just verifying it exists and peeking at the config file.)
 
@@ -200,9 +200,9 @@ ls
    You should see `conf`, `data`, `logs`, `tmp`, `stats`, `hdagent.sh`, and `hd-debug.sh`.
 
 3. View the configuration file.
-   - By default it holds only the `token` needed to connect
+   - By default, it holds only the `token` needed to connect
    securely to Fivetran's cloud
-   - And also the SE Linux configuration toggle, which is automatically set based on the workstation settings
+   - It also holds the SELinux configuration toggle, which is automatically set based on the workstation settings.
 
 ```bash
 cat conf/config.json
@@ -215,8 +215,8 @@ cat conf/config.json
 ```
 
 5. Reminder from the training:
-  - `data/` is persistent storage used during processing (and its
-  - `_samples/` sub-directory holds hashed sample files for active-row/MAR calculations — never delete anything in `_samples/`).
+  - `data/` is persistent storage used during processing. Its `_samples/` subdirectory
+    holds hashed sample files for active-row/MAR calculations — never delete anything in `_samples/`.
   - `tmp/` is transient.
   - `logs/` holds the agent logs.
   - `stats/` is where the `hd-debug.sh` diagnostics tool writes its support bundle.

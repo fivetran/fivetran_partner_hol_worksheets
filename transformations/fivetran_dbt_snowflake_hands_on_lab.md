@@ -1,8 +1,8 @@
 # Hands-on Lab: Fivetran + dbt with Snowflake Cortex
 
-*Updated October 2026. Verified against the current Fivetran, dbtLabs, and Snowflake documentation.*
+*Updated October 2026. Verified against the current Fivetran, dbt Labs, and Snowflake documentation.*
 
-Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop. 
+Thank you for registering for our hands-on lab. This worksheet provides everything you need to prepare and to work through the lab. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 > **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, a provisioned dbt Platform account, a PostgreSQL source, and a Snowflake destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account and any [Fivetran-supported source](https://fivetran.com/docs/connectors) and [destination](https://fivetran.com/docs/destinations) you have access to. Skip the Housekeeping section and Parts 0–1, and use the remaining parts as an example of what each step looks like, adapting setup details, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
 
@@ -10,7 +10,7 @@ Thank you for registering for our hands-on lab. This worksheet provides everythi
 
 ## Objective
 
-In this workshop, you'll move data from a PostgreSQL source database into Snowflake using Fivetran, transform it into trusted, production-ready data products using dbt, and see how modern data capabilities like the dbt v2, dbt Wizard, and dbt State make that process faster, smarter, and more efficient.
+In this workshop, you'll move data from a PostgreSQL source database into Snowflake using Fivetran, transform it into trusted, production-ready data products using dbt, and see how modern data capabilities like dbt v2, dbt Wizard, and dbt State make that process faster, smarter, and more efficient.
 
 This is a **full-stack, end-to-end walkthrough of how modern data teams go from raw data to AI-powered outcomes** — no prior experience with any of these tools is required.
 
@@ -91,7 +91,7 @@ This is a **full-stack, end-to-end walkthrough of how modern data teams go from 
 4. Enter the provided Snowflake credentials.
 5. For the authentication method, select **Key Pair** and paste in the provided private key.
 6. In the **Deployment model** section, select **SaaS**.
-7. For **Table Type** select **Snowflake Native Tables**
+7. For **Table Type**, select **Snowflake Native Tables**
 8. Leave **Connection Method** and **Storage for Unstructured Files** as their defaults.
 9. Click **Load Virtual Warehouses** and select the warehouse provided in your credentials, which should be `TECH_FOUNDATIONS_HOL_WAREHOUSE`
 
@@ -114,7 +114,7 @@ This is a **full-stack, end-to-end walkthrough of how modern data teams go from 
 2. Search for **PostgreSQL**, hover over the connector tile, and click **Set up**.
 3. Select the destination you created in Part 2 (make sure you don't use someone else's destination), then click **Select**.
 4. The value you enter in the **Destination schema prefix** field becomes the name of your connection. Use the format `<firstname>_<lastname>_postgres`, replacing `<firstname>` and `<lastname>` with your actual first and last names.
-5. For **Destination names** select **Fivetran naming**
+5. For **Destination names**, select **Fivetran naming**
 6. Populate the setup form with the provided PostgreSQL credentials.
 7. Leave **Connection Method** at its default value, **Connect directly**.
 8. For **Update Method**, select **Query-Based**.
@@ -124,7 +124,7 @@ This is a **full-stack, end-to-end walkthrough of how modern data teams go from 
 11. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 12. Click **Continue**.
 13. Fivetran now fetches all tables, schemas, and columns for the database.
-14. The database user you have been provided has access to the `retail` schema. Make sure the `retail` schema and all of its tables are selected, then click **Save & Continue** to proceed.
+14. The database user provided to you has access to the `retail` schema. Make sure the `retail` schema and all of its tables are selected, then click **Save & Continue** to proceed.
 15. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
 16. Click **Start Initial Sync**. Wait for the initial (historical) sync to finish, then let at least one **incremental** sync complete. At least one incremental sync must complete for this lab.
 17. The sync will finish in about 1–2 minutes. A successful sync shows the connection status as **Active** with the synced tables and row counts.
@@ -137,13 +137,13 @@ This is a **full-stack, end-to-end walkthrough of how modern data teams go from 
 
 ## Part 4: Verify the Data in Snowflake
 1. Access the Snowflake UI login via the URL provided in the 1Password link
-2. Enter in the provided Username and Password provided via the 1Password link
-3. You'll need to configure MFA, we recommend Passkey Authentication since it's only a few clicks to setup, but other methods can be selected if Passkey is not available
+2. Enter the username and password provided via the 1Password link.
+3. You'll need to configure MFA. We recommend passkey authentication since it takes only a few clicks to set up, but you can select another method if passkeys are unavailable.
 4. Once you're logged in, click **Catalog** in the left navigation bar
 5. Find your schema (e.g., `{firstname}_{lastname}_postgres_retail`)
 6. Click **Tables**
 7. Click on any of the tables such as `avocado_prices`
-8. Click **Data Preview** tab to view the Fivetran synced data and scroll all the way to the right to see `_fivetran_synced`
+8. Click the **Data Preview** tab to view the Fivetran-synced data and scroll all the way to the right to see `_fivetran_synced`
 
 
 ## Part 5: Accessing dbt Platform
@@ -155,29 +155,29 @@ This is a **full-stack, end-to-end walkthrough of how modern data teams go from 
    - **Last Name**: Your last name
    - **Password**: Set a password
    - **Confirm Password**: Confirm your password
-3. Select **I aggree to dbt's Terms of Service**
+3. Select **I agree to dbt's Terms of Service**
 4. Click **Get started**
 5. Record these credentials — you may need them to log back in during the lab.
-6. Once you're logged in click on **Project** in the left navigation bar and select the project
+6. Once you're logged in, click on **Project** in the left navigation bar and select the project
    - There should only be one visible project starting with `LAB_DBT`
 7. Click on `Studio` in the left navigation bar
-8. To configure your personal developer credentials do the following
-   - Click on **Status: Disconnected** to open up the **Server status**. You'll notice that it's missing credentails
+8. To configure your personal developer credentials, do the following:
+   - Click on **Status: Disconnected** to open up the **Server status**. You'll notice that it's missing credentials
    - Click on **View Credentials** to open up the pane to enter your development credentials 
       - In **Connection details**, set **Database** to the development database provided for your lab (the name ends in `_DEV`). Do not leave this field blank or use the shared `LABSTUDIOS` database.
-      - For **Auth method** select **Key pair**
+      - For **Auth method**, select **Key pair**
       - Enter the **Username** provided to you via the 1Password link
       - Enter the **Private key** provided to you via the 1Password link
       - DO NOT enter a **Private key passphrase**. Leave it blank.
       - Change **Schema** to `dbt_<firstname>_<lastname>` where `<firstname>` and `<lastname>` are replaced with your actual first and last names.  
       - Leave **Target name** (`default`) and **Threads** at their default values. **Target name** is a dbt profile label; the **Database** field above controls which Snowflake database receives your models.
       - Click **Save** in the top right
-9. Reload the page you should now see that the **Server status** says `Connected`
-10. On the left hand navigation bar click on **Create branch** and use the naming convention `<firstname>_<lastname>_branch` where `<firstname>` and `<lastname>` are replaced with your actual first and last names.  
+9. Reload the page. You should now see that the **Server status** says `Connected`.
+10. On the left-hand navigation bar, click on **Create branch** and use the naming convention `<firstname>_<lastname>_branch` where `<firstname>` and `<lastname>` are replaced with your actual first and last names.
 11. Click **Create** branch
 
 > **Checkpoint — dbt Platform Setup**
-> - You have now setup your development environment in dbt Platform by connecting to Snowflake with your credentials. You have also created an isolated branch in the connected GitHub repostitory that you can work in independently.
+> - You have now set up your development environment in dbt Platform by connecting to Snowflake with your credentials. You have also created an isolated branch in the connected GitHub repository that you can work in independently.
 
 ---
 

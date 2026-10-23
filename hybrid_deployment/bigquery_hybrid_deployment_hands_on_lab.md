@@ -2,7 +2,7 @@
 
 *BigQuery edition — October 2026. Adapted from the corresponding lab worksheet; validate with the provisioned lab resources before delivery.*
 
-Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you on another workshop.
+Thank you for registering for our hands-on lab. This worksheet has everything you need to prepare. Please read through the requirements first. If you can't meet them, let us know and we'll rebook you for another workshop.
 
 > **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, an assigned VM, a PostgreSQL source, and a BigQuery destination with instructor-provided credentials. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account with Hybrid Deployment enabled, a Linux machine or VM where you can run Docker or Podman, and any source and destination that support Hybrid Deployment. Skip the Housekeeping section and Parts 0–1 (other than connecting to your own machine), and use the remaining parts as an example of what each step looks like, adapting setup details, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
 
@@ -87,10 +87,10 @@ Create a **Hybrid Deployment agent** in Fivetran and install it on your own **VM
 2. Switch to the `HYBRID_DEPLOYMENT_HANDS_ON_LAB` account via the account drop-down in the top left.
 
 ### Access your Hybrid Deployment VM
-Log into the VM over SSH with the SSH command and password you were assigned.
+Log in to the VM over SSH with the SSH command and password you were assigned.
    - The command can be found in your welcome email
       - If you cannot find it, let your instructor know and they will provide it to you
-      - DO NOT use someone else's SSH command as they are unique to you
+      - Do not use someone else's SSH command; the command is unique to you.
    - The password can be found in the 1Password credentials link
 
 **macOS / Linux (Terminal):**
@@ -113,7 +113,7 @@ then enter `<username>` and the password when prompted.
    - It will not appear or be visible when you paste it.
    - This is normal
    - Do not paste it more than once or press any other buttons besides ENTER
-- On success you'll see the VM welcome screen.
+- On success, you'll see the VM welcome screen.
 
 > All commands from here run **on the VM** (Linux), so they're identical whether your
 > laptop is macOS, Linux, or Windows. The only OS difference is the SSH client you used to
@@ -125,7 +125,7 @@ then enter `<username>` and the password when prompted.
 
 1. In Fivetran, go to the **Destinations** tab and click **Add destination**.
 2. Search for **BigQuery**.
-3. Name it `<firstname>_<lastname>_bigquery` (use your real first/last name), then click
+3. Name it `<firstname>_<lastname>_bigquery` (use your real first and last names), then click
    **Add**.
 4. Enter the **BigQuery Project ID** from your credentials. After selecting Hybrid Deployment, paste the complete **BigQuery Service Account JSON** into **Service Account Private Key**.
 5. In **Select deployment model**, choose **Hybrid Deployment**, then click
@@ -194,7 +194,7 @@ docker container logs container_id --follow
 10. For **Destination schema names**, select **Fivetran naming**.
 11. Click **Save & Test** and wait for the setup tests to pass, then click **Continue**.
 12. Fivetran fetches all tables, schemas, and columns.
-   - The fivetran database user provided to you via 1Password has access to the **agriculture** schema
+   - The Fivetran database user provided to you via 1Password has access to the **agriculture** schema
    - Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue**.
 13. For handling schema changes, select **Allow all**.
 14. Click **Start Initial Sync**. While it runs, continue to Part 4.
@@ -205,7 +205,7 @@ docker container logs container_id --follow
 
 ## Part 4: Confirm the install directory
 
-In the training (Module 3) you learned what the installer creates under `$HOME/fivetran`.
+In the training (Module 3), you learned what the installer creates under `$HOME/fivetran`.
 Let's confirm it on your own VM. (For the full explanation of each directory, refer back to
 the training — here we're just verifying it exists and peeking at the config file.)
 
@@ -221,9 +221,9 @@ ls
    You should see `conf`, `data`, `logs`, `tmp`, `stats`, `hdagent.sh`, and `hd-debug.sh`.
 
 3. View the configuration file.
-   - By default it holds only the `token` needed to connect
+   - By default, it holds only the `token` needed to connect
    securely to Fivetran's cloud
-   - And also the SE Linux configuration toggle, which is automatically set based on the VM settings
+   - It also holds the SELinux configuration toggle, which is automatically set based on the VM settings.
 
 ```bash
 cat conf/config.json
@@ -236,8 +236,8 @@ cat conf/config.json
 ```
 
 5. Reminder from the training:
-  - `data/` is persistent storage used during processing (and its
-  - `_samples/` sub-directory holds hashed sample files for active-row/MAR calculations — never delete anything in `_samples/`).
+  - `data/` is persistent storage used during processing. Its `_samples/` subdirectory
+    holds hashed sample files for active-row/MAR calculations — never delete anything in `_samples/`.
   - `tmp/` is transient.
   - `logs/` holds the agent logs.
   - `stats/` is where the `hd-debug.sh` diagnostics tool writes its support bundle.

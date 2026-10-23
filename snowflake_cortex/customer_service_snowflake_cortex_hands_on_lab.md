@@ -120,7 +120,7 @@ Logical names such as `__summary` in those examples resolve through the semantic
 2. Under **Configuration → General**, describe its purpose as: “Explore response-length review from tested dbt output; answer only questions supported by this mart.”
 3. Under **Tools**, turn off Web search and Code Execution if enabled, and leave Analytical search off. Under **Query structured data**, choose **Add semantic view**.
 4. Select both your development database and **APPS** schema, then `CUSTOMER_SERVICE_ASSISTANT`. Name the Cortex Analyst tool `customer_service_analytics`. Describe it as: “Query response-length review using the documented mart grain, counts and rules.”
-5. Use your verified lab default warehouse, or select the instructor-provided custom warehouse. Set query timeout to `60` seconds and add the tool.
+5. Use your verified lab default warehouse, or select the instructor-provided custom warehouse. Set the query timeout to `60` seconds and add the tool.
 6. Under **Instructions**, keep model selection `auto`. Set orchestration instructions to:
 
 ```text
@@ -133,7 +133,7 @@ Use customer_service_analytics for every quantitative answer. Query the current 
 Give concise answers grounded in successful tool results. Explain the grain, denominator and missing values when relevant. Identify these as lab observations, not live predictions. State when a request needs columns or history absent from the semantic view. Do not invent a result when a query fails.
 ```
 
-8. If available, set a `120` second time limit and `8000` token limit for these small questions. Follow the instructor's account limits if they differ. Save the agent as a **draft** and open **Preview**. Agent publication, sharing and CoWork integration are outside this exercise.
+8. If available, set a time limit of `120` seconds and a token limit of `8000` for these small questions. Follow the instructor's account limits if they differ. Save the agent as a **draft** and open **Preview**. Agent publication, sharing and CoWork integration are outside this exercise.
 
 ## 5. Ask questions and verify answers
 

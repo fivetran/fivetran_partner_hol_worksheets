@@ -1,6 +1,6 @@
-# Fivetran Partner Hands on Lab Worksheets
+# Fivetran Partner Hands-on Lab Worksheets
 
-Public repository of hands-on lab worksheets for the technical trainings Fivetran offers to
+Public repository of hands-on lab worksheets for the technical training sessions Fivetran offers to
 partners — Systems Integrators (SIs) and Global Systems Integrators (GSIs). Each worksheet
 walks a partner through a guided, step-by-step lab for one training.
 
@@ -10,7 +10,8 @@ One folder per training, each containing that training's `<training>_hands_on_la
 worksheet. Some trainings also have variants:
 
 - `bigquery_` — BigQuery destination variants, following the existing BigQuery Technical
-  Foundations worksheet. Combined variants retain their source/workstation suffixes.
+  Foundations worksheet, or BigQuery query-engine variants for Managed Data Lake Service.
+  Combined variants retain their source/workstation suffixes.
 - `ws_` — for labs run on a provided browser-accessible Linux workstation instead of the
   attendee's own laptop.
 - `mysql_`, `sql_server_`, `oracle_` — for labs where the source database is MySQL, SQL
@@ -26,6 +27,8 @@ worksheet. Some trainings also have variants:
   - Database variants: [MySQL](hybrid_deployment/mysql_hybrid_deployment_hands_on_lab.md), [SQL Server](hybrid_deployment/sql_server_hybrid_deployment_hands_on_lab.md), [Oracle](hybrid_deployment/oracle_hybrid_deployment_hands_on_lab.md)
   - Workstation + database variants: [MySQL](hybrid_deployment/mysql_ws_hybrid_deployment_hands_on_lab.md), [SQL Server](hybrid_deployment/sql_server_ws_hybrid_deployment_hands_on_lab.md), [Oracle](hybrid_deployment/oracle_ws_hybrid_deployment_hands_on_lab.md)
 - [`managed_data_lake_service/`](managed_data_lake_service/managed_data_lake_service_hands_on_lab.md) — Managed Data Lake Service
+  - [BigQuery query-engine variant](managed_data_lake_service/bigquery_managed_data_lake_service_hands_on_lab.md) — GCS destination with BigLake registration and an instructor-led query demo
+  - BigQuery query-engine database variants: [MySQL](managed_data_lake_service/bigquery_mysql_managed_data_lake_service_hands_on_lab.md), [Oracle](managed_data_lake_service/bigquery_oracle_managed_data_lake_service_hands_on_lab.md), [SQL Server](managed_data_lake_service/bigquery_sql_server_managed_data_lake_service_hands_on_lab.md)
   - Database variants: [MySQL](managed_data_lake_service/mysql_managed_data_lake_service_hands_on_lab.md), [SQL Server](managed_data_lake_service/sql_server_managed_data_lake_service_hands_on_lab.md), [Oracle](managed_data_lake_service/oracle_managed_data_lake_service_hands_on_lab.md)
 - [`operations_management/`](operations_management/operations_management_hands_on_lab.md) — Operations Management
   - Database variants: [MySQL](operations_management/mysql_operations_management_hands_on_lab.md), [SQL Server](operations_management/sql_server_operations_management_hands_on_lab.md), [Oracle](operations_management/oracle_operations_management_hands_on_lab.md)
@@ -37,13 +40,18 @@ worksheet. Some trainings also have variants:
 - [`transformations/`](transformations/transformations_hands_on_lab.md) — Transformations
   - [Workstation variant](transformations/ws_transformations_hands_on_lab.md)
 
-## BigQuery destination worksheets
+## BigQuery worksheets
 
-These editions use instructor-provided BigQuery project, service-account JSON, dataset
+BigQuery destination editions use instructor-provided BigQuery project, service-account JSON, dataset
 prefix and location credentials. Hybrid Deployment also requires a GCS staging bucket.
 Transformation labs require dbt access to the landing and output datasets. See each
 worksheet's credentials and instructor prerequisites before running a session.
-Attendees do not receive BigQuery Studio access. All BigQuery destination data previews are instructor-led;
+The Managed Data Lake Service edition uses GCS as the destination and BigQuery as the
+query engine through BigLake Metastore (classic). It uses the destination's Fivetran-managed
+service account, participant-specific dataset names, and an instructor-led query demo.
+It does not require attendees to supply a BigQuery service-account JSON key.
+
+Attendees do not receive BigQuery Studio access. All BigQuery data previews and query demonstrations are instructor-led;
 attendees verify destination setup, syncs and transformation runs through Fivetran and
 the lab tools. Local DuckDB previews remain hands-on.
 
@@ -54,13 +62,13 @@ validation with provisioned lab resources is still required before delivery.
 |---|---|
 | Connector SDK | [AI Plugin](connector_sdk/bigquery_connector_sdk_ai_hands_on_lab.md), [Standard](connector_sdk/bigquery_connector_sdk_hands_on_lab.md), [Workstation](connector_sdk/bigquery_ws_connector_sdk_hands_on_lab.md) |
 | Hybrid Deployment | [Standard](hybrid_deployment/bigquery_hybrid_deployment_hands_on_lab.md), [MySQL](hybrid_deployment/bigquery_mysql_hybrid_deployment_hands_on_lab.md), [MySQL + Workstation](hybrid_deployment/bigquery_mysql_ws_hybrid_deployment_hands_on_lab.md), [Oracle](hybrid_deployment/bigquery_oracle_hybrid_deployment_hands_on_lab.md), [Oracle + Workstation](hybrid_deployment/bigquery_oracle_ws_hybrid_deployment_hands_on_lab.md), [SQL Server](hybrid_deployment/bigquery_sql_server_hybrid_deployment_hands_on_lab.md), [SQL Server + Workstation](hybrid_deployment/bigquery_sql_server_ws_hybrid_deployment_hands_on_lab.md), [Workstation](hybrid_deployment/bigquery_ws_hybrid_deployment_hands_on_lab.md) |
+| Managed Data Lake Service | [PostgreSQL](managed_data_lake_service/bigquery_managed_data_lake_service_hands_on_lab.md), [MySQL](managed_data_lake_service/bigquery_mysql_managed_data_lake_service_hands_on_lab.md), [Oracle](managed_data_lake_service/bigquery_oracle_managed_data_lake_service_hands_on_lab.md), [SQL Server](managed_data_lake_service/bigquery_sql_server_managed_data_lake_service_hands_on_lab.md) — GCS destination + BigQuery query engine |
 | Operations Management | [MySQL](operations_management/bigquery_mysql_operations_management_hands_on_lab.md), [Standard](operations_management/bigquery_operations_management_hands_on_lab.md), [Oracle](operations_management/bigquery_oracle_operations_management_hands_on_lab.md), [SQL Server](operations_management/bigquery_sql_server_operations_management_hands_on_lab.md) |
 | Programmatic Management | [MySQL](programmatic_management/bigquery_mysql_programmatic_management_hands_on_lab.md), [Oracle](programmatic_management/bigquery_oracle_programmatic_management_hands_on_lab.md), [Standard](programmatic_management/bigquery_programmatic_management_hands_on_lab.md), [SQL Server](programmatic_management/bigquery_sql_server_programmatic_management_hands_on_lab.md) |
 | Technical Foundations | [MySQL](technical_foundations/bigquery_mysql_technical_foundations_hands_on_lab.md), [Oracle](technical_foundations/bigquery_oracle_technical_foundations_hands_on_lab.md), [SQL Server](technical_foundations/bigquery_sql_server_technical_foundations_hands_on_lab.md), [Standard](technical_foundations/bigquery_technical_foundations_hands_on_lab.md) |
 | Transformations | [Standard](transformations/bigquery_transformations_hands_on_lab.md), [Workstation](transformations/bigquery_ws_transformations_hands_on_lab.md) |
 
-Activations, Managed Data Lake Service and the Technical Foundations AI worksheet are
-not included. The existing standard BigQuery Technical Foundations worksheet is reused.
+Activations and the Technical Foundations AI worksheet are not included. The existing standard BigQuery Technical Foundations worksheet is reused.
 The retail dbt Platform lab is also excluded because attendees do not have access to
 BigQuery Studio.
 

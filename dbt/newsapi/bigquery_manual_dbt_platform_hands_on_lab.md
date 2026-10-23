@@ -8,7 +8,7 @@ Build **News source coverage** from the synced NewsAPI / Connector SDK data. Con
 
 ## Requirements and instructor preparation
 
-- Complete the source lab and successfully sync `top_headlines`, `sources`; optionally `everything` into your own destination. Use **Fivetran → Connection → Schema** to confirm names and selected columns.
+- Complete the source lab and successfully sync `top_headlines` and `sources` (and optionally `everything`) into your own destination. Use **Fivetran → Connection → Schema** to confirm names and selected columns.
 - Accept the invitation to the provisioned dbt Platform project, with a Developer seat and Git access to a generated copy of [dbt-newsapi-lab](https://github.com/dbt-Hands-on-Labs/dbt-newsapi-lab). The instructor provides project-scoped environment/job creation permissions and an approved deployment connection profile.
 - The instructor enables dbt v2 and State for the session. If a required feature is unavailable, resolve it with the instructor; do not start a trial or change shared account settings.
 - The connection must read the landing data and create models in your development/deployment targets and their `_staging` schemas/datasets. Credentials belong only in the provisioned credential forms, never in SQL, YAML, prompts or Git.
@@ -151,7 +151,7 @@ Views can expose changed upstream values without rebuilding their definitions. R
 
 ### Create and run the job
 
-1. From your environment choose **Create job → Deploy job**, name it `newsapi_build_<firstname>_<lastname>` and confirm the environment is yours.
+1. From your environment, choose **Create job → Deploy job**, name it `newsapi_build_<firstname>_<lastname>` and confirm the environment is yours.
 2. Replace the unrestricted default build command with:
 
 ```bash

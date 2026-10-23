@@ -29,7 +29,7 @@ Each worksheet includes a complete native semantic-view YAML definition, a Corte
 | Transportation | [Worksheet](transportation_snowflake_cortex_hands_on_lab.md) | `mart_transportation_review_summary` |
 | Utilities | [Worksheet](utilities_snowflake_cortex_hands_on_lab.md) | `mart_utilities_review_summary` |
 | Weather | [Worksheet](weather_snowflake_cortex_hands_on_lab.md) | `mart_weather_review_summary` |
-| Newsapi | [Worksheet](newsapi_snowflake_cortex_hands_on_lab.md) | `mart_newsapi_source_coverage` |
+| NewsAPI | [Worksheet](newsapi_snowflake_cortex_hands_on_lab.md) | `mart_newsapi_source_coverage` |
 
 ## Delivery and validation
 
