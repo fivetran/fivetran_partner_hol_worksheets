@@ -17,12 +17,13 @@ Build **Churn review** from the synced Telco data. Configure your personal devel
 ## Part 1: Access dbt Platform and isolate your work
 
 1. Accept your dbt Platform lab invitation, complete registration and select the project named `LAB_DBT...` assigned by your instructor. Do not create a trial or use another lab's project.
-2. Open **Studio**. If disconnected, open **Status → View Credentials**, or **Your profile → Credentials → your project**.
-3. Use the lab's existing **BigQuery** connection and **Service Account JSON** authentication. LabStudios configures the runner service account on that connection; do not upload your Fivetran destination key or change the shared connection.
-4. Keep your assigned development **Dataset**, such as `dbt_bqp042`. Confirm it with the instructor; do not substitute another attendee's dataset. Verify the connection's project and location match the lab (currently `US`). Leave the target name at its default, test and save.
-5. If credentials are missing or the test fails, have the instructor repair the provisioned connection. Attendees do not need BigQuery Studio, Google Cloud Console or IAM access.
-6. Restart Studio if needed and confirm it is connected. Create your personal Git branch `<firstname>_<lastname>_dbt_addon`. Work on that branch throughout the exercise.
-7. Open **dbt version → Personal version override**, select the instructor-approved **v2 Stable** runtime, and save/restart. Do not edit the shared Development environment. Confirm the actual runtime in command logs; UI wording can change.
+2. Open **Your profile → Credentials → your assigned project**. Alternatively, from Studio's **Status: Disconnected** menu, open **Edit environment**, find **Connection → User credentials**, and follow the **profile page** link. Use that link only to reach your personal credentials; do not edit the shared environment or connection. Personal credentials apply to your dbt login, so each participant must use their own login.
+3. Under **Credentials for project**, click **Edit**. Verify that the **Project ID** is `fivetran-hands-on-lab` and **Service Account JSON** is selected. LabStudios configures the runner service account on the existing BigQuery connection; do not upload your Fivetran destination key. If the project or authentication method differs, ask the instructor to check the provisioned connection.
+4. In **Dataset**, enter the **BigQuery dbt dataset** from your assigned 1Password lab item, such as `dbt_bqp042`. Use your participant-specific dbt dataset, not the Fivetran source dataset or another attendee's dataset. Leave **Target name** and the other settings unchanged.
+5. Click **Test connection**. Wait for setup and connection testing to finish, and confirm that **Complete** is green. Then click **Save** and wait for the green **Saved** confirmation.
+6. Return to **Studio**. Its status may show **Parsing** and **Checking connection** while it starts. Wait until the status is green and **Connected** before continuing. If testing fails or Studio remains disconnected after saving, ask the instructor to troubleshoot the provisioned connection. Attendees do not need BigQuery Studio, Google Cloud Console or IAM access.
+7. Create your personal Git branch `<firstname>_<lastname>_dbt_addon`. Work on that branch throughout the exercise.
+8. Open **dbt version → Personal version override**, select the instructor-approved **v2 Stable** runtime, and save/restart. Do not edit the shared Development environment. Confirm the actual runtime in command logs; UI wording can change.
 
 > **Checkpoint:** Studio connects to your assigned BigQuery target, your personal branch is selected and the runtime is confirmed.
 
@@ -121,6 +122,8 @@ change settings, commit or push. Do not request credentials or warehouse-console
 4. Approve only the four exercise files. Inspect the diff and confirm the earlier project-variable changes are still yours. Keep unrelated files unchanged.
 5. Inspect **Lineage** for both marts. Explain the dependencies before running commands.
 
+> **BigQuery syntax:** A reconciliation SELECT that uses `WHERE` must include a `FROM` clause. For a scalar comparison with no input relation, use `from (select 1) as singleton` before `where`. Keep existing model-backed `FROM` clauses.
+
 ## Part 4: Build and validate
 
 1. Inspect the resolved targets before executing:
@@ -174,9 +177,10 @@ Views can expose changed upstream values without rebuilding their definitions. R
 
 ### Prepare the branch and target
 
-1. Review `dbt_project.yml` and the four new exercise files. Commit and push only those changes to your personal branch. Exclude unrelated changes and all credentials.
-2. Use **Go to repository** to verify the remote branch has the final SQL, YAML and test files and the restored threshold. Record the exact branch and commit SHA as `<DEPLOY_BRANCH>` and `<DEPLOY_COMMIT>`.
-3. Confirm `<DEPLOY_SCHEMA>` is separate from your Studio target and other attendees' targets. Ask the instructor to provide a dedicated deployment connection profile that can read the source and create the deployment marts and staging views. Personal Studio credentials do not automatically configure deployment credentials.
+1. Create `macros/log_telco_review_totals.sql` using the helper in the **Deployment validation helper**. Run `dbt run-operation log_telco_review_totals` in Studio and confirm its totals match your restored baseline. This helper logs the totals and effective target through the current connection.
+2. Review `dbt_project.yml`, the four model/test files and the new macro. Commit and push only those changes to your personal branch. Exclude unrelated changes and all credentials.
+3. Use **Go to repository** to verify the remote branch has the final SQL, YAML, test and macro files and the restored threshold. Record the exact branch and commit SHA as `<DEPLOY_BRANCH>` and `<DEPLOY_COMMIT>`.
+4. Confirm `<DEPLOY_SCHEMA>` is separate from your Studio target and other attendees' targets. Ask the instructor to provide a dedicated deployment connection profile that can read the source and create the deployment marts and staging views. Personal Studio credentials do not automatically configure deployment credentials.
 
 ### Configure the environment
 
@@ -194,7 +198,7 @@ Views can expose changed upstream values without rebuilding their definitions. R
 dbt build --select +mart_telco_review_summary
 ```
 
-3. Add the aggregate command from Part 4 as a second job command. This verifies deployment results through the job's own target and credentials.
+3. Add `dbt run-operation log_telco_review_totals` as the second job command. The deployment job form rejected the inline `dbt show` command during the live BigQuery walkthrough; this macro logs the same aggregate check through the job's own target and credentials.
 4. Inherit the runtime and State settings from the environment. Keep **Compare changes against** at **No deferral** for this exercise. Keep source-freshness execution off. Turn off scheduled and job-completion triggers. Save and recheck the job settings.
 5. Click **Run now** once and wait for the final result. Confirm the Git commit is `<DEPLOY_COMMIT>`, the logs show the expected runtime/State setting, the source variables resolve correctly and output relations use your deployment schema/dataset (plus `_staging` for staging).
 6. Compare the aggregate output with the restored Studio baseline. Record the run URL, final status, executed/reused counts and comparison result. If results differ, investigate source changes, target/profile or remote commit before rerunning.
@@ -213,3 +217,22 @@ You configured a personal dbt Platform target, turned source observations into t
 - [dbt State](https://docs.getdbt.com/docs/deploy/dbt-state-about)
 - [Deployment environments](https://docs.getdbt.com/docs/deploy/deploy-environments)
 - [dbt Wizard in Studio](https://docs.getdbt.com/docs/platform/wizard-platform)
+
+## Deployment validation helper
+
+### `macros/log_telco_review_totals.sql`
+
+```sql
+{% macro log_telco_review_totals() %}
+  {% set sql %}
+    select coalesce(sum(observation_count), 0) as observations, coalesce(sum(measured_count), 0) as measured, coalesce(sum(missing_metric_count), 0) as missing, coalesce(sum(review_count), 0) as flagged from {{ ref('mart_telco_review_summary') }}
+  {% endset %}
+  {% if execute %}
+    {% set results = run_query(sql) %}
+    {% for row in results.rows %}
+      {{ log('Telco totals: observations=' ~ row[0] ~ ', measured=' ~ row[1] ~ ', missing=' ~ row[2] ~ ', flagged=' ~ row[3], info=true) }}
+    {% endfor %}
+    {{ log('Deployment target: ' ~ target.database ~ '.' ~ target.schema, info=true) }}
+  {% endif %}
+{% endmacro %}
+```

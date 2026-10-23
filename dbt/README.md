@@ -11,6 +11,13 @@ same contracts as reviewed prompts. BigQuery uses the provisioned dbt runner con
 attendees do not need BigQuery Studio or IAM access. Destination data previews are
 instructor-led; local DuckDB previews remain hands-on.
 
+For BigQuery, each participant configures **Your profile → Credentials → their assigned
+project → Edit** using their own dbt login. Enter the **BigQuery dbt dataset** from the
+assigned 1Password lab item, keep the provisioned Service Account JSON connection and
+default target name, then **Test connection** until **Complete** is green. Click **Save**,
+confirm **Saved**, and return to Studio to wait for **Connected**. These are personal
+credentials; participants must not edit the shared development environment or connection.
+
 | Industry / dataset | Snowflake + Wizard | BigQuery + Wizard | Snowflake manual | BigQuery manual |
 |---|---|---|---|---|
 | Agriculture | [Worksheet](agriculture/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](agriculture/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](agriculture/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](agriculture/bigquery_manual_dbt_platform_hands_on_lab.md) |
@@ -53,6 +60,12 @@ Before delivery, the instructor provisions source data, dbt project/connection, 
 and job/environment permissions, Wizard access where applicable, State and dedicated
 deployment profiles. Keep each learner's development and deployment targets separate.
 The worksheet identifiers come from the assigned lab resources, not from another session.
+
+BigQuery editions use `dbt show` for the Studio aggregate check and a supplied
+`dbt run-operation` macro for the deployment job. Create and validate the macro
+before committing the exercise files. The helper preserves each industry's own
+aggregate columns and logs the effective target. BigQuery scalar reconciliation
+checks include a single-row `FROM` clause before `WHERE`.
 
 ## Validation scope
 

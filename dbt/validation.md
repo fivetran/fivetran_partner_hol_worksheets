@@ -1,7 +1,8 @@
 # dbt add-on validation evidence
 
-Checked October 22, 2026. This record describes local verification, not live warehouse
-execution or a completed instructor-led session.
+The original checks below were performed locally on October 22, 2026. The separate
+October 23 addendum records the live Agriculture BigQuery walkthrough; it does not
+extend live validation to the other industries or the Wizard flow.
 
 ## Inputs
 
@@ -56,3 +57,43 @@ For other industries, flags apply to fact observations. Missing metrics remain u
 | transportation | [a18986e0](https://github.com/dbt-Hands-on-Labs/dbt-transportation-lab/commit/a18986e034447be5b69bb2d16b440904be3fc54e) | 101,315 | 45,486 | 13,286 | 45,486 |
 | utilities | [16d8dfe0](https://github.com/dbt-Hands-on-Labs/dbt-utilities-lab/commit/16d8dfe09388a9fec89b16c7cff12f22a42ba9a6) | 750 | 349 | 126 | 349 |
 | weather | [0dbc22f6](https://github.com/dbt-Hands-on-Labs/dbt-weather-lab/commit/0dbc22f6ca97e64e86526c42baaad913dd38c86b) | 10,966 | 2,850 | 245 | 2,850 |
+
+## October 23: live Agriculture BigQuery walkthrough
+
+The manual Agriculture worksheet was exercised through Parts 2–6 in dbt Studio and
+an isolated General deployment environment using v2 Stable (Fusion 2.0.9). The
+instructor corrected the shared connection location and approved removal of the
+empty staging dataset left by the earlier failed build. Region provisioning remains
+an instructor/LabStudios responsibility, outside the participant worksheet flow.
+
+Two corrections were verified live:
+
+- BigQuery rejected scalar reconciliation SELECTs with WHERE but no FROM. Adding
+  `from (select 1) as singleton` preserved the checks and passed the singular test.
+- The deployment job form rejected the Studio inline `dbt show` command. A supplied
+  macro invoked with `dbt run-operation` logged the same totals and effective target
+  successfully in Studio and in the deployment job.
+
+| Run | Models built | Models reused | Tests executed | Tests reused | Flagged |
+|---|---:|---:|---:|---:|---:|
+| State baseline, threshold 150 | 3 | 0 | 13 | 0 | 1,319 |
+| Unchanged rerun | 0 | 3 | 0 | 13 | Not separately queried |
+| Threshold 200 | 1 | 2 | 11 | 2 | 609 |
+| Restored threshold 150 | 1 | 2 | 0 | 13 | 1,319 |
+| Isolated deployment | 3 | 0 | 0 | 13 | 1,319 |
+
+Each aggregate check returned 5,746 observations, 5,746 measured and zero missing
+metrics. Reused test results were not freshly executed. These counts describe this
+lab's input, not constants participants should expect.
+
+The manually triggered deployment succeeded with the verified personal-branch commit.
+Its marts and staging relations used the separately assigned deployment datasets.
+The job inherited runtime and State, used No deferral, and left source freshness,
+scheduled triggers and job-completion triggers off.
+
+The matching corrections were propagated to all 44 BigQuery worksheets, including
+manual-answer SQL and Wizard guidance. Each deployment helper uses its worksheet's
+own Part 4 query; Retail and NewsAPI retain their distinct aggregate columns. Static
+checks verify helper/query agreement, command references, scalar FROM clauses and
+Markdown formatting. Other industry helpers and Wizard flows have not been rerun
+against live warehouses as part of this propagation.
