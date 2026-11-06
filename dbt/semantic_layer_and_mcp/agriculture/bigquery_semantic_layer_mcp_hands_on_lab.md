@@ -14,7 +14,7 @@ Turn your **Coffee price monitoring** marts into governed metrics that an AI ass
   - a **Production** environment whose deployment credential writes to your own prod dataset. It runs the `lab-work` branch (GitHub template labs) or `main` (dbt-managed repository labs);
   - a Semantic Layer configuration on that Production environment;
   - a lab **workstation** with Claude Code installed and configured.
-- Complete **Parts 1–3** of either Agriculture edition, [manual](../../agriculture/bigquery_manual_dbt_platform_hands_on_lab.md) or [dbt Wizard](../../agriculture/bigquery_wizard_dbt_platform_hands_on_lab.md), on the **`lab-work`** branch. Your Production environment runs `lab-work`, so your work must be there. (dbt-managed repository labs: see the variant at the end.)
+- Complete **Parts 1–3** of either Agriculture edition, [manual](../../manual/agriculture/bigquery_manual_dbt_platform_hands_on_lab.md) or [dbt Wizard](../../wizard/agriculture/bigquery_wizard_dbt_platform_hands_on_lab.md), on the **`lab-work`** branch. Your Production environment runs `lab-work`, so your work must be there. (dbt-managed repository labs: see the variant at the end.)
 - Stop after Part 3. You should have these files on `lab-work`, not yet built:
   - `models/marts/fct_agriculture_observations.sql`
   - `models/marts/mart_agriculture_review_summary.sql`

@@ -6,7 +6,7 @@ Build an assistant for **trial dropout review** using the data you transformed i
 
 ## 1. Start from the completed dbt lab
 
-Complete either the [Snowflake + dbt Wizard worksheet](../dbt/pharma/snowflake_wizard_dbt_platform_hands_on_lab.md) or the [Snowflake manual worksheet](../dbt/pharma/snowflake_manual_dbt_platform_hands_on_lab.md). The [template repository](https://github.com/dbt-Hands-on-Labs/dbt-pharma-lab) supplies the starting project; the completed dbt exercise supplies the mart used here.
+Complete either the [Snowflake + dbt Wizard worksheet](../dbt/wizard/pharma/snowflake_wizard_dbt_platform_hands_on_lab.md) or the [Snowflake manual worksheet](../dbt/manual/pharma/snowflake_manual_dbt_platform_hands_on_lab.md). The [template repository](https://github.com/dbt-Hands-on-Labs/dbt-pharma-lab) supplies the starting project; the completed dbt exercise supplies the mart used here.
 
 1. Confirm the dbt build and reconciliation tests passed after restoring `review_threshold: 20`. Use the restored **development** output, not the separate deployment schema.
 2. Record `<DEV_DATABASE>` and `<DBT_SCHEMA>` from that build. `<DBT_SCHEMA>` is the mart schema (for example, `dbt_firstname_lastname`), without the staging suffix.

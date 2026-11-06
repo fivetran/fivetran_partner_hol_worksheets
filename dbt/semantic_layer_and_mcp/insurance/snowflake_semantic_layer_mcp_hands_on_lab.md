@@ -14,7 +14,7 @@ Turn your **Insurance claim severity** marts into governed metrics that an AI as
   - a **Production** environment with its deployment credential. It runs the `lab-work` branch (GitHub template labs) or `main` (dbt-managed repository labs);
   - a Semantic Layer configuration on that Production environment;
   - a lab **workstation** with Claude Code installed and configured.
-- Complete **Parts 1–3** of either Insurance edition, [manual](../../insurance/snowflake_manual_dbt_platform_hands_on_lab.md) or [dbt Wizard](../../insurance/snowflake_wizard_dbt_platform_hands_on_lab.md), on the **`lab-work`** branch. Your Production environment runs `lab-work`, so your work must be there. (dbt-managed repository labs: see the variant at the end.)
+- Complete **Parts 1–3** of either Insurance edition, [manual](../../manual/insurance/snowflake_manual_dbt_platform_hands_on_lab.md) or [dbt Wizard](../../wizard/insurance/snowflake_wizard_dbt_platform_hands_on_lab.md), on the **`lab-work`** branch. Your Production environment runs `lab-work`, so your work must be there. (dbt-managed repository labs: see the variant at the end.)
 - Stop after Part 3. You should have these files on `lab-work`, not yet built:
   - `models/marts/fct_insurance_observations.sql`
   - `models/marts/mart_insurance_review_summary.sql`

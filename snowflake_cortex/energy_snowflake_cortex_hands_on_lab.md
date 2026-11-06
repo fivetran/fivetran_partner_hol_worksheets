@@ -6,7 +6,7 @@ Build an assistant for **crude price monitoring** using the data you transformed
 
 ## 1. Start from the completed dbt lab
 
-Complete either the [Snowflake + dbt Wizard worksheet](../dbt/energy/snowflake_wizard_dbt_platform_hands_on_lab.md) or the [Snowflake manual worksheet](../dbt/energy/snowflake_manual_dbt_platform_hands_on_lab.md). The [template repository](https://github.com/dbt-Hands-on-Labs/dbt-energy-lab) supplies the starting project; the completed dbt exercise supplies the mart used here.
+Complete either the [Snowflake + dbt Wizard worksheet](../dbt/wizard/energy/snowflake_wizard_dbt_platform_hands_on_lab.md) or the [Snowflake manual worksheet](../dbt/manual/energy/snowflake_manual_dbt_platform_hands_on_lab.md). The [template repository](https://github.com/dbt-Hands-on-Labs/dbt-energy-lab) supplies the starting project; the completed dbt exercise supplies the mart used here.
 
 1. Confirm the dbt build and reconciliation tests passed after restoring `review_threshold: 70`. Use the restored **development** output, not the separate deployment schema.
 2. Record `<DEV_DATABASE>` and `<DBT_SCHEMA>` from that build. `<DBT_SCHEMA>` is the mart schema (for example, `dbt_firstname_lastname`), without the staging suffix.

@@ -14,7 +14,7 @@ Turn your **Meter consumption review** marts into governed metrics that an AI as
   - a **Production** environment with its deployment credential. It runs the `lab-work` branch (GitHub template labs) or `main` (dbt-managed repository labs);
   - a Semantic Layer configuration on that Production environment;
   - a lab **workstation** with Claude Code installed and configured.
-- Complete **Parts 1–3** of either Utilities edition, [manual](../../utilities/snowflake_manual_dbt_platform_hands_on_lab.md) or [dbt Wizard](../../utilities/snowflake_wizard_dbt_platform_hands_on_lab.md), on the **`lab-work`** branch. Your Production environment runs `lab-work`, so your work must be there. (dbt-managed repository labs: see the variant at the end.)
+- Complete **Parts 1–3** of either Utilities edition, [manual](../../manual/utilities/snowflake_manual_dbt_platform_hands_on_lab.md) or [dbt Wizard](../../wizard/utilities/snowflake_wizard_dbt_platform_hands_on_lab.md), on the **`lab-work`** branch. Your Production environment runs `lab-work`, so your work must be there. (dbt-managed repository labs: see the variant at the end.)
 - Stop after Part 3. You should have these files on `lab-work`, not yet built:
   - `models/marts/fct_utilities_observations.sql`
   - `models/marts/mart_utilities_review_summary.sql`
