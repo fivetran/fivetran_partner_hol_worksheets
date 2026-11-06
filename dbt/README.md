@@ -78,3 +78,11 @@ After completing either Snowflake edition, continue with the matching
 [Snowflake Cortex add-on](../snowflake_cortex/README.md). It uses the restored development
 mart to create a semantic view and draft Cortex Agent. This optional step requires
 provisioned Snowflake access; there is no BigQuery AI counterpart in this series.
+
+## Continue with the dbt Semantic Layer and MCP
+
+On labs launched with **dbt Semantic Layer + remote MCP**, attendees stop after Part 3 of
+either edition and continue with the matching
+[Semantic Layer and MCP add-on](semantic_layer_and_mcp/README.md) instead of Parts 4–6. It
+adds governed metrics, publishes them through the attendee's Production environment and
+connects Claude Code on the lab workstation to the dbt remote MCP server.
