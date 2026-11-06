@@ -4,7 +4,7 @@
 
 ## Objective
 
-Build **Forecast error review** from the synced Supply Chain data. Configure your personal development target, create two tested marts with dbt Wizard, compare dbt State decisions, then run a job from your own branch in an isolated deployment target.
+Build **Forecast error review** from the synced Supply Chain data. Configure your personal development target, create two tested marts with dbt Wizard, compare dbt State decisions, then run a job from your working branch in an isolated deployment target.
 
 ## Requirements and instructor preparation
 
@@ -21,10 +21,10 @@ Build **Forecast error review** from the synced Supply Chain data. Configure you
 3. In **Connection details**, set **Database** to your provisioned development database ending in `_DEV`. Use **Key pair** authentication and enter your assigned username and private key directly from the 1Password credential link. Leave the passphrase blank unless one was explicitly provided.
 4. Set **Schema** to `dbt_<firstname>_<lastname>` and preserve the instructor-provided role and warehouse. Leave the target name at its default. Test and save; do not target the landing database or shared `LABSTUDIOS` database.
 5. If permissions or credentials are missing, have the instructor repair your provisioned access before continuing.
-6. Restart Studio if needed and confirm it is connected. Create your personal Git branch `<firstname>_<lastname>_dbt_addon`. Work on that branch throughout the exercise.
+6. Restart Studio if needed and confirm it is connected. Select the **`lab-work`** branch (**Change branch → `lab-work`**) and work on it throughout the exercise. If your instructor gives you a different branch, such as a personal branch `<firstname>_<lastname>_dbt_addon`, use that one instead.
 7. Open **dbt version → Personal version override**, select the instructor-approved **v2 Stable** runtime, and save/restart. Do not edit the shared Development environment. Confirm the actual runtime in command logs; UI wording can change.
 
-> **Checkpoint:** Studio connects to your assigned Snowflake target, your personal branch is selected and the runtime is confirmed.
+> **Checkpoint:** Studio connects to your assigned Snowflake target, your working branch (`lab-work` unless your instructor said otherwise) is selected and the runtime is confirmed.
 
 ## Part 2: Configure and inspect the source
 
@@ -40,7 +40,7 @@ Build **Forecast error review** from the synced Supply Chain data. Configure you
 | Warehouse / role | Values from your assigned lab credentials |
 
 2. Inspect the template's staging SQL and source YAML. This exercise uses `stg_supply_chain__spl_records`. The source definition reads `source_database` and `source_schema` from project variables. Set both explicitly; do not rely on a destination-specific default.
-3. Update `dbt_project.yml` on your own branch: keep the project name `supply_chain_lab`, profile and paths, set both source variables, add `review_threshold: 20`, retain the staging view configuration and add marts as views. Replace the placeholders with your actual identifiers. Preserve any additional instructor-provided configuration.
+3. Update `dbt_project.yml` on your working branch: keep the project name `supply_chain_lab`, profile and paths, set both source variables, add `review_threshold: 20`, retain the staging view configuration and add marts as views. Replace the placeholders with your actual identifiers. Preserve any additional instructor-provided configuration.
 
 4. Keep the existing staging models and source definitions. They preserve the template’s source-row behavior and rename `_fivetran_synced` to `synced_at`; this exercise does not introduce a soft-delete policy.
 
@@ -174,7 +174,7 @@ Views can expose changed upstream values without rebuilding their definitions. R
 
 ### Prepare the branch and target
 
-1. Review `dbt_project.yml` and the four new exercise files. Commit and push only those changes to your personal branch. Exclude unrelated changes and all credentials.
+1. Review `dbt_project.yml` and the four new exercise files. Commit and push only those changes to your working branch. Exclude unrelated changes and all credentials.
 2. Use **Go to repository** to verify the remote branch has the final SQL, YAML and test files and the restored threshold. Record the exact branch and commit SHA as `<DEPLOY_BRANCH>` and `<DEPLOY_COMMIT>`.
 3. Confirm `<DEPLOY_SCHEMA>` is separate from your Studio target and other attendees' targets. Ask the instructor to provide a dedicated deployment connection profile that can read the source and create the deployment marts and staging views. Personal Studio credentials do not automatically configure deployment credentials.
 

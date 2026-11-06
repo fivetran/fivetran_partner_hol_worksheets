@@ -4,7 +4,7 @@
 
 ## Objective
 
-Build **Guest transport review** from the synced Hospitality data. Configure your personal development target, create two tested marts without dbt Wizard, compare dbt State decisions, then run a job from your own branch in an isolated deployment target.
+Build **Guest transport review** from the synced Hospitality data. Configure your personal development target, create two tested marts without dbt Wizard, compare dbt State decisions, then run a job from your working branch in an isolated deployment target.
 
 ## Requirements and instructor preparation
 
@@ -22,10 +22,10 @@ Build **Guest transport review** from the synced Hospitality data. Configure you
 4. In **Dataset**, enter the **BigQuery dbt dataset** from your assigned 1Password lab item, such as `dbt_bqp042`. Use your participant-specific dbt dataset, not the Fivetran source dataset or another attendee's dataset. Leave **Target name** and the other settings unchanged.
 5. Click **Test connection**. Wait for setup and connection testing to finish, and confirm that **Complete** is green. Then click **Save** and wait for the green **Saved** confirmation.
 6. Return to **Studio**. Its status may show **Parsing** and **Checking connection** while it starts. Wait until the status is green and **Connected** before continuing. If testing fails or Studio remains disconnected after saving, ask the instructor to troubleshoot the provisioned connection. Attendees do not need BigQuery Studio, Google Cloud Console or IAM access.
-7. Create your personal Git branch `<firstname>_<lastname>_dbt_addon`. Work on that branch throughout the exercise.
+7. Select the **`lab-work`** branch (**Change branch → `lab-work`**) and work on it throughout the exercise. If your instructor gives you a different branch, such as a personal branch `<firstname>_<lastname>_dbt_addon`, use that one instead.
 8. Open **dbt version → Personal version override**, select the instructor-approved **v2 Stable** runtime, and save/restart. Do not edit the shared Development environment. Confirm the actual runtime in command logs; UI wording can change.
 
-> **Checkpoint:** Studio connects to your assigned BigQuery target, your personal branch is selected and the runtime is confirmed.
+> **Checkpoint:** Studio connects to your assigned BigQuery target, your working branch (`lab-work` unless your instructor said otherwise) is selected and the runtime is confirmed.
 
 ## Part 2: Configure and inspect the source
 
@@ -41,7 +41,7 @@ Build **Guest transport review** from the synced Hospitality data. Configure you
 | Location | Same as the source and output datasets; use the provisioned connection |
 
 2. Inspect the template's staging SQL and source YAML. This exercise uses `stg_hospitality__hpt_records`. The source definition reads `source_database` and `source_schema` from project variables. Set both explicitly; do not rely on a destination-specific default.
-3. Update `dbt_project.yml` on your own branch: keep the project name `hospitality_lab`, profile and paths, set both source variables, add `review_threshold: 30`, retain the staging view configuration and add marts as views. Replace the placeholders with your actual identifiers. Preserve any additional instructor-provided configuration.
+3. Update `dbt_project.yml` on your working branch: keep the project name `hospitality_lab`, profile and paths, set both source variables, add `review_threshold: 30`, retain the staging view configuration and add marts as views. Replace the placeholders with your actual identifiers. Preserve any additional instructor-provided configuration.
 
 4. Keep the existing staging models and source definitions. They preserve the template’s source-row behavior and rename `_fivetran_synced` to `synced_at`; this exercise does not introduce a soft-delete policy.
 
@@ -140,7 +140,7 @@ Views can expose changed upstream values without rebuilding their definitions. R
 ### Prepare the branch and target
 
 1. Create `macros/log_hospitality_review_totals.sql` using the helper in the **Full answer**. Run `dbt run-operation log_hospitality_review_totals` in Studio and confirm its totals match your restored baseline. This helper logs the totals and effective target through the current connection.
-2. Review `dbt_project.yml`, the four model/test files and the new macro. Commit and push only those changes to your personal branch. Exclude unrelated changes and all credentials.
+2. Review `dbt_project.yml`, the four model/test files and the new macro. Commit and push only those changes to your working branch. Exclude unrelated changes and all credentials.
 3. Use **Go to repository** to verify the remote branch has the final SQL, YAML, test and macro files and the restored threshold. Record the exact branch and commit SHA as `<DEPLOY_BRANCH>` and `<DEPLOY_COMMIT>`.
 4. Confirm `<DEPLOY_SCHEMA>` is separate from your Studio target and other attendees' targets. Ask the instructor to provide a dedicated deployment connection profile that can read the source and create the deployment marts and staging views. Personal Studio credentials do not automatically configure deployment credentials.
 
