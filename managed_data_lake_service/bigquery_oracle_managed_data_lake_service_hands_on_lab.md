@@ -15,9 +15,14 @@ meet them, let us know and we'll rebook you for another workshop.
 ## Objective
 
 Stand up a Managed Data Lake Service destination on Google Cloud Storage, sync the
-Oracle `agriculture` tables into it as Apache Iceberg, and observe an instructor-led
-BigQuery query of `coffee_prices`. BigLake Metastore (classic) registers the tables
+Oracle `<industry>` tables into it as Apache Iceberg, and observe an instructor-led
+BigQuery query of one of them, `<table_name>`. BigLake Metastore (classic) registers the tables
 as BigQuery external Iceberg tables; the underlying data stays in GCS.
+
+The source schema is your lab's industry, referred to in this worksheet as `<industry>`. It is
+`agriculture` by default; your instructor will tell you if your lab uses a different one (for
+example `retail`). `<table_name>` is any table in your `<industry>` schema (for Agriculture,
+`coffee_prices`).
 
 ## Requirements
 
@@ -66,8 +71,8 @@ participants have the same name, the instructor assigns a unique suffix, such as
 
 ### Instructor prerequisites
 
-- Provision the Oracle source with the `agriculture` tables, including
-  `coffee_prices`, and a database user with the permissions required for Teleport Sync.
+- Provision the Oracle source with the lab's industry tables (Agriculture by default, including
+  `coffee_prices`), and a database user with the permissions required for Teleport Sync.
   See the [Oracle setup guide](https://fivetran.com/docs/connectors/databases/oracle/oracle-connector/setup-guide).
 
 - Provision the GCS bucket in `us-east4` and the Google Cloud project for table registration.
@@ -172,6 +177,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 
    > Write this value down. You'll need it in Part 4, because Fivetran combines it with
    > the source schema name to form the catalog namespace and BigQuery dataset:
+   > `<dataset_prefix><firstname>_<lastname>_oracle_<industry>`, or
    > `bqp001_jane_doe_oracle_agriculture` in this example.
 
 6. Populate the setup form with the provided Oracle credentials. For **Database**,
@@ -187,19 +193,20 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 11. Confirm the TLS certificate when prompted.
 12. Wait for the setup tests to complete, then click **Continue**.
 13. Fivetran now fetches all tables, schemas, and columns for the provided database.
-14. The Fivetran database user provided to you via 1Password has access to the `agriculture` schema, which
-    includes the `coffee_prices` table the instructor will query in Part 4.
-15. Select the `agriculture` schema and all of its tables. Oracle may display
-    unquoted source identifiers as `AGRICULTURE` and `COFFEE_PRICES`; with **Fivetran
-    naming**, use the delivered lowercase names in the BigQuery query below.
+14. The Fivetran database user provided to you via 1Password has access to the `<industry>` schema, which
+    includes the `<table_name>` table the instructor will query in Part 4.
+15. Select the `<industry>` schema and all of its tables. Oracle may display
+    unquoted source identifiers in uppercase (for Agriculture, `AGRICULTURE` and
+    `COFFEE_PRICES`); with **Fivetran naming**, use the delivered lowercase names in the
+    BigQuery query below.
 16. Click **Save & Continue**.
 17. For handling schema changes, select **Allow all**.
 18. Click **Start Initial Sync**.
 19. Wait for the sync to complete.
 
-**Checkpoint:** The connection shows a completed initial sync of the `agriculture` schema.
+**Checkpoint:** The connection shows a completed initial sync of the `<industry>` schema.
 Fivetran has written each table's data to
-`gs://<your_provisioned_bucket>/<firstname>_<lastname>_oracle_mdls/<dataset_prefix><firstname>_<lastname>_oracle_agriculture/<table>/`
+`gs://<your_provisioned_bucket>/<firstname>_<lastname>_oracle_mdls/<dataset_prefix><firstname>_<lastname>_oracle_<industry>/<table>/`
 (for example `.../coffee_prices/`) as Parquet files with Iceberg metadata. Because you
 enabled **Write Delta Format** in Part 2, a Delta transaction log is also present.
 
@@ -223,9 +230,9 @@ Studio login is required. Attendees confirm their own completed sync in Fivetran
 
 1. In BigQuery Studio, select the **BigQuery Project ID** configured in Part 2.
 2. In Explorer, locate a participant's dataset:
-   `<dataset_prefix><firstname>_<lastname>_oracle_agriculture`
+   `<dataset_prefix><firstname>_<lastname>_oracle_<industry>`
    (for example, `bqp001_jane_doe_oracle_agriculture`). Confirm it belongs to that participant.
-3. Open `coffee_prices` and inspect its external-table details and Iceberg metadata
+3. Open `<table_name>` (for Agriculture, `coffee_prices`) and inspect its external-table details and Iceberg metadata
    location in the participant's GCS path. Explain that BigQuery queries the data
    stored in GCS through the external table registered by Fivetran.
 4. Open a SQL query tab. Replace every placeholder below with the selected participant's
@@ -234,16 +241,16 @@ Studio login is required. Attendees confirm their own completed sync in Fivetran
 
    ```sql
    SELECT *
-   FROM `<project_id>.<dataset_prefix><firstname>_<lastname>_oracle_agriculture.coffee_prices`
+   FROM `<project_id>.<dataset_prefix><firstname>_<lastname>_oracle_<industry>.<table_name>`
    LIMIT 10;
    ```
 
 5. Run the query and show the returned rows. For example, the table identifier for
-   Jane Doe is `your-project-id.bqp001_jane_doe_oracle_agriculture.coffee_prices`;
+   Jane Doe in an Agriculture lab is `your-project-id.bqp001_jane_doe_oracle_agriculture.coffee_prices`;
    replace `your-project-id` with the actual lab project ID.
 
 **Checkpoint:** The instructor shows rows from the selected participant's
-`coffee_prices` external Iceberg table. Attendees can connect their Fivetran sync,
+`<table_name>` external Iceberg table. Attendees can connect their Fivetran sync,
 participant-specific GCS path, and registered BigQuery dataset to the query result.
 
 If the dataset or table is missing, verify the project ID, participant's schema prefix,
@@ -256,9 +263,9 @@ processing location before retrying.
 ## What you did
 
 You configured a Managed Data Lake Service destination on Google Cloud Storage and
-synced the Oracle `agriculture` tables as Apache Iceberg, with optional Delta
+synced the Oracle `<industry>` tables as Apache Iceberg, with optional Delta
 metadata explicitly enabled for the storage demo. You then observed the instructor
-query `coffee_prices` from a participant-specific BigQuery dataset. BigLake Metastore
+query `<table_name>` from a participant-specific BigQuery dataset. BigLake Metastore
 (classic) registers these external Iceberg tables while the underlying data remains
 in GCS; the default Fivetran Catalog also remains available.
 

@@ -121,7 +121,7 @@ Everyone in this lab shares the same BigQuery project, so a Platform Connection 
 1. Navigate to the **Connections** tab and, in the top-right corner, click **Add connection**.
 2. Search for **PostgreSQL**, hover over the connector tile, and click **Set up**.
 3. Select the destination you created in Part 2 (make sure you don't use someone else's destination), then click **Select**.
-4. The value you enter in the **Destination schema prefix** field becomes the name of your connection and of the BigQuery dataset it loads into. Use the format `<dataset_prefix><firstname>_<lastname>_postgres`, replacing `<dataset_prefix>` with the **BigQuery Dataset Prefix** from your credentials and `<firstname>` and `<lastname>` with your actual first and last names (for example, `bqp001_jane_doe_postgres`). Fivetran adds the source schema name to create the dataset, for example `bqp001_jane_doe_postgres_agriculture`.
+4. The value you enter in the **Destination schema prefix** field becomes the name of your connection and of the BigQuery dataset it loads into. Use the format `<dataset_prefix><firstname>_<lastname>_postgres`, replacing `<dataset_prefix>` with the **BigQuery Dataset Prefix** from your credentials and `<firstname>` and `<lastname>` with your actual first and last names (for example, `bqp001_jane_doe_postgres`). Fivetran adds the source schema name to create the dataset: `<dataset_prefix><firstname>_<lastname>_postgres_<industry>`, where `<industry>` is your lab's industry schema. It is `agriculture` by default; your instructor will tell you if your lab uses a different one (for example `retail`). For the default, the dataset is `bqp001_jane_doe_postgres_agriculture`.
 5. Populate the setup form with the provided PostgreSQL credentials.
 6. For **Authentication Method**, select **Connect with username and password**.
 7. Leave **Connection Method** at its default value, **Connect directly**.
@@ -133,7 +133,7 @@ Everyone in this lab shares the same BigQuery project, so a Platform Connection 
 12. Wait for the setup tests to complete. When they pass, you'll see all connection tests marked successful.
 13. Click **Continue**.
 14. Fivetran now fetches all tables, schemas, and columns for the database.
-15. The Fivetran database user provided to you via 1Password has access to the `agriculture` schema. Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue** to proceed.
+15. The Fivetran database user provided to you via 1Password has access to the `<industry>` schema. Make sure the `<industry>` schema and all of its tables are selected, then click **Save & Continue** to proceed.
 16. For handling schema changes, select **Allow all**, then click **Continue** (or **Save**).
 17. Click **Start Initial Sync** and wait for the initial (historical) sync to finish. Then manually trigger another sync rather than waiting for the default six-hour schedule. Wait for this **incremental** sync to complete before continuing.
 18. The sync will finish in about 1–2 minutes. A successful sync shows the connection status as **Active** with the synced tables and row counts.

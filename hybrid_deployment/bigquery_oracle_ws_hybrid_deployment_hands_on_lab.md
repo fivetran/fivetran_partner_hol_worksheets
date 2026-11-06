@@ -173,12 +173,12 @@ docker container logs container_id --follow
 10. For **Destination schema names**, select **Fivetran naming**.
 11. Click **Save & Test** and wait for the setup tests to pass, then click **Continue**.
 12. Fivetran fetches all tables, schemas, and columns.
-   - The Fivetran database user provided to you via 1Password has access to the **agriculture** schema
-   - Make sure the `agriculture` schema and all of its tables are selected, then click **Save & Continue**.
+   - The Fivetran database user provided to you via 1Password has access to your lab's industry schema, referred to below as `<industry>`. It is **agriculture** by default; your instructor will tell you if your lab uses a different one (for example **retail**)
+   - Make sure the `<industry>` schema and all of its tables are selected, then click **Save & Continue**.
 13. For handling schema changes, select **Allow all**.
 14. Click **Start Initial Sync**. While it runs, continue to Part 4.
 
-> **Checkpoint:** Your Oracle connector is created and its initial sync of the `agriculture` schema completes successfully.
+> **Checkpoint:** Your Oracle connector is created and its initial sync of the `<industry>` schema completes successfully.
 
 ---
 
@@ -323,7 +323,7 @@ ls stats
 1. Confirm the connection has successfully synced in the Fivetran dashboard.
 2. Follow the instructor's shared-screen preview of your destination dataset and synced tables in BigQuery. The instructor uses their own authorized access; attendees do not sign in to BigQuery Studio.
 
-> **Checkpoint:** Your sync succeeded in Fivetran, and the instructor showed the synced `agriculture` tables (for example `coffee_prices`) in your BigQuery destination.
+> **Checkpoint:** Your sync succeeded in Fivetran, and the instructor showed the synced `<industry>` tables (for example `coffee_prices` for Agriculture) in your BigQuery destination.
 
 ---
 

@@ -157,17 +157,20 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 11. Confirm the TLS certificate when prompted.
 12. Wait for the setup tests to complete, then click **Continue**.
 13. Fivetran now fetches all tables, schemas, and columns for the provided database.
-14. The Fivetran database user provided to you via 1Password has access to the `agriculture` schema, which
-    includes the `coffee_prices` table you'll query later in this lab.
-15. Make sure the `agriculture` schema and all of its tables are selected.
+14. The Fivetran database user provided to you via 1Password has access to your lab's industry schema,
+    referred to in this worksheet as `<industry>`. It is `agriculture` by default; your instructor will
+    tell you if your lab uses a different one (for example `retail`). You'll query one of its tables
+    later in this lab, referred to as `<table_name>`: any table in your `<industry>` schema (for
+    Agriculture, `coffee_prices`).
+15. Make sure the `<industry>` schema and all of its tables are selected.
 16. Click **Save & Continue**.
 17. For handling schema changes, select **Allow all**.
 18. Click **Start Initial Sync**.
 19. Wait for the sync to complete.
 
-**Checkpoint:** The connection shows a completed initial sync of the `agriculture` schema.
+**Checkpoint:** The connection shows a completed initial sync of the `<industry>` schema.
 Fivetran has written each table's data to
-`gs://mdls-gcs-hands-on-lab/<firstname>_<lastname>_mdls/<firstname>_<lastname>_mysql_agriculture/<table>/`
+`gs://mdls-gcs-hands-on-lab/<firstname>_<lastname>_mdls/<firstname>_<lastname>_mysql_<industry>/<table>/`
 (for example `.../coffee_prices/`) as Parquet files with Iceberg metadata. Because you
 enabled **Write Delta Format** in Part 2, a Delta transaction log is also present.
    - Iceberg is written by default; Delta metadata is present because you enabled **Write Delta Format** for this demonstration.
@@ -249,10 +252,10 @@ CREATE DATABASE catalog_db_renegade_kindle
     CATALOG = 'fivetran_catalog_renegade_kindle'
   );
 ```
-1. You will need to replace `{fivetran_delivered_schema_name}` with the name of your connector followed by `agriculture`. If you've followed the naming convention, it will look like `firstname_lastname_mysql_agriculture`
+1. You will need to replace `{fivetran_delivered_schema_name}` with the name of your connector followed by your source schema name (`<industry>`). If you've followed the naming convention, it will look like `firstname_lastname_mysql_<industry>` (for example `jane_doe_mysql_agriculture`)
 
 > **How the namespace is formed:** Fivetran combines the **destination schema prefix**
-> you set in Part 3 with the **source schema name** (`agriculture`). So a connector named
+> you set in Part 3 with the **source schema name** (`<industry>`). So a connector named
 > `angel_hernandez_mysql` syncing the `agriculture` schema produces the namespace
 > `angel_hernandez_mysql_agriculture`. This trips people up — the namespace is not just the
 > connector name.
@@ -273,7 +276,7 @@ integration was created.
 SHOW ICEBERG TABLES IN DATABASE your_database_name;
 ```
 
-**Checkpoint:** The `agriculture` tables, including `coffee_prices`, appear in the results. The catalog-linked database
+**Checkpoint:** Your `<industry>` tables (for Agriculture, including `coffee_prices`) appear in the results. The catalog-linked database
 auto-discovers tables as Fivetran adds them — you never write a `CREATE TABLE`
 statement.
 
@@ -281,9 +284,12 @@ statement.
 
 ```sql
 SELECT *
-FROM your_database_name.<firstname>_<lastname>_mysql_agriculture.coffee_prices
+FROM your_database_name.<firstname>_<lastname>_mysql_<industry>.<table_name>
 LIMIT 100;
 ```
+
+For example, Jane Doe in an Agriculture lab queries
+`your_database_name.jane_doe_mysql_agriculture.coffee_prices`.
 
 **Checkpoint:** Rows are returned. You are querying Iceberg data sitting in a Google
 Cloud Storage bucket, from Snowflake compute, with no copy and no second ETL.
@@ -328,14 +334,15 @@ registration instead and end up with unnecessary maintenance.
 
 **Manual table registration** is only for custom naming or object organization. It
 requires you to first create a Snowflake external volume (`CREATE EXTERNAL VOLUME`),
-then create each Iceberg table explicitly:
+then create each Iceberg table explicitly (here `<table_name>` is a table in your
+`<industry>` schema, for example `coffee_prices` for Agriculture):
 
 ```sql
-CREATE ICEBERG TABLE IF NOT EXISTS <database>.<schema>.coffee_prices
+CREATE ICEBERG TABLE IF NOT EXISTS <database>.<schema>.<table_name>
   EXTERNAL_VOLUME = '<external_volume_name>'
   CATALOG = 'fivetran_catalog_int'
-  CATALOG_NAMESPACE = '<firstname>_<lastname>_mysql_agriculture'
-  CATALOG_TABLE_NAME = 'coffee_prices'
+  CATALOG_NAMESPACE = '<firstname>_<lastname>_mysql_<industry>'
+  CATALOG_TABLE_NAME = '<table_name>'
   AUTO_REFRESH = TRUE;
 ```
 
@@ -355,7 +362,7 @@ That difference is the whole reason the first approach is recommended.
 | GCS setup test fails on read/write access | Service accounts not yet added to the bucket | Ask the instructor to confirm the service account has access to the lab GCS bucket |
 | Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
 | Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |
-| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is the connector name **+ source schema**, e.g. `first_last_mysql_agriculture` — not just the connector name |
+| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is the connector name **+ source schema**, e.g. `first_last_mysql_<industry>` (`first_last_mysql_agriculture` by default) — not just the connector name |
 | Tables appear but a query returns no rows | Initial sync hadn't finished when the catalog last refreshed | Wait 30 seconds and re-run; the catalog polls on an interval |
 | `WAREHOUSE` parameter rejected | Snowflake warehouse name used instead of the Fivetran group ID | The `WAREHOUSE` field on the catalog integration takes your Fivetran **group ID** |
 | You see other participants' tables | `ALLOWED_NAMESPACES` omitted | Recreate the database with `ALLOWED_NAMESPACES` scoped to your namespace |
