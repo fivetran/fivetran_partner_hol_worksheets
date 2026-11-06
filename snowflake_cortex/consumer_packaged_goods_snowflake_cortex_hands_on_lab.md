@@ -6,7 +6,7 @@ Build an assistant for **stockout review** using the data you transformed in dbt
 
 ## 1. Start from the completed dbt lab
 
-Complete either the [Snowflake + dbt Wizard worksheet](../dbt/consumer_packaged_goods/snowflake_wizard_dbt_platform_hands_on_lab.md) or the [Snowflake manual worksheet](../dbt/consumer_packaged_goods/snowflake_manual_dbt_platform_hands_on_lab.md). The [template repository](https://github.com/dbt-Hands-on-Labs/dbt-consumer-packaged-goods-lab) supplies the starting project; the completed dbt exercise supplies the mart used here.
+Complete either the [Snowflake + dbt Wizard worksheet](../dbt/wizard/consumer_packaged_goods/snowflake_wizard_dbt_platform_hands_on_lab.md) or the [Snowflake manual worksheet](../dbt/manual/consumer_packaged_goods/snowflake_manual_dbt_platform_hands_on_lab.md). The [template repository](https://github.com/dbt-Hands-on-Labs/dbt-consumer-packaged-goods-lab) supplies the starting project; the completed dbt exercise supplies the mart used here.
 
 1. Confirm the dbt build and reconciliation tests passed after restoring `review_threshold: 0.1`. Use the restored **development** output, not the separate deployment schema.
 2. Record `<DEV_DATABASE>` and `<DBT_SCHEMA>` from that build. `<DBT_SCHEMA>` is the mart schema (for example, `dbt_firstname_lastname`), without the staging suffix.

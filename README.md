@@ -78,6 +78,7 @@ The [`dbt/`](dbt/README.md) folder contains 88 add-on worksheets: Snowflake and 
 with and without dbt Wizard, for each of 21 industries plus NewsAPI. Each covers dbt
 Platform setup, tested marts, State comparisons and a manually triggered deployment job.
 Manual editions include complete answers at the end. Destination previews are instructor-led.
+Manual editions live in `dbt/manual/<industry>/` and Wizard editions in `dbt/wizard/<industry>/`.
 
 ## Snowflake Cortex add-ons
 
