@@ -89,3 +89,11 @@ either edition and continue with the matching
 [Semantic Layer and MCP add-on](semantic_layer_and_mcp/README.md) instead of Parts 4–6. It
 adds governed metrics, publishes them through the attendee's Production environment and
 connects Claude Code on the lab workstation to the dbt remote MCP server.
+
+## Migrate from dbt v1 to v2
+
+The [v2 migration worksheets](v2_migration/README.md) start with deliberately legacy
+industry or NewsAPI code on v1, use Wizard to repair compatibility issues on v2, compare State
+decisions, and finish in a dedicated Production environment. Snowflake and BigQuery
+editions cover all 21 industries and NewsAPI (44 migration worksheets), separate from
+the 88 add-on worksheets above.
