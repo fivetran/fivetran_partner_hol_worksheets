@@ -30,6 +30,8 @@ worksheet. Some trainings also have variants:
   - [BigQuery query-engine variant](managed_data_lake_service/bigquery_managed_data_lake_service_hands_on_lab.md) — GCS destination with BigLake registration and an instructor-led query demo
   - BigQuery query-engine database variants: [MySQL](managed_data_lake_service/bigquery_mysql_managed_data_lake_service_hands_on_lab.md), [Oracle](managed_data_lake_service/bigquery_oracle_managed_data_lake_service_hands_on_lab.md), [SQL Server](managed_data_lake_service/bigquery_sql_server_managed_data_lake_service_hands_on_lab.md)
   - Database variants: [MySQL](managed_data_lake_service/mysql_managed_data_lake_service_hands_on_lab.md), [SQL Server](managed_data_lake_service/sql_server_managed_data_lake_service_hands_on_lab.md), [Oracle](managed_data_lake_service/oracle_managed_data_lake_service_hands_on_lab.md)
+  - [Amazon S3 variant](managed_data_lake_service/managed_data_lake_service_s3_hands_on_lab.md) — S3 destination with a personal IAM role per attendee, queried from Snowflake
+  - Amazon S3 database variants: [MySQL](managed_data_lake_service/mysql_managed_data_lake_service_s3_hands_on_lab.md), [SQL Server](managed_data_lake_service/sql_server_managed_data_lake_service_s3_hands_on_lab.md), [Oracle](managed_data_lake_service/oracle_managed_data_lake_service_s3_hands_on_lab.md)
 - [`operations_management/`](operations_management/operations_management_hands_on_lab.md) — Operations Management
   - Database variants: [MySQL](operations_management/mysql_operations_management_hands_on_lab.md), [SQL Server](operations_management/sql_server_operations_management_hands_on_lab.md), [Oracle](operations_management/oracle_operations_management_hands_on_lab.md)
 - [`programmatic_management/`](programmatic_management/programmatic_management_hands_on_lab.md) — Programmatic Management
@@ -78,7 +80,16 @@ The [`dbt/`](dbt/README.md) folder contains 88 add-on worksheets: Snowflake and 
 with and without dbt Wizard, for each of 21 industries plus NewsAPI. Each covers dbt
 Platform setup, tested marts, State comparisons and a manually triggered deployment job.
 Manual editions include complete answers at the end. Destination previews are instructor-led.
-Manual editions live in `dbt/manual/<industry>/` and Wizard editions in `dbt/wizard/<industry>/`.
+Manual editions live in `dbt/manual/<industry>/`, Wizard editions in `dbt/wizard/dbt_platform/<industry>/`
+and Wizard CLI editions, run on a provided workstation, in `dbt/wizard/cli/<industry>/`.
+
+## Lake Compute on a workstation
+
+[`dbt/lake_compute/workstation/`](dbt/lake_compute/workstation/) contains 42 standalone
+worksheets, a manual and a dbt Wizard CLI edition per industry: an S3 Managed Data Lake with
+Lake Compute and no warehouse, dbt Fusion on the provided workstation, and DuckDB to query
+the results. See the
+[dbt README](dbt/README.md#lake-compute-on-a-workstation) for the list.
 
 ## Snowflake Cortex add-ons
 
