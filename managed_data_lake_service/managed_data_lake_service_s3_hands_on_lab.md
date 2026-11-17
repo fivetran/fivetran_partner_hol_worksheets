@@ -1,0 +1,403 @@
+# Hands-on Lab: Managed Data Lake Service (Amazon S3)
+
+*Updated November 2026. Verified against the current Fivetran Managed Data Lake Service
+documentation and the "Query Fivetran-managed Apache Iceberg tables from Snowflake"
+tutorial.*
+
+Thank you for registering for our hands-on lab. This worksheet provides all the
+information you need to prepare. Please read through the requirements first. If you can't
+meet them, let us know and we'll rebook you for another workshop.
+
+> **Completing this lab self-paced?** This worksheet is written for our instructor-led sessions, which use a provisioned Fivetran account, an Amazon S3 bucket with a personal IAM role that your instructor grants Fivetran access to, a PostgreSQL source, and Snowflake as the query engine. If you're working through the lab on your own, you don't need any of those: use your own Fivetran partner account, a bucket or container you control in any Managed Data Lake Service–supported cloud (Amazon S3, Azure Data Lake Storage, or Google Cloud Storage), any [Fivetran-supported source](https://fivetran.com/docs/connectors), and a query engine that can read your data lake tables. Skip the Housekeeping section and Parts 0–1. Where the worksheet has you open the destination created for you, create your own and grant Fivetran access to your storage by following the setup guide for your cloud. Use the remaining parts as an example of what each step looks like, adapting setup details, credentials, and naming to your own resources. If you can't provision your own resources, contact Fivetran to schedule an instructor-led session.
+
+---
+
+## Objective
+
+Stand up a Managed Data Lake Service destination on Amazon S3, sync a table
+into it as Apache Iceberg, and then query that table from Snowflake through a
+catalog-linked database — the recommended, documented path.
+
+## Requirements
+
+- Web browser (Chrome)
+- No local software installation is required. 
+   - Everything in this lab runs in the Fivetran and Snowflake web UIs.
+
+## Housekeeping
+
+- You will receive an invitation to the **MDLS_HANDS_ON_LAB** Fivetran account.
+- **Do not set up a new account or trial** — you will receive an invite to a dedicated
+  Fivetran account prior to the lab.
+- Confirm that you have received the invite. It is sent to the email address you used
+  to sign up for this lab and originates from `notifications@fivetran.com`.
+
+## What you'll do in this lab
+
+1. Set up a Managed Data Lake destination on Amazon S3
+2. Set up a connector to send data to the data lake
+3. Query the landed Iceberg data from Snowflake
+
+---
+
+## Part 0: Credentials
+
+### Snowflake
+
+- Provided by your instructor via a 1Password link.
+   - When entering these credentials into any setup form, make sure you select **SaaS** as the deployment model.
+
+### Postgres
+
+- Provided by your instructor via a 1Password link.
+
+### Amazon S3
+
+- Provided by your instructor in the same 1Password link: **S3 Bucket**, **S3 Region**,
+  **S3 Role ARN** and **S3 Prefix Path**.
+   - The role and the prefix are yours alone: the role can only read and write under your
+     prefix in the lab bucket.
+
+---
+
+## Part 1: Accessing the provided resources
+
+1. Log in to Fivetran at `https://fivetran.com/login`.
+   - If you just signed up for the first time, use the username and password you used
+     for your sign-up.
+   - If you already have a Fivetran account, use those credentials.
+2. Switch to the `MDLS_HANDS_ON_LAB` account via the drop-down menu in the top left.
+3. Log in to Snowflake.
+   - Click the link provided in **Part 0: Credentials**.
+   - Enter the provided username and password and click **Sign in**.
+
+   > **MFA enrollment:** Snowflake requires multi-factor authentication for password
+   > sign-ins. The first time you sign in, Snowflake will prompt you to enroll and
+   > offer several options. We recommend choosing **Passkey**. Complete the enrollment
+   > before continuing.
+
+**Checkpoint:** You are signed in to the `MDLS_HANDS_ON_LAB` Fivetran account and into
+the Snowflake account, each in its own browser tab. Keep both open — you will move
+between them in Part 4.
+
+---
+
+## Part 2: Setting up the data lake destination
+
+We'll begin by setting up a Managed Data Lake destination.
+
+1. Navigate to the **Destinations** tab in the left-hand navigation.
+2. Search for the Destination with your name. It was created for you when the lab was
+   launched and shows as **Incomplete** until you finish setting it up. Click it.
+
+   > **Make sure it's yours.** Your destination is the only one that has been given
+   > access to your S3 role and prefix; anyone else's will fail its setup tests.
+
+3. Three Fivetran Managed Data Lake Service options appear. Select the
+   **S3 Data Lake** option by clicking its **Set up** button.
+4. For **Bucket name**, enter the **S3 Bucket** value from your 1Password link.
+5. For **Fivetran Role ARN**, enter the **S3 Role ARN** value from your 1Password link.
+6. For **S3 Prefix Path**, enter the **S3 Prefix Path** value from your 1Password link.
+   Use it exactly as given: your role can only write under this prefix, so any other value
+   fails the setup tests.
+
+   > **Note — this field is immutable.** The prefix path cannot be changed after the
+   > destination is created. The same is true of the bucket and the region. Getting it
+   > wrong means recreating the destination, so check your spelling now. This is one of
+   > the delivery lessons from Module 02.
+
+7. In **S3 Bucket Region**, select the **S3 Region** value from your 1Password link
+   (usually `us-west-2`). It must match the bucket's actual region.
+
+8. Leave the **Update AWS Glue Catalog** option untoggled.
+
+   > **Note — catalog integrations are final.** Catalog integration settings cannot be
+   > edited after the first successful sync into the data lake. In a real engagement you
+   > would decide these *before* creating the destination, based on which engines the
+   > customer will use. For this lab we're leaving AWS Glue off because we're querying
+   > from Snowflake, which reads the Fivetran Catalog directly.
+
+9. Set **Write Delta Format** to **ON** for demonstration purposes. Iceberg is the
+   default format; Delta metadata is optional and must be explicitly enabled.
+   This toggle adds a Delta transaction log alongside the Iceberg metadata over the
+   same Parquet files. Snowflake continues to query **Iceberg** in this lab.
+   Set **Snapshot Retention Period** to one week and leave the remaining options
+   at their defaults.
+
+10. Click **Save & Test**.
+
+   > If the AWS access test fails, check that you opened your own destination and that
+   > the bucket, role ARN and prefix match your 1Password link, then confirm with your
+   > instructor that your destination was given access to your role.
+
+11. Let the setup tests run. For S3 these are **Input Validation**, **AWS Read and
+    Write Access**, **Fivetran Catalog Access**, **Bucket Region Test** and optionally
+    **S3 Private Link Test**.
+12. Once the tests complete successfully, click **View Destination**.
+
+**Checkpoint:** All setup tests show green, and your destination appears in the
+Destinations list with your name. Every Managed Data Lake destination is provisioned
+with the **Fivetran Catalog** automatically — you did not have to configure it. You'll
+use it in Part 4.
+
+---
+
+## Part 3: Creating a connector
+
+Now we'll create a connector to sync data into our managed data lake in S3.
+
+1. Navigate to the **Connections** tab.
+2. Click **Add Connection**.
+3. Search for **PostgreSQL** and click **Set up**.
+4. Select your destination (the one from Part 2). 
+   - **Make sure you don't use someone else's destination** — check that the name matches yours.
+5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
+   your connector. Use the format `<firstname>_<lastname>_pg`.
+
+   > Write this value down. You'll need it in Part 4, because Fivetran combines it with
+   > the source schema name to form the catalog namespace.
+
+6. Populate the setup form with the provided PostgreSQL credentials.
+7. For **Authentication Method**, select **Connect with username and password**.
+8. For **Connection method**, make sure **Connect directly** is selected.
+9. For **Update Method**, select **Query-Based**.
+   - *Context:* PostgreSQL's older XMIN and Fivetran Teleport Sync methods have been sunset and replaced by **Query-Based** change data capture. The other available method is **Logical replication** (using the `pgoutput` plugin).
+10. Click **Save & Test**.
+11. Confirm the TLS certificate when prompted.
+12. Wait for the setup tests to complete, then click **Continue**.
+13. Fivetran now fetches all tables, schemas, and columns for the provided database.
+14. The Fivetran database user provided to you via 1Password has access to your lab's industry schema,
+    referred to in this worksheet as `<industry>`. It is `agriculture` by default; your instructor will
+    tell you if your lab uses a different one (for example `retail`). You'll query one of its tables
+    later in this lab, referred to as `<table_name>`: any table in your `<industry>` schema (for
+    Agriculture, `coffee_prices`).
+15. Make sure the `<industry>` schema and all of its tables are selected.
+16. Click **Save & Continue**.
+17. For handling schema changes, select **Allow all**.
+18. Click **Start Initial Sync**.
+19. Wait for the sync to complete.
+
+**Checkpoint:** The connection shows a completed initial sync of the `<industry>` schema.
+Fivetran has written each table's data to
+`s3://<S3 Bucket>/<S3 Prefix Path>/<firstname>_<lastname>_pg_<industry>/<table>/`
+(for example `.../coffee_prices/`) as Parquet files with Iceberg metadata. Because you
+enabled **Write Delta Format** in Part 2, a Delta transaction log is also present.
+   - Iceberg is written by default; Delta metadata is present because you enabled **Write Delta Format** for this demonstration.
+
+> **Instructor demo:** If you look at the S3 bucket, you can see the folder structure
+> Fivetran created: a `data/` folder holding the shared Parquet files, a `metadata/`
+> folder for the Iceberg snapshots and schemas, and a `_delta_log/` folder for the Delta
+> transaction log. The Delta metadata is present because we explicitly enabled it
+> for this demonstration. Both sets of metadata reference the same Parquet data;
+> Iceberg is written by default, while Delta is optional.
+
+---
+
+## Part 4: Querying the data from Snowflake
+
+We're now going to read the Iceberg tables Fivetran wrote to S3, using Snowflake.
+
+Snowflake reads the Fivetran Catalog — a managed Apache Polaris implementation speaking
+the Iceberg REST protocol — through a **catalog-linked database**. This is the
+recommended approach in Fivetran's official tutorial, and the simplest: it uses
+credentials vended by the catalog, so no Snowflake external volume is required.
+
+### 4.1 Collect the catalog credentials from Fivetran
+
+1. In Fivetran, click the **Destinations** tab and open the destination with your name.
+2. Click the **Catalog integration** tab, then the **Snowflake** tab.
+
+   > **Use the Snowflake tab, not Base configuration.** Base configuration holds the
+   > values for DuckDB, Trino, and Starburst. The Snowflake tab generates a complete
+   > `CREATE CATALOG INTEGRATION` statement for you, pre-filled with your values.
+
+3. Copy these five values from the generated SQL:
+   - `CATALOG_URI`
+   - `WAREHOUSE` — this is your Fivetran **group ID**, not a Snowflake virtual
+     warehouse. It surprises most people the first time.
+   - `OAUTH_TOKEN_URI`
+   - `OAUTH_CLIENT_ID`
+   - `OAUTH_CLIENT_SECRET`
+
+   > **The client secret is displayed once.** Copy it somewhere safe now. Regenerating
+   > it immediately invalidates the old one and breaks any existing Snowflake catalog
+   > integration until you update it.
+
+### 4.2 Open a Snowflake worksheet
+
+1. Navigate to the provided Snowflake account.
+2. Click **Create** and select **SQL Worksheet**.
+3. Rename the worksheet so it's easy to find, using the format
+   `<firstname>_<lastname>_mdls_hol`.
+
+### 4.3 Create the catalog integration and linked database
+
+The simplest approach is to paste the statement Fivetran generated on the **Catalog
+integration → Snowflake** tab directly into your worksheet. It looks like this:
+ - **DO NOT paste the SQL below. This is just an example and will not work**
+
+```sql
+CREATE OR REPLACE CATALOG INTEGRATION fivetran_catalog_mystify_velvet
+  CATALOG_SOURCE = POLARIS
+  TABLE_FORMAT = ICEBERG
+  -- Useful only for individual Iceberg tables; catalog-linked databases ignore this.
+  CATALOG_NAMESPACE = '{fivetran_delivered_schema_name}'
+  REST_CONFIG = (
+    ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS,
+    CATALOG_URI = 'https://auditory-waive.us-east-1.aws.polaris.fivetran.com/api/catalog'
+    WAREHOUSE = 'mystify_velvet'
+  )
+  REST_AUTHENTICATION = (
+    TYPE = OAUTH
+    OAUTH_TOKEN_URI = 'https://auditory-waive.us-east-1.aws.polaris.fivetran.com/api/catalog/v1/oauth/tokens'
+    OAUTH_CLIENT_ID = 'redacted'
+    OAUTH_CLIENT_SECRET = 'redacted'
+    OAUTH_ALLOWED_SCOPES = ('PRINCIPAL_ROLE:ALL')
+  )
+  ENABLED = TRUE,
+  REFRESH_INTERVAL_SECONDS = 30; -- Configurable: adjust this value to control how often Snowflake refreshes the catalog integration
+
+CREATE DATABASE catalog_db_mystify_velvet
+  LINKED_CATALOG = (
+    CATALOG = 'fivetran_catalog_mystify_velvet'
+  );
+
+```
+1. You will need to replace `{fivetran_delivered_schema_name}` with the name of your connector followed by your source schema name (`<industry>`). If you've followed the naming convention, it will look like `firstname_lastname_pg_<industry>` (for example `jane_doe_pg_agriculture`)
+
+> **How the namespace is formed:** Fivetran combines the **destination schema prefix**
+> you set in Part 3 with the **source schema name** (`<industry>`). So a connector named
+> `angel_hernandez_pg` syncing the `agriculture` schema produces the namespace
+> `angel_hernandez_pg_agriculture`. This trips people up — the namespace is not just the
+> connector name.
+
+2. Execute the statement. A successful run returns a status message confirming the
+integration was created.
+
+> **Two parameters people leave out.** `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` is
+> what selects the vended-credentials path — without it you are configuring the
+> external-volume approach instead, and will then wonder why Snowflake wants a volume
+> you never created. `OAUTH_TOKEN_URI` is required alongside the client ID and secret.
+> Both are in the generated SQL; copy the whole statement rather than retyping it.
+
+### 4.4 Verify the tables were discovered
+1. Replace `your_database_name` with the name of the catalog-linked database created in section 4.3.
+
+```sql
+SHOW ICEBERG TABLES IN DATABASE your_database_name;
+```
+
+**Checkpoint:** Your `<industry>` tables (for Agriculture, including `coffee_prices`) appear in the results. The catalog-linked database
+auto-discovers tables as Fivetran adds them — you never write a `CREATE TABLE`
+statement.
+
+### 4.5 Query the data
+
+```sql
+SELECT *
+FROM your_database_name.<firstname>_<lastname>_pg_<industry>.<table_name>
+LIMIT 100;
+```
+
+For example, Jane Doe in an Agriculture lab queries
+`your_database_name.jane_doe_pg_agriculture.coffee_prices`.
+
+**Checkpoint:** Rows are returned. You are querying Iceberg data sitting in an Amazon
+S3 bucket, from Snowflake compute, with no copy and no second ETL.
+
+### 4.6 Understand the refresh behavior
+
+Snowflake polls the Fivetran Catalog to detect new snapshots written by Fivetran syncs.
+
+- The default polling interval is **30 seconds**.
+- Valid values for `REFRESH_INTERVAL_SECONDS` range from `30` to `86400`.
+
+You may see an older Fivetran integration guide mention 300 seconds. That is the value
+baked into Fivetran's generated script, not the Snowflake default — don't conflate the
+two in front of a customer.
+
+> **Delivery note.** This refresh lag is why you should not trigger a downstream
+> transformation job the instant a Fivetran sync completes when reading through a
+> catalog-linked database. The catalog won't have caught up, and the job will "succeed"
+> having read stale metadata. Use an interval schedule instead.
+
+---
+
+## Optional: Part 5 — the other two Snowflake approaches
+
+Skip this unless you finish early. The catalog-linked database with vended credentials
+that you built in Part 4 is the recommended path for most cases. This section exists so
+you know when the other two documented approaches apply, and why.
+
+Fivetran documents three approaches:
+
+| Approach | External volume | Private networking | Use when |
+|---|---|---|---|
+| Catalog-linked DB + vended credentials | No | No | Most cases — what you built in Part 4 |
+| Catalog-linked DB + external volume | Yes | Yes | **Private networking is required** |
+| Manually created Iceberg tables | Yes | Yes | Custom naming or object organization |
+
+**When private networking is required**, use the second approach — a catalog-linked
+database backed by a Snowflake external volume you create. Vended credentials always
+traverse the public internet, so a customer who needs a private path to storage cannot
+use them. This is the one to remember, because it is easy to reach for manual table
+registration instead and end up with unnecessary maintenance.
+
+**Manual table registration** is only for custom naming or object organization. It
+requires you to first create a Snowflake external volume (`CREATE EXTERNAL VOLUME`),
+then create each Iceberg table explicitly (here `<table_name>` is a table in your
+`<industry>` schema, for example `coffee_prices` for Agriculture):
+
+```sql
+CREATE ICEBERG TABLE IF NOT EXISTS <database>.<schema>.<table_name>
+  EXTERNAL_VOLUME = '<external_volume_name>'
+  CATALOG = 'fivetran_catalog_int'
+  CATALOG_NAMESPACE = '<firstname>_<lastname>_pg_<industry>'
+  CATALOG_TABLE_NAME = '<table_name>'
+  AUTO_REFRESH = TRUE;
+```
+
+Note what this costs you: a statement like this for **every** table, repeated every time
+Fivetran adds one. The catalog-linked database in Part 4 discovers new tables on its own.
+That difference is the whole reason the first approach is recommended.
+
+> Running this section requires an external volume, which is not provisioned in the lab
+> environment. Read it rather than executing it unless your instructor says otherwise.
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| **AWS Read and Write Access** test fails | You opened someone else's destination, or the bucket, prefix or role ARN was mistyped | Check that the destination name is yours and the values match your 1Password link, then re-run the test; if it still fails, ask the instructor to confirm your destination was given access to your role |
+| **Bucket Region Test** fails | Wrong region selected | Select the **S3 Region** from your 1Password link; recreate the destination if it was already saved, since the region can't be changed |
+| Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
+| Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |
+| `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is the connector name **+ source schema**, e.g. `first_last_pg_<industry>` (`first_last_pg_agriculture` by default) — not just the connector name |
+| Tables appear but a query returns no rows | Initial sync hadn't finished when the catalog last refreshed | Wait 30 seconds and re-run; the catalog polls on an interval |
+| `WAREHOUSE` parameter rejected | Snowflake warehouse name used instead of the Fivetran group ID | The `WAREHOUSE` field on the catalog integration takes your Fivetran **group ID** |
+| You see other participants' tables | `ALLOWED_NAMESPACES` omitted | Recreate the database with `ALLOWED_NAMESPACES` scoped to your namespace |
+
+---
+
+## What you did
+
+You configured a Managed Data Lake Service destination on Amazon S3, synced
+a PostgreSQL table into it as Apache Iceberg with optional Delta metadata enabled for the demo,
+and queried it from Snowflake through a catalog-linked database reading the Fivetran
+Catalog — a managed Apache Polaris implementation speaking the Iceberg REST protocol.
+
+Along the way, you saw three things that matter in a real delivery: the prefix path and
+catalog integrations are decisions you cannot undo, the catalog namespace is the
+connector name plus the source schema, and the catalog refresh interval introduces a lag
+that downstream scheduling has to account for.
+
+## Further reading
+
+- Managed Data Lake Service — `fivetran.com/docs/managed-data-lake-service`
+- Setup guide — `fivetran.com/docs/managed-data-lake-service/setup-guide`
+- Query Iceberg tables from Snowflake —
+  `fivetran.com/docs/managed-data-lake-service/tutorials/query-iceberg-tables-from-snowflake`
+- Query Iceberg tables from DuckDB and from Python — same `tutorials` path
+- Metadata catalogs — `fivetran.com/docs/managed-data-lake-service/metadata-catalogs`

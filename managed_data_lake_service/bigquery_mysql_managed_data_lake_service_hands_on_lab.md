@@ -76,9 +76,9 @@ participants have the same name, the instructor assigns a unique suffix, such as
   See the [MySQL setup guide](https://fivetran.com/docs/connectors/databases/mysql/setup-guide).
 
 - Provision the GCS bucket in `us-east4` and the Google Cloud project for table registration.
-- For each destination, collect the **Fivetran service account** shown in its setup form.
-  Grant it **Storage Object Admin** on the lab bucket and the required BigQuery permissions
-  in the registration project. The [GCS setup guide](https://fivetran.com/docs/managed-data-lake-service/setup-guide)
+- Each attendee's destination is created at launch, and its **Fivetran service account**
+  is granted **Storage Object Admin** on the lab bucket and the required BigQuery
+  permissions in the registration project before attendees open it. The [GCS setup guide](https://fivetran.com/docs/managed-data-lake-service/setup-guide)
   documents **BigQuery Data Editor** or a custom role with the required permissions.
   Any dataset-prefix restrictions must cover the names used in this lab and Fivetran's
   automatically created metadata datasets.
@@ -86,7 +86,7 @@ participants have the same name, the instructor assigns a unique suffix, such as
   registered tables, and run BigQuery queries against their underlying GCS data.
   Validate this access before delivery; granting the Fivetran service account access
   does not grant the instructor access.
-- Attendees use the Fivetran-managed service account displayed by the MDLS destination;
+- Attendees use the Fivetran-managed service account of the destination created for them;
   they do not paste a BigQuery service-account JSON key into this setup.
 
 ---
@@ -108,22 +108,26 @@ participants have the same name, the instructor assigns a unique suffix, such as
 We'll begin by setting up a Managed Data Lake destination.
 
 1. Navigate to the **Destinations** tab in the left-hand navigation.
-2. Click **Add Destination**.
-3. Three Fivetran Managed Data Lake Service options appear immediately. Select the
+2. Search for the Destination with your name. It was created for you when the lab was
+   launched and shows as **Incomplete** until you finish setting it up. Click it.
+
+   > **Make sure it's yours.** Your destination is the only one that has been given
+   > access to the lab bucket and the registration project; anyone else's will fail its
+   > setup tests.
+
+3. Three Fivetran Managed Data Lake Service options appear. Select the
    **Google Cloud Storage** option by clicking its **Set up** button.
-4. For the **Destination name**, enter `<firstname>_<lastname>_mysql_gcs`, replacing
-   `<firstname>` and `<lastname>` with your actual first and last names. Click **Add**.
-5. Enter the **Bucket name** provided via the 1Password credentials link.
-6. For the **GCS Prefix Path**, enter `<firstname>_<lastname>_mysql_mdls`, again replacing the
+4. Enter the **Bucket name** provided via the 1Password credentials link.
+5. For the **GCS Prefix Path**, enter `<firstname>_<lastname>_mysql_mdls`, again replacing the
    placeholders with your name.
 
    > **Note — this field is immutable.** The prefix path cannot be changed after the
    > destination is created. The same is true of the bucket and the region. Getting it
    > wrong means recreating the destination, so check your spelling now.
 
-7. For the **Bucket Region**, choose **us-east4**, matching the provisioned bucket.
+6. For the **Bucket Region**, choose **us-east4**, matching the provisioned bucket.
 
-8. Enable **Update BigLake Metastore** and enter the **BigQuery Project ID** from
+7. Enable **Update BigLake Metastore** and enter the **BigQuery Project ID** from
    your credentials in the **Google Cloud Project ID** field.
 
    > **Note — catalog integrations are final.** Catalog integration settings cannot be
@@ -132,26 +136,23 @@ We'll begin by setting up a Managed Data Lake destination.
    > customer will use. For this lab, keep BigLake enabled so Fivetran registers the
    > tables as BigQuery external Iceberg tables for the instructor's query demo.
 
-9. Set **Write Delta Format** to **ON** for demonstration purposes. Iceberg is the
+8. Set **Write Delta Format** to **ON** for demonstration purposes. Iceberg is the
    default format; Delta metadata is optional and must be explicitly enabled.
    This toggle adds a Delta transaction log alongside the Iceberg metadata over the
    same Parquet files. BigQuery continues to query **Iceberg** in this lab.
    Set **Snapshot Retention Period** to one week and leave the remaining options
    at their defaults.
 
-10. Share the **Fivetran service account** displayed in the setup form with your
-    instructor. Pause until the instructor confirms both bucket access and BigQuery
-    permissions have been granted, as described in the instructor prerequisites.
+9. Click **Save & Test**.
 
-11. Click **Save & Test**.
+   > If the GCS or BigLake access test fails, check that you opened your own destination
+   > and that the bucket and project ID match your credentials, then confirm with your
+   > instructor that your destination was given access.
 
-   > If you get an error connecting to the Google account, confirm with your instructor
-   > that the service accounts have been correctly added.
-
-12. Let the setup tests run. For GCS these are **Input Validation** and **GCS Read and
+10. Let the setup tests run. For GCS these are **Input Validation** and **GCS Read and
     Write Access**. A **BigLake Metastore Access** test also runs since we enabled it.
 
-13. Once the tests complete successfully, click **View Destination**.
+11. Once the tests complete successfully, click **View Destination**.
 
 **Checkpoint:** All setup tests show green, and your destination appears in the
 Destinations list with your name. Every Managed Data Lake destination is provisioned
@@ -167,7 +168,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 1. Navigate to the **Connections** tab.
 2. Click **Add Connection**.
 3. Search for **MySQL** and click **Set up**.
-4. Select the destination you created.
+4. Select your destination (the one from Part 2).
    - **Make sure you don't use someone else's destination** — check that the name matches yours.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use `<dataset_prefix><firstname>_<lastname>_mysql`, where

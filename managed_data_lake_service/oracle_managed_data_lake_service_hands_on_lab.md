@@ -78,13 +78,16 @@ between them in Part 4.
 We'll begin by setting up a Managed Data Lake destination.
 
 1. Navigate to the **Destinations** tab in the left-hand navigation.
-2. Click **Add Destination**.
-3. Three Fivetran Managed Data Lake Service options appear immediately. Select the
+2. Search for the Destination with your name. It was created for you when the lab was
+   launched and shows as **Incomplete** until you finish setting it up. Click it.
+
+   > **Make sure it's yours.** Your destination is the only one that has been given
+   > access to the lab bucket; anyone else's will fail its setup tests.
+
+3. Three Fivetran Managed Data Lake Service options appear. Select the
    **Google Cloud Storage** option by clicking its **Set up** button.
-4. For the **Destination name**, enter `<firstname>_<lastname>_gcs`, replacing
-   `<firstname>` and `<lastname>` with your actual first and last names. Click **Add**.
-5. Enter the **Bucket name** provided via the 1Password credentials link.
-6. For the **GCS Prefix Path**, enter `<firstname>_<lastname>_mdls`, again replacing the
+4. Enter the **Bucket name** provided via the 1Password credentials link.
+5. For the **GCS Prefix Path**, enter `<firstname>_<lastname>_mdls`, again replacing the
    placeholders with your name.
 
    > **Note — this field is immutable.** The prefix path cannot be changed after the
@@ -92,12 +95,12 @@ We'll begin by setting up a Managed Data Lake destination.
    > wrong means recreating the destination, so check your spelling now. This is one of
    > the delivery lessons from Module 02.
 
-7. In **GCS Bucket Region**, select the region of the bucket provided by your
+6. In **GCS Bucket Region**, select the region of the bucket provided by your
    instructor. Use the region in your 1Password lab details; if it is not listed,
    confirm it with your instructor before continuing. This must match the bucket's
    actual region. For a self-paced lab, select the region of your own GCS bucket.
 
-8. Leave the **Update BigLake Metastore** option untoggled.
+7. Leave the **Update BigLake Metastore** option untoggled.
 
    > **Note — catalog integrations are final.** Catalog integration settings cannot be
    > edited after the first successful sync into the data lake. In a real engagement you
@@ -105,26 +108,24 @@ We'll begin by setting up a Managed Data Lake destination.
    > customer will use. For this lab we're leaving BigLake off because we're querying
    > from Snowflake, which reads the Fivetran Catalog directly.
 
-9. Set **Write Delta Format** to **ON** for demonstration purposes. Iceberg is the
+8. Set **Write Delta Format** to **ON** for demonstration purposes. Iceberg is the
    default format; Delta metadata is optional and must be explicitly enabled.
    This toggle adds a Delta transaction log alongside the Iceberg metadata over the
    same Parquet files. Snowflake continues to query **Iceberg** in this lab.
    Set **Snapshot Retention Period** to one week and leave the remaining options
    at their defaults.
 
-10. To access cloud storage locations, Fivetran needs permission to access the cloud storage
-   environment. Pause here so your instructor can allowlist your destinations.
+9. Click **Save & Test**.
 
-11. Click **Save & Test**.
+   > If the GCS access test fails, check that you opened your own destination and that
+   > the bucket matches your 1Password link, then confirm with your instructor that your
+   > destination was given access to the lab bucket.
 
-   > If you get an error connecting to the Google account, confirm with your instructor
-   > that the service accounts have been correctly added.
-
-12. Let the setup tests run. For GCS these are **Input Validation** and **GCS Read and
+10. Let the setup tests run. For GCS these are **Input Validation** and **GCS Read and
     Write Access**. (A **BigLake Metastore Access** test also runs, but only if the
     Update BigLake Metastore toggle is on — which we left off in step 8, so you will not
     see it.)
-13. Once the tests complete successfully, click **View Destination**.
+11. Once the tests complete successfully, click **View Destination**.
 
 **Checkpoint:** All setup tests show green, and your destination appears in the
 Destinations list with your name. Every Managed Data Lake destination is provisioned
@@ -140,7 +141,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 1. Navigate to the **Connections** tab.
 2. Click **Add Connection**.
 3. Search for **Oracle** and click **Set up**.
-4. Select the destination you created. 
+4. Select your destination (the one from Part 2). 
    - **Make sure you don't use someone else's destination** — check that the name matches yours.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use the format `<firstname>_<lastname>_oracle`.
@@ -359,7 +360,7 @@ That difference is the whole reason the first approach is recommended.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| GCS setup test fails on read/write access | Service accounts not yet added to the bucket | Ask the instructor to confirm the service account has access to the lab GCS bucket |
+| GCS setup test fails on read/write access | You opened someone else's destination, or the bucket was mistyped | Check that the destination name is yours and the bucket matches your 1Password link; if it still fails, ask the instructor to confirm your destination was given access to the lab bucket |
 | Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
 | Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |
 | `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is the connector name **+ source schema**, e.g. `first_last_oracle_<industry>` (`first_last_oracle_agriculture` by default) — not just the connector name |

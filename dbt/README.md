@@ -11,8 +11,9 @@ same contracts as reviewed prompts. BigQuery uses the provisioned dbt runner con
 attendees do not need BigQuery Studio or IAM access. Destination data previews are
 instructor-led; local DuckDB previews remain hands-on.
 
-Manual editions are in [`manual/`](manual/) and Wizard editions in [`wizard/`](wizard/),
-one folder per industry in each (for example `manual/agriculture/` and `wizard/agriculture/`).
+Manual editions are in [`manual/`](manual/) and Wizard editions in [`wizard/dbt_platform/`](wizard/dbt_platform/),
+one folder per industry in each (for example `manual/agriculture/` and `wizard/dbt_platform/agriculture/`).
+Wizard CLI editions, run on a provided workstation, are in [`wizard/cli/`](wizard/cli/).
 
 For BigQuery, each participant configures **Your profile → Credentials → their assigned
 project → Edit** using their own dbt login. Enter the **BigQuery dbt dataset** from the
@@ -23,28 +24,108 @@ credentials; participants must not edit the shared development environment or co
 
 | Industry / dataset | Snowflake + Wizard | BigQuery + Wizard | Snowflake manual | BigQuery manual |
 |---|---|---|---|---|
-| Agriculture | [Worksheet](wizard/agriculture/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/agriculture/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/agriculture/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/agriculture/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Attractions | [Worksheet](wizard/attractions/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/attractions/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/attractions/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/attractions/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Construction | [Worksheet](wizard/construction/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/construction/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/construction/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/construction/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Consumer Packaged Goods | [Worksheet](wizard/consumer_packaged_goods/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/consumer_packaged_goods/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/consumer_packaged_goods/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/consumer_packaged_goods/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Customer Service | [Worksheet](wizard/customer_service/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/customer_service/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/customer_service/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/customer_service/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Energy | [Worksheet](wizard/energy/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/energy/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/energy/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/energy/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Financial Services | [Worksheet](wizard/financial_services/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/financial_services/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/financial_services/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/financial_services/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Healthcare | [Worksheet](wizard/healthcare/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/healthcare/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/healthcare/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/healthcare/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Higher Education | [Worksheet](wizard/higher_education/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/higher_education/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/higher_education/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/higher_education/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Hospitality | [Worksheet](wizard/hospitality/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/hospitality/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/hospitality/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/hospitality/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Insurance | [Worksheet](wizard/insurance/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/insurance/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/insurance/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/insurance/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Manufacturing | [Worksheet](wizard/manufacturing/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/manufacturing/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/manufacturing/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/manufacturing/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Media Entertainment | [Worksheet](wizard/media_entertainment/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/media_entertainment/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/media_entertainment/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/media_entertainment/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Pharma | [Worksheet](wizard/pharma/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/pharma/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/pharma/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/pharma/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Retail | [Worksheet](wizard/retail/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/retail/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/retail/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/retail/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Sales | [Worksheet](wizard/sales/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/sales/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/sales/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/sales/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Supply Chain | [Worksheet](wizard/supply_chain/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/supply_chain/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/supply_chain/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/supply_chain/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Telco | [Worksheet](wizard/telco/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/telco/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/telco/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/telco/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Transportation | [Worksheet](wizard/transportation/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/transportation/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/transportation/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/transportation/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Utilities | [Worksheet](wizard/utilities/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/utilities/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/utilities/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/utilities/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| Weather | [Worksheet](wizard/weather/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/weather/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/weather/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/weather/bigquery_manual_dbt_platform_hands_on_lab.md) |
-| NewsAPI | [Worksheet](wizard/newsapi/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/newsapi/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/newsapi/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/newsapi/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Agriculture | [Worksheet](wizard/dbt_platform/agriculture/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/agriculture/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/agriculture/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/agriculture/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Attractions | [Worksheet](wizard/dbt_platform/attractions/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/attractions/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/attractions/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/attractions/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Construction | [Worksheet](wizard/dbt_platform/construction/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/construction/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/construction/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/construction/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Consumer Packaged Goods | [Worksheet](wizard/dbt_platform/consumer_packaged_goods/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/consumer_packaged_goods/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/consumer_packaged_goods/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/consumer_packaged_goods/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Customer Service | [Worksheet](wizard/dbt_platform/customer_service/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/customer_service/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/customer_service/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/customer_service/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Energy | [Worksheet](wizard/dbt_platform/energy/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/energy/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/energy/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/energy/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Financial Services | [Worksheet](wizard/dbt_platform/financial_services/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/financial_services/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/financial_services/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/financial_services/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Healthcare | [Worksheet](wizard/dbt_platform/healthcare/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/healthcare/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/healthcare/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/healthcare/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Higher Education | [Worksheet](wizard/dbt_platform/higher_education/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/higher_education/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/higher_education/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/higher_education/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Hospitality | [Worksheet](wizard/dbt_platform/hospitality/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/hospitality/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/hospitality/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/hospitality/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Insurance | [Worksheet](wizard/dbt_platform/insurance/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/insurance/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/insurance/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/insurance/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Manufacturing | [Worksheet](wizard/dbt_platform/manufacturing/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/manufacturing/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/manufacturing/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/manufacturing/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Media Entertainment | [Worksheet](wizard/dbt_platform/media_entertainment/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/media_entertainment/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/media_entertainment/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/media_entertainment/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Pharma | [Worksheet](wizard/dbt_platform/pharma/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/pharma/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/pharma/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/pharma/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Retail | [Worksheet](wizard/dbt_platform/retail/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/retail/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/retail/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/retail/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Sales | [Worksheet](wizard/dbt_platform/sales/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/sales/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/sales/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/sales/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Supply Chain | [Worksheet](wizard/dbt_platform/supply_chain/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/supply_chain/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/supply_chain/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/supply_chain/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Telco | [Worksheet](wizard/dbt_platform/telco/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/telco/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/telco/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/telco/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Transportation | [Worksheet](wizard/dbt_platform/transportation/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/transportation/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/transportation/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/transportation/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Utilities | [Worksheet](wizard/dbt_platform/utilities/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/utilities/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/utilities/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/utilities/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| Weather | [Worksheet](wizard/dbt_platform/weather/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/weather/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/weather/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/weather/bigquery_manual_dbt_platform_hands_on_lab.md) |
+| NewsAPI | [Worksheet](wizard/dbt_platform/newsapi/snowflake_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](wizard/dbt_platform/newsapi/bigquery_wizard_dbt_platform_hands_on_lab.md) | [Worksheet](manual/newsapi/snowflake_manual_dbt_platform_hands_on_lab.md) | [Worksheet](manual/newsapi/bigquery_manual_dbt_platform_hands_on_lab.md) |
+
+## dbt Wizard CLI on a workstation
+
+[`wizard/cli/`](wizard/cli/) has a Snowflake and a BigQuery edition for each industry and
+NewsAPI: **44 worksheets**. They use the same business questions, model requirements and
+Wizard prompts as the dbt Platform Wizard editions, but run on a provided Linux workstation:
+the attendee clones their own `lab-dbt-` repository, creates the key file their pre-written
+`~/.dbt/profiles.yml` points at, builds with dbt Fusion (`dbtf`), generates the marts with
+the dbt Wizard CLI (`wizard`), tests a controlled threshold change and pushes a branch.
+Snowflake editions then view the marts in the Snowflake web UI; BigQuery editions use
+DBeaver on the workstation with the same service-account key, since attendees have no
+BigQuery Studio access. dbt State and deployment jobs are dbt Platform features and are
+not part of the CLI editions.
+
+| Industry / dataset | Snowflake + Wizard CLI | BigQuery + Wizard CLI |
+|---|---|---|
+| Agriculture | [Worksheet](wizard/cli/agriculture/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/agriculture/bigquery_wizard_cli_hands_on_lab.md) |
+| Attractions | [Worksheet](wizard/cli/attractions/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/attractions/bigquery_wizard_cli_hands_on_lab.md) |
+| Construction | [Worksheet](wizard/cli/construction/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/construction/bigquery_wizard_cli_hands_on_lab.md) |
+| Consumer Packaged Goods | [Worksheet](wizard/cli/consumer_packaged_goods/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/consumer_packaged_goods/bigquery_wizard_cli_hands_on_lab.md) |
+| Customer Service | [Worksheet](wizard/cli/customer_service/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/customer_service/bigquery_wizard_cli_hands_on_lab.md) |
+| Energy | [Worksheet](wizard/cli/energy/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/energy/bigquery_wizard_cli_hands_on_lab.md) |
+| Financial Services | [Worksheet](wizard/cli/financial_services/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/financial_services/bigquery_wizard_cli_hands_on_lab.md) |
+| Healthcare | [Worksheet](wizard/cli/healthcare/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/healthcare/bigquery_wizard_cli_hands_on_lab.md) |
+| Higher Education | [Worksheet](wizard/cli/higher_education/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/higher_education/bigquery_wizard_cli_hands_on_lab.md) |
+| Hospitality | [Worksheet](wizard/cli/hospitality/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/hospitality/bigquery_wizard_cli_hands_on_lab.md) |
+| Insurance | [Worksheet](wizard/cli/insurance/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/insurance/bigquery_wizard_cli_hands_on_lab.md) |
+| Manufacturing | [Worksheet](wizard/cli/manufacturing/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/manufacturing/bigquery_wizard_cli_hands_on_lab.md) |
+| Media Entertainment | [Worksheet](wizard/cli/media_entertainment/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/media_entertainment/bigquery_wizard_cli_hands_on_lab.md) |
+| Pharma | [Worksheet](wizard/cli/pharma/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/pharma/bigquery_wizard_cli_hands_on_lab.md) |
+| Retail | [Worksheet](wizard/cli/retail/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/retail/bigquery_wizard_cli_hands_on_lab.md) |
+| Sales | [Worksheet](wizard/cli/sales/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/sales/bigquery_wizard_cli_hands_on_lab.md) |
+| Supply Chain | [Worksheet](wizard/cli/supply_chain/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/supply_chain/bigquery_wizard_cli_hands_on_lab.md) |
+| Telco | [Worksheet](wizard/cli/telco/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/telco/bigquery_wizard_cli_hands_on_lab.md) |
+| Transportation | [Worksheet](wizard/cli/transportation/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/transportation/bigquery_wizard_cli_hands_on_lab.md) |
+| Utilities | [Worksheet](wizard/cli/utilities/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/utilities/bigquery_wizard_cli_hands_on_lab.md) |
+| Weather | [Worksheet](wizard/cli/weather/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/weather/bigquery_wizard_cli_hands_on_lab.md) |
+| NewsAPI / Connector SDK | [Worksheet](wizard/cli/newsapi/snowflake_wizard_cli_hands_on_lab.md) | [Worksheet](wizard/cli/newsapi/bigquery_wizard_cli_hands_on_lab.md) |
+
+## Lake Compute on a workstation
+
+[`lake_compute/workstation/`](lake_compute/workstation/) has two standalone worksheets per
+industry for Managed Data Lake Service labs on Amazon S3 with Lake Compute as the
+destination: no warehouse and no dbt Platform. Both cover the S3 destination and
+PostgreSQL connector setup, the Lake Compute token, the workstation login, environment
+variables, `profiles.yml` and `dbt_project.yml`, cloning the person's generated `lab-dbt-`
+repository, building the industry's two tested marts with dbt Fusion (`dbtf`) on Lake
+Compute, and querying the results with the DuckDB CLI. The marts are the same contracts as
+the manual dbt Platform editions, materialized as tables and written in DuckDB SQL.
+
+- **Manual** editions ([`manual/`](lake_compute/workstation/manual/)) have attendees write
+  the marts themselves and end with complete answers, validated locally in DuckDB.
+- **Wizard** editions ([`wizard/`](lake_compute/workstation/wizard/)) have attendees
+  generate the marts with the dbt Wizard CLI (`wizard`), using a prompt that states Lake
+  Compute's limits (DuckDB SQL, tables only, no hooks, grants or unit tests). They need a
+  lab with Lake Compute and the Wizard CLI enabled together.
+
+| Industry | Manual | dbt Wizard CLI |
+|---|---|---|
+| Agriculture | [Worksheet](lake_compute/workstation/manual/agriculture/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/agriculture/lake_compute_workstation_hands_on_lab.md) |
+| Attractions | [Worksheet](lake_compute/workstation/manual/attractions/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/attractions/lake_compute_workstation_hands_on_lab.md) |
+| Construction | [Worksheet](lake_compute/workstation/manual/construction/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/construction/lake_compute_workstation_hands_on_lab.md) |
+| Consumer Packaged Goods | [Worksheet](lake_compute/workstation/manual/consumer_packaged_goods/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/consumer_packaged_goods/lake_compute_workstation_hands_on_lab.md) |
+| Customer Service | [Worksheet](lake_compute/workstation/manual/customer_service/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/customer_service/lake_compute_workstation_hands_on_lab.md) |
+| Energy | [Worksheet](lake_compute/workstation/manual/energy/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/energy/lake_compute_workstation_hands_on_lab.md) |
+| Financial Services | [Worksheet](lake_compute/workstation/manual/financial_services/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/financial_services/lake_compute_workstation_hands_on_lab.md) |
+| Healthcare | [Worksheet](lake_compute/workstation/manual/healthcare/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/healthcare/lake_compute_workstation_hands_on_lab.md) |
+| Higher Education | [Worksheet](lake_compute/workstation/manual/higher_education/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/higher_education/lake_compute_workstation_hands_on_lab.md) |
+| Hospitality | [Worksheet](lake_compute/workstation/manual/hospitality/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/hospitality/lake_compute_workstation_hands_on_lab.md) |
+| Insurance | [Worksheet](lake_compute/workstation/manual/insurance/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/insurance/lake_compute_workstation_hands_on_lab.md) |
+| Manufacturing | [Worksheet](lake_compute/workstation/manual/manufacturing/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/manufacturing/lake_compute_workstation_hands_on_lab.md) |
+| Media Entertainment | [Worksheet](lake_compute/workstation/manual/media_entertainment/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/media_entertainment/lake_compute_workstation_hands_on_lab.md) |
+| Pharma | [Worksheet](lake_compute/workstation/manual/pharma/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/pharma/lake_compute_workstation_hands_on_lab.md) |
+| Retail | [Worksheet](lake_compute/workstation/manual/retail/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/retail/lake_compute_workstation_hands_on_lab.md) |
+| Sales | [Worksheet](lake_compute/workstation/manual/sales/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/sales/lake_compute_workstation_hands_on_lab.md) |
+| Supply Chain | [Worksheet](lake_compute/workstation/manual/supply_chain/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/supply_chain/lake_compute_workstation_hands_on_lab.md) |
+| Telco | [Worksheet](lake_compute/workstation/manual/telco/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/telco/lake_compute_workstation_hands_on_lab.md) |
+| Transportation | [Worksheet](lake_compute/workstation/manual/transportation/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/transportation/lake_compute_workstation_hands_on_lab.md) |
+| Utilities | [Worksheet](lake_compute/workstation/manual/utilities/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/utilities/lake_compute_workstation_hands_on_lab.md) |
+| Weather | [Worksheet](lake_compute/workstation/manual/weather/lake_compute_workstation_hands_on_lab.md) | [Worksheet](lake_compute/workstation/wizard/weather/lake_compute_workstation_hands_on_lab.md) |
 
 ## Choosing and provisioning a template
 
