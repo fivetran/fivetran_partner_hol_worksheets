@@ -61,7 +61,14 @@ All of these are provided by your instructor via a 1Password link.
 
 - **Gateway URL**, **Guacamole Username** and **Guacamole Password** for your workstation.
 - **Git Clone Command** for your own copy of the Transportation dbt project, a private GitHub
-  repository named `lab-dbt-...` that only your workstation can reach.
+  repository named `lab-dbt-...` that only your workstation can reach. The command
+  clones it into `~/lab-dbt`.
+
+### Fivetran destination
+
+- **Fivetran Destination**: the name of the destination created for you when the lab
+  was launched. It starts with `lbs_mdls_`. You open it in Part 2, and it is the only
+  destination you set up in this lab.
 
 ---
 
@@ -82,8 +89,9 @@ All of these are provided by your instructor via a 1Password link.
 We'll begin by setting up a Managed Data Lake destination.
 
 1. Navigate to the **Destinations** tab in the left-hand navigation.
-2. Search for the Destination with your name. It was created for you when the lab was
-   launched and shows as **Incomplete** until you finish setting it up. Click it.
+2. Find the destination named in the **Fivetran Destination** field of your 1Password
+   link (it starts with `lbs_mdls_`). It was created for you when the lab was launched
+   and shows as **Incomplete** until you finish setting it up. Click it.
 
    > **Make sure it's yours.** Your destination is the only one that has been given
    > access to your S3 role and prefix; anyone else's will fail its setup tests.
@@ -120,7 +128,8 @@ We'll begin by setting up a Managed Data Lake destination.
 13. Once the tests complete successfully, click **View Destination**.
 
 **Checkpoint:** All setup tests show green, and your destination appears in the
-Destinations list with your name. Every Managed Data Lake destination is provisioned
+Destinations list under the name in your **Fivetran Destination** field. Every Managed
+Data Lake destination is provisioned
 with the **Fivetran Catalog** automatically. Lake Compute and DuckDB both use it.
 
 ---
@@ -133,7 +142,7 @@ Now we'll create a connector to sync the Transportation data into your managed d
 2. Click **Add Connection**.
 3. Search for **PostgreSQL** and click **Set up**.
 4. Select your destination (the one from Part 2).
-   - **Make sure you don't use someone else's destination** — check that the name matches yours.
+   - **Make sure you don't use someone else's destination** — check that the name matches your **Fivetran Destination** field.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use the format `<firstname>_<lastname>_pg`.
 
@@ -267,7 +276,7 @@ workstation a key that can read and write it.
 2. Change into the project:
 
    ```bash
-   cd ~/lab-dbt-*
+   cd ~/lab-dbt
    ```
 
 3. Look around:
@@ -288,7 +297,7 @@ workstation a key that can read and write it.
 ## Part 8: Configure `profiles.yml`
 
 Your workstation already has a dbt profile at `~/.dbt/profiles.yml`, written when the lab
-was launched. It needs one value from you.
+was launched, with your destination's group ID already filled in.
 
 1. Look at it:
 
@@ -296,7 +305,7 @@ was launched. It needs one value from you.
    cat ~/.dbt/profiles.yml
    ```
 
-   It looks like this, with your own schema:
+   It looks like this, with your own group ID and schema:
 
    ```yaml
    default:
@@ -308,7 +317,7 @@ was launched. It needs one value from you.
            method: fivetran
            fivetran_credential: "{{ env_var('LAKE_COMPUTE_TOKEN') }}"
            base_url: "https://api.lake-compute.fivetran.com/"
-           database: "REPLACE_WITH_YOUR_DESTINATION_GROUP_ID"
+           database: "<your group ID>"
            schema: "dbt_<your suffix>"
    ```
 
@@ -319,11 +328,16 @@ was launched. It needs one value from you.
    - `database` is your destination's group ID. `schema` is where your models land: marts
      in `dbt_<your suffix>`, staging models in `dbt_<your suffix>_staging`.
 
-2. Replace the placeholder with your group ID from Part 4:
+2. Check that `database` matches the group ID you copied in Part 4:
+
+   ```bash
+   grep database ~/.dbt/profiles.yml
+   ```
+
+   If it still shows `REPLACE_WITH_YOUR_DESTINATION_GROUP_ID`, replace it with your group ID:
 
    ```bash
    sed -i 's/REPLACE_WITH_YOUR_DESTINATION_GROUP_ID/<your_group_id>/' ~/.dbt/profiles.yml
-   grep database ~/.dbt/profiles.yml
    ```
 
 3. Write down your schema; this worksheet calls it `<DBT_SCHEMA>`:
@@ -595,7 +609,7 @@ straight from your data lake.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| **AWS Read and Write Access** test fails | You opened someone else's destination, or the bucket, prefix or role ARN was mistyped | Check that the destination name is yours and the values match your 1Password link, then re-run the test; if it still fails, ask the instructor to confirm your destination was given access to your role |
+| **AWS Read and Write Access** test fails | You opened someone else's destination, or the bucket, prefix or role ARN was mistyped | Check that the destination name matches your **Fivetran Destination** field and the values match your 1Password link, then re-run the test; if it still fails, ask the instructor to confirm your destination was given access to your role |
 | `dbt` says the profile is misconfigured or doesn't know `lakecompute` | You ran `dbt` (dbt Core 1.x) | Use `dbtf` |
 | dbt refuses to run Lake Compute, or crashes at startup | The settings from Part 6 are missing in this terminal | Run `source ~/.bashrc` and set your token again |
 | Authentication fails | Token not set in this terminal, or it was copied incompletely | Run Part 6 step 2 again; generate a new token if needed |

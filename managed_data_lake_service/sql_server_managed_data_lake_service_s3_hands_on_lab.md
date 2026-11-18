@@ -58,6 +58,12 @@ catalog-linked database — the recommended, documented path.
    - The role and the prefix are yours alone: the role can only read and write under your
      prefix in the lab bucket.
 
+### Fivetran destination
+
+- **Fivetran Destination**: the name of the destination created for you when the lab
+  was launched. It starts with `lbs_mdls_`. You open it in Part 2, and it is the only
+  destination you set up in this lab.
+
 ---
 
 ## Part 1: Accessing the provided resources
@@ -87,8 +93,9 @@ between them in Part 4.
 We'll begin by setting up a Managed Data Lake destination.
 
 1. Navigate to the **Destinations** tab in the left-hand navigation.
-2. Search for the Destination with your name. It was created for you when the lab was
-   launched and shows as **Incomplete** until you finish setting it up. Click it.
+2. Find the destination named in the **Fivetran Destination** field of your 1Password
+   link (it starts with `lbs_mdls_`). It was created for you when the lab was launched
+   and shows as **Incomplete** until you finish setting it up. Click it.
 
    > **Make sure it's yours.** Your destination is the only one that has been given
    > access to your S3 role and prefix; anyone else's will fail its setup tests.
@@ -136,7 +143,8 @@ We'll begin by setting up a Managed Data Lake destination.
 12. Once the tests complete successfully, click **View Destination**.
 
 **Checkpoint:** All setup tests show green, and your destination appears in the
-Destinations list with your name. Every Managed Data Lake destination is provisioned
+Destinations list under the name in your **Fivetran Destination** field. Every Managed
+Data Lake destination is provisioned
 with the **Fivetran Catalog** automatically — you did not have to configure it. You'll
 use it in Part 4.
 
@@ -150,7 +158,7 @@ Now we'll create a connector to sync data into our managed data lake in S3.
 2. Click **Add Connection**.
 3. Search for **SQL Server** and click **Set up**.
 4. Select your destination (the one from Part 2). 
-   - **Make sure you don't use someone else's destination** — check that the name matches yours.
+   - **Make sure you don't use someone else's destination** — check that the name matches your **Fivetran Destination** field.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use the format `<firstname>_<lastname>_sql_server`.
 
@@ -370,7 +378,7 @@ That difference is the whole reason the first approach is recommended.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| **AWS Read and Write Access** test fails | You opened someone else's destination, or the bucket, prefix or role ARN was mistyped | Check that the destination name is yours and the values match your 1Password link, then re-run the test; if it still fails, ask the instructor to confirm your destination was given access to your role |
+| **AWS Read and Write Access** test fails | You opened someone else's destination, or the bucket, prefix or role ARN was mistyped | Check that the destination name matches your **Fivetran Destination** field and the values match your 1Password link, then re-run the test; if it still fails, ask the instructor to confirm your destination was given access to your role |
 | **Bucket Region Test** fails | Wrong region selected | Select the **S3 Region** from your 1Password link; recreate the destination if it was already saved, since the region can't be changed |
 | Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
 | Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |

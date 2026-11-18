@@ -85,6 +85,12 @@ participants have the same name, the instructor assigns a unique suffix, such as
 - Attendees use the Fivetran-managed service account of the destination created for them;
   they do not paste a BigQuery service-account JSON key into this setup.
 
+### Fivetran destination
+
+- **Fivetran Destination**: the name of the destination created for you when the lab
+  was launched. It starts with `lbs_mdls_`. You open it in Part 2, and it is the only
+  destination you set up in this lab.
+
 ---
 
 ## Part 1: Accessing the provided resources
@@ -104,8 +110,9 @@ participants have the same name, the instructor assigns a unique suffix, such as
 We'll begin by setting up a Managed Data Lake destination.
 
 1. Navigate to the **Destinations** tab in the left-hand navigation.
-2. Search for the Destination with your name. It was created for you when the lab was
-   launched and shows as **Incomplete** until you finish setting it up. Click it.
+2. Find the destination named in the **Fivetran Destination** field of your 1Password
+   link (it starts with `lbs_mdls_`). It was created for you when the lab was launched
+   and shows as **Incomplete** until you finish setting it up. Click it.
 
    > **Make sure it's yours.** Your destination is the only one that has been given
    > access to the lab bucket and the registration project; anyone else's will fail its
@@ -151,7 +158,8 @@ We'll begin by setting up a Managed Data Lake destination.
 11. Once the tests complete successfully, click **View Destination**.
 
 **Checkpoint:** All setup tests show green, and your destination appears in the
-Destinations list with your name. Every Managed Data Lake destination is provisioned
+Destinations list under the name in your **Fivetran Destination** field. Every Managed
+Data Lake destination is provisioned
 with the **Fivetran Catalog** automatically. The additional BigLake integration
 registers external Iceberg tables in BigQuery for the instructor demo in Part 4.
 
@@ -165,7 +173,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 2. Click **Add Connection**.
 3. Search for **PostgreSQL** and click **Set up**.
 4. Select your destination (the one from Part 2).
-   - **Make sure you don't use someone else's destination** — check that the name matches yours.
+   - **Make sure you don't use someone else's destination** — check that the name matches your **Fivetran Destination** field.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use `<dataset_prefix><firstname>_<lastname>_pg`, where
    `<dataset_prefix>` is the **BigQuery Dataset Prefix**, including its trailing underscore.
