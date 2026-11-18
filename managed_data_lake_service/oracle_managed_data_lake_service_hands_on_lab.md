@@ -49,6 +49,12 @@ catalog-linked database — the recommended, documented path.
 
 - Provided by your instructor via a 1Password link.
 
+### Fivetran destination
+
+- **Fivetran Destination**: the name of the destination created for you when the lab
+  was launched. It starts with `lbs_mdls_`. You open it in Part 2, and it is the only
+  destination you set up in this lab.
+
 ---
 
 ## Part 1: Accessing the provided resources
@@ -78,8 +84,9 @@ between them in Part 4.
 We'll begin by setting up a Managed Data Lake destination.
 
 1. Navigate to the **Destinations** tab in the left-hand navigation.
-2. Search for the Destination with your name. It was created for you when the lab was
-   launched and shows as **Incomplete** until you finish setting it up. Click it.
+2. Find the destination named in the **Fivetran Destination** field of your 1Password
+   link (it starts with `lbs_mdls_`). It was created for you when the lab was launched
+   and shows as **Incomplete** until you finish setting it up. Click it.
 
    > **Make sure it's yours.** Your destination is the only one that has been given
    > access to the lab bucket; anyone else's will fail its setup tests.
@@ -128,7 +135,8 @@ We'll begin by setting up a Managed Data Lake destination.
 11. Once the tests complete successfully, click **View Destination**.
 
 **Checkpoint:** All setup tests show green, and your destination appears in the
-Destinations list with your name. Every Managed Data Lake destination is provisioned
+Destinations list under the name in your **Fivetran Destination** field. Every Managed
+Data Lake destination is provisioned
 with the **Fivetran Catalog** automatically — you did not have to configure it. You'll
 use it in Part 4.
 
@@ -142,7 +150,7 @@ Now we'll create a connector to sync data into our managed data lake in GCS.
 2. Click **Add Connection**.
 3. Search for **Oracle** and click **Set up**.
 4. Select your destination (the one from Part 2). 
-   - **Make sure you don't use someone else's destination** — check that the name matches yours.
+   - **Make sure you don't use someone else's destination** — check that the name matches your **Fivetran Destination** field.
 5. Select **Fivetran naming**. The name you provide in the **Destination schema prefix** field becomes the name of
    your connector. Use the format `<firstname>_<lastname>_oracle`.
 
@@ -360,7 +368,7 @@ That difference is the whole reason the first approach is recommended.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| GCS setup test fails on read/write access | You opened someone else's destination, or the bucket was mistyped | Check that the destination name is yours and the bucket matches your 1Password link; if it still fails, ask the instructor to confirm your destination was given access to the lab bucket |
+| GCS setup test fails on read/write access | You opened someone else's destination, or the bucket was mistyped | Check that the destination name matches your **Fivetran Destination** field and the bucket matches your 1Password link; if it still fails, ask the instructor to confirm your destination was given access to the lab bucket |
 | Catalog integration creation fails on auth | Client secret mistyped, or values copied from the wrong tab | Re-copy the whole generated statement from **Catalog integration → Snowflake**, not Base configuration; the secret displays once |
 | Snowflake asks for an external volume you never created | `ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS` omitted from `REST_CONFIG` | Recreate the catalog integration with that parameter — it is what selects the vended-credentials path |
 | `SHOW ICEBERG TABLES` returns nothing | Namespace in `ALLOWED_NAMESPACES` doesn't match | It is the connector name **+ source schema**, e.g. `first_last_oracle_<industry>` (`first_last_oracle_agriculture` by default) — not just the connector name |
