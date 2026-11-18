@@ -183,6 +183,10 @@ dbtf build --select stg_manufacturing__mso_records
 
 6. Resolve failures before continuing. Confirm the built staging relations are in your development target plus `_staging`. The source can be empty; a successful zero-row build is not evidence of a populated pipeline. Check the Fivetran sync status and discuss empty inputs with the instructor.
 
+   > **Note:** The build can finish with a warning that the `marts` configuration path in
+   > `dbt_project.yml` is unused (`UnusedResourceConfigPath`). This is expected: the
+   > `models/marts` folder doesn't exist until the Wizard creates it in Part 5. You can ignore it.
+
 ## Part 5: Build the marts with the dbt Wizard CLI
 
 **Business question:** Material waste review. The source does not define a common physical unit here; retain its units and do not label them kilograms.

@@ -184,6 +184,10 @@ If you enabled Everything, also run `dbtf build --select stg_newsapi__everything
 
 6. Resolve failures before continuing. Confirm the built staging relations are in your development target plus `_staging`. The source can legitimately be empty (especially NewsAPI); a successful zero-row build is not evidence of a populated pipeline. Check the Fivetran sync status and discuss empty inputs with the instructor.
 
+   > **Note:** The build can finish with a warning that the `marts` configuration path in
+   > `dbt_project.yml` is unused (`UnusedResourceConfigPath`). This is expected: the
+   > `models/marts` folder doesn't exist until the Wizard creates it in Part 5. You can ignore it.
+
 ## Part 5: Build the marts with the dbt Wizard CLI
 
 **Business question:** News source coverage. Coverage is limited to the configured API endpoints, filters and synced rows; it is not the complete news universe.
