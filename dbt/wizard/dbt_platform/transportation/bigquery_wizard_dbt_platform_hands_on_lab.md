@@ -112,6 +112,8 @@ tests/assert_transportation_addon.sql
 Use BigQuery SQL and ref() dependencies, view materializations and built-in dbt tests.
 Follow the Model requirements immediately above (paste them with this prompt).
 Read review_threshold from dbt_project.yml with var('review_threshold').
+This project runs on dbt Fusion v2: nest generic test parameters such as `to`
+and `field` under `arguments:` in YAML.
 Preserve existing staging, sources, project configuration and packages.
 Document grains, units, null handling and the limits of the review rule.
 Propose the files and explain their logic before editing. Do not run commands,
@@ -138,6 +140,11 @@ dbt ls --select +mart_transportation_review_summary --resource-type model --outp
 ```bash
 dbt build --select +mart_transportation_review_summary
 ```
+
+   > If the build stops while parsing with `dbt1159 Deprecated test arguments ... at top-level`,
+   > a generic test's `to` and `field` sit directly under the test name, the dbt 1.x layout.
+   > Nest them under `arguments:`, as in
+   > `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, and build again.
 
 4. Require a successful final result. Read failing test output and repair the model or assumptions; do not remove tests merely to get a green run. Verify the singular reconciliation test was selected. If it was not, run it explicitly:
 
