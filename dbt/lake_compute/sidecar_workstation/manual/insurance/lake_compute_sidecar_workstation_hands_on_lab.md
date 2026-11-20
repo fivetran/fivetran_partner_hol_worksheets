@@ -562,6 +562,7 @@ Use these files:
 - Preserve `synced_at`. Set `requires_review` to `metric_value >= review_threshold`, initially 50000. Missing metrics and their flags stay null; never silently turn them into zero or false.
 - Build `mart_insurance_review_summary` from the fact at one row per `group_key`. Include group name, total observations, measured observations, missing metric count, review count, unweighted mean metric and review share. Divide review count by measured observations with a zero-safe denominator and decimal arithmetic.
 - Test unique/non-null observation IDs and group keys, observation-to-staging key relationships and non-null counts. Add a singular test for source/fact row preservation, summary row-count reconciliation, measured + missing = total and review count no greater than measured count. Legitimately missing metrics must remain visible, not fail a blanket non-null test.
+- Use these exact output column names on `mart_insurance_review_summary`, because the aggregate checks later in this worksheet query them: `observation_count`, `measured_count`, `missing_metric_count`, `review_count`.
 
 1. Create `models/marts` and `tests` if needed. Write the fact SQL first: start with the
    staging input(s), give the output columns explicit names and implement the model
@@ -684,6 +685,7 @@ built, in your Dev database.
 | `dbtf debug` fails the Snowflake propagation test | The catalog integration from Part 4 is missing or its secret was regenerated | Recreate it from the current statement in **Catalog integration → Snowflake** |
 | A source table is not found | The landing database is not named after your Dev database, or `source_schema` is wrong | Name it like your Dev database with `_DEV` replaced by `_LANDING` (Part 4), and set `source_schema` to `<firstname>_<lastname>_pg_insurance` |
 | `501: Views are not supported on Lake Compute` | A Lake Compute model, or a model it reads, is a view | Make the staging layer an Iceberg table (Part 10) and the marts tables |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors in a mart | A numeric source column arrived as text | Convert it with `try_cast(... as double)` before using it |
 
 ---

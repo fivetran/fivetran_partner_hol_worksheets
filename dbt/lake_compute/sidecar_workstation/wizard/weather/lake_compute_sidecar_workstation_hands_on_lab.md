@@ -565,6 +565,7 @@ Use these files:
 - Preserve `synced_at`. Set `requires_review` to `metric_value >= review_threshold`, initially 30. Missing metrics and their flags stay null; never silently turn them into zero or false.
 - Build `mart_weather_review_summary` from the fact at one row per `group_key`. Include group name, total observations, measured observations, missing metric count, review count, unweighted mean metric and review share. Divide review count by measured observations with a zero-safe denominator and decimal arithmetic.
 - Test unique/non-null observation IDs and group keys, observation-to-staging key relationships and non-null counts. Add a singular test for source/fact row preservation, summary row-count reconciliation, measured + missing = total and review count no greater than measured count. Legitimately missing metrics must remain visible, not fail a blanket non-null test.
+- Use these exact output column names on `mart_weather_review_summary`, because the aggregate checks later in this worksheet query them: `observation_count`, `measured_count`, `missing_metric_count`, `review_count`.
 
 1. From your project directory, parse the project. Wizard reads the compiled project in
    `target/`, so it needs this first:
@@ -599,6 +600,8 @@ try_cast(... as double) before arithmetic or comparisons, and use try_cast or
 try_strptime for dates and booleans.
 Follow the Model requirements immediately above (paste them with this prompt).
 Read review_threshold from dbt_project.yml with var('review_threshold').
+This project runs on dbt Fusion v2: nest generic test parameters such as `to`
+and `field` under `arguments:` in YAML.
 Preserve existing staging, sources, project configuration and packages.
 Document grains, units, null handling and the limits of the review rule.
 Propose the files and explain their logic before editing. Do not run commands,
@@ -730,6 +733,7 @@ built, in your Dev database.
 | Wizard writes a view, Snowflake SQL, or a mart without the Lake Compute adapter | Wizard used another dialect or materialization | Ask it to start each mart with `{{ config(adapter='lakecompute', materialized='table') }}` and use DuckDB SQL, as the prompt says, then review the diff again |
 | `wizard` can't find the project or its models | `dbtf parse` hasn't run, or you started Wizard outside the project | Run `dbtf parse` in `~/lab-dbt`, then start `wizard` there |
 | Wizard reports that the profile is invalid or doesn't know `lakecompute` | Wizard ran dbt Core (`dbt`), which cannot read this profile | Decline the command and run dbt yourself with `dbtf`. Wizard is set up to use `dbtf` for `~/lab-dbt` (`~/.dbt/wizard/wizard_config.toml`); if that file doesn't list it, ask your instructor |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors in a mart | A numeric source column arrived as text | Convert it with `try_cast(... as double)` before using it |
 
 ---

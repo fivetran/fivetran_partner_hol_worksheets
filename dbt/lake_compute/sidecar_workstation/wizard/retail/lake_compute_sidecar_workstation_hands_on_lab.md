@@ -564,6 +564,7 @@ Use these files:
 - Build `mart_retail_inventory_priorities` from the fact. Select the latest date per product/store, with `row_id` ascending as a deterministic tie-breaker. Use a null-aware structured encoding of both IDs before hashing the product/store key.
 - Carry the relevant fact columns through and calculate `needs_replenishment` as days of supply less than adjusted lead time. Do not use today's date to filter historical data.
 - Test unique/non-null weekly row IDs and latest keys, product/store relationships, typed dates/flags, latest-to-weekly row relationships and non-null replenishment inputs. Add a singular test for weekly row preservation, one latest row per pair and correct latest dates.
+- Use these exact output column names on `mart_retail_inventory_priorities`, because the aggregate checks later in this worksheet query them: `product_store_key`, `needs_replenishment`, `inventory_date`.
 
 1. From your project directory, parse the project. Wizard reads the compiled project in
    `target/`, so it needs this first:
@@ -598,6 +599,8 @@ try_cast(... as double) before arithmetic or comparisons, and use try_cast or
 try_strptime for dates and booleans.
 Follow the Model requirements immediately above (paste them with this prompt).
 Read review_threshold from dbt_project.yml with var('review_threshold').
+This project runs on dbt Fusion v2: nest generic test parameters such as `to`
+and `field` under `arguments:` in YAML.
 Preserve existing staging, sources, project configuration and packages.
 Document grains, units, null handling and the limits of the review rule.
 Propose the files and explain their logic before editing. Do not run commands,
@@ -729,6 +732,7 @@ built, in your Dev database.
 | Wizard writes a view, Snowflake SQL, or a mart without the Lake Compute adapter | Wizard used another dialect or materialization | Ask it to start each mart with `{{ config(adapter='lakecompute', materialized='table') }}` and use DuckDB SQL, as the prompt says, then review the diff again |
 | `wizard` can't find the project or its models | `dbtf parse` hasn't run, or you started Wizard outside the project | Run `dbtf parse` in `~/lab-dbt`, then start `wizard` there |
 | Wizard reports that the profile is invalid or doesn't know `lakecompute` | Wizard ran dbt Core (`dbt`), which cannot read this profile | Decline the command and run dbt yourself with `dbtf`. Wizard is set up to use `dbtf` for `~/lab-dbt` (`~/.dbt/wizard/wizard_config.toml`); if that file doesn't list it, ask your instructor |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors in a mart | A numeric source column arrived as text | Convert it with `try_cast(... as double)` before using it |
 
 ---
