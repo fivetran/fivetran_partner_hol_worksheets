@@ -99,6 +99,15 @@ Snowflake, where one dbt Platform project uses two adapters. Snowflake stages th
 Iceberg tables and Lake Compute builds the marts, run from Studio and from a Production job.
 See the [dbt README](dbt/README.md#lake-compute-sidecar-on-dbt-platform) for the list.
 
+## Lake Compute sidecar on a workstation
+
+[`dbt/lake_compute/sidecar_workstation/`](dbt/lake_compute/sidecar_workstation/) contains 42
+standalone worksheets, a manual and a dbt Wizard CLI edition per industry: the same S3 Managed
+Data Lake with Snowflake and Lake Compute as a second adapter, run with dbt Fusion on the
+provided workstation. Snowflake stages the data as Iceberg tables, Lake Compute builds the
+marts, and every layer is queried from Snowflake. See the
+[dbt README](dbt/README.md#lake-compute-sidecar-on-a-workstation) for the list.
+
 ## Snowflake Cortex add-ons
 
 The [`snowflake_cortex/`](snowflake_cortex/README.md) folder contains 22 optional AI
