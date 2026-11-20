@@ -91,6 +91,14 @@ Lake Compute and no warehouse, dbt Fusion on the provided workstation, and DuckD
 the results. See the
 [dbt README](dbt/README.md#lake-compute-on-a-workstation) for the list.
 
+## Lake Compute sidecar on dbt Platform
+
+[`dbt/lake_compute/dbt_platform/`](dbt/lake_compute/dbt_platform/) contains 42 standalone
+worksheets, a manual and a dbt Wizard edition per industry: an S3 Managed Data Lake with
+Snowflake, where one dbt Platform project uses two adapters. Snowflake stages the data as
+Iceberg tables and Lake Compute builds the marts, run from Studio and from a Production job.
+See the [dbt README](dbt/README.md#lake-compute-sidecar-on-dbt-platform) for the list.
+
 ## Snowflake Cortex add-ons
 
 The [`snowflake_cortex/`](snowflake_cortex/README.md) folder contains 22 optional AI

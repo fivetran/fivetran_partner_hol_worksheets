@@ -178,3 +178,48 @@ industry or NewsAPI code on v1, use Wizard to repair compatibility issues on v2,
 decisions, and finish in a dedicated Production environment. Snowflake and BigQuery
 editions cover all 21 industries and NewsAPI (44 migration worksheets), separate from
 the 88 add-on worksheets above.
+
+## Lake Compute sidecar on dbt Platform
+
+[`lake_compute/dbt_platform/`](lake_compute/dbt_platform/) has two standalone worksheets per
+industry for Managed Data Lake Service labs on Amazon S3 with Snowflake as the destination and
+Lake Compute as a second dbt adapter (the Lake Compute sidecar), run in dbt Platform. Both
+cover the S3 destination with Lake Compute turned on, the PostgreSQL connector, the Snowflake
+catalog integration and the catalog-linked landing database, the Lake Compute token, the
+person's key-pair development credentials and the `DBT_ENV_SECRET_LAKE_COMPUTE_TOKEN`
+variable, staging on Snowflake as Iceberg tables, the industry's two tested marts on Lake
+Compute (`adapter='lakecompute'`, DuckDB SQL), a manually run Production job and querying
+every layer from Snowflake. The marts are the same contracts as the other editions. They need
+a lab with the Lake Compute sidecar and the dbt Platform add-on in a per-person project mode;
+LabStudios sets the environments to dbt v2 and adds the extended attributes and the two flag
+variables at launch.
+
+- **Manual** editions ([`manual/`](lake_compute/dbt_platform/manual/)) have attendees write
+  the marts themselves and end with complete answers.
+- **Wizard** editions ([`wizard/`](lake_compute/dbt_platform/wizard/)) have attendees
+  generate the marts with dbt Wizard in Studio, using a prompt that puts the marts on Lake
+  Compute and states its limits.
+
+| Industry | Manual | dbt Wizard |
+|---|---|---|
+| Agriculture | [Worksheet](lake_compute/dbt_platform/manual/agriculture/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/agriculture/lake_compute_dbt_platform_hands_on_lab.md) |
+| Attractions | [Worksheet](lake_compute/dbt_platform/manual/attractions/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/attractions/lake_compute_dbt_platform_hands_on_lab.md) |
+| Construction | [Worksheet](lake_compute/dbt_platform/manual/construction/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/construction/lake_compute_dbt_platform_hands_on_lab.md) |
+| Consumer Packaged Goods | [Worksheet](lake_compute/dbt_platform/manual/consumer_packaged_goods/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/consumer_packaged_goods/lake_compute_dbt_platform_hands_on_lab.md) |
+| Customer Service | [Worksheet](lake_compute/dbt_platform/manual/customer_service/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/customer_service/lake_compute_dbt_platform_hands_on_lab.md) |
+| Energy | [Worksheet](lake_compute/dbt_platform/manual/energy/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/energy/lake_compute_dbt_platform_hands_on_lab.md) |
+| Financial Services | [Worksheet](lake_compute/dbt_platform/manual/financial_services/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/financial_services/lake_compute_dbt_platform_hands_on_lab.md) |
+| Healthcare | [Worksheet](lake_compute/dbt_platform/manual/healthcare/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/healthcare/lake_compute_dbt_platform_hands_on_lab.md) |
+| Higher Education | [Worksheet](lake_compute/dbt_platform/manual/higher_education/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/higher_education/lake_compute_dbt_platform_hands_on_lab.md) |
+| Hospitality | [Worksheet](lake_compute/dbt_platform/manual/hospitality/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/hospitality/lake_compute_dbt_platform_hands_on_lab.md) |
+| Insurance | [Worksheet](lake_compute/dbt_platform/manual/insurance/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/insurance/lake_compute_dbt_platform_hands_on_lab.md) |
+| Manufacturing | [Worksheet](lake_compute/dbt_platform/manual/manufacturing/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/manufacturing/lake_compute_dbt_platform_hands_on_lab.md) |
+| Media Entertainment | [Worksheet](lake_compute/dbt_platform/manual/media_entertainment/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/media_entertainment/lake_compute_dbt_platform_hands_on_lab.md) |
+| Pharma | [Worksheet](lake_compute/dbt_platform/manual/pharma/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/pharma/lake_compute_dbt_platform_hands_on_lab.md) |
+| Retail | [Worksheet](lake_compute/dbt_platform/manual/retail/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/retail/lake_compute_dbt_platform_hands_on_lab.md) |
+| Sales | [Worksheet](lake_compute/dbt_platform/manual/sales/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/sales/lake_compute_dbt_platform_hands_on_lab.md) |
+| Supply Chain | [Worksheet](lake_compute/dbt_platform/manual/supply_chain/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/supply_chain/lake_compute_dbt_platform_hands_on_lab.md) |
+| Telco | [Worksheet](lake_compute/dbt_platform/manual/telco/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/telco/lake_compute_dbt_platform_hands_on_lab.md) |
+| Transportation | [Worksheet](lake_compute/dbt_platform/manual/transportation/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/transportation/lake_compute_dbt_platform_hands_on_lab.md) |
+| Utilities | [Worksheet](lake_compute/dbt_platform/manual/utilities/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/utilities/lake_compute_dbt_platform_hands_on_lab.md) |
+| Weather | [Worksheet](lake_compute/dbt_platform/manual/weather/lake_compute_dbt_platform_hands_on_lab.md) | [Worksheet](lake_compute/dbt_platform/wizard/weather/lake_compute_dbt_platform_hands_on_lab.md) |
