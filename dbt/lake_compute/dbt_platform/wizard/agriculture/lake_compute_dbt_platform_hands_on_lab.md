@@ -461,6 +461,7 @@ Use these files:
 - Preserve `synced_at`. Set `requires_review` to `metric_value >= review_threshold`, initially 150. Missing metrics and their flags stay null; never silently turn them into zero or false.
 - Build `mart_agriculture_review_summary` from the fact at one row per `group_key`. Include group name, total observations, measured observations, missing metric count, review count, unweighted mean metric and review share. Divide review count by measured observations with a zero-safe denominator and decimal arithmetic.
 - Test unique/non-null observation IDs and group keys, observation-to-staging key relationships and non-null counts. Add a singular test for source/fact row preservation, summary row-count reconciliation, measured + missing = total and review count no greater than measured count. Legitimately missing metrics must remain visible, not fail a blanket non-null test.
+- Use these exact output column names on `mart_agriculture_review_summary`, because the aggregate checks later in this worksheet query them: `observation_count`, `measured_count`, `missing_metric_count`, `review_count`.
 
 1. Open **dbt Wizard** in Studio (the **dbt Wizard** tab next to **Commands**) and keep
    **Ask for approval** on, so Wizard asks before it changes any file.
@@ -484,6 +485,8 @@ try_cast(... as double) before arithmetic or comparisons, and use try_cast or
 try_strptime for dates and booleans.
 Follow the Model requirements immediately above (paste them with this prompt).
 Read review_threshold from dbt_project.yml with var('review_threshold').
+This project runs on dbt Fusion v2: nest generic test parameters such as `to`
+and `field` under `arguments:` in YAML.
 Preserve existing staging, sources, project configuration and packages.
 Document grains, units, null handling and the limits of the review rule.
 Propose the files and explain their logic before editing. Do not run commands,
@@ -624,6 +627,7 @@ built, in Dev and in Prod.
 | dbt ignores `adapter='lakecompute'`, or the log shows a 1.x version | The environment runs a dbt v1 release track | Ask your instructor: Lake Compute needs **v2 Stable** |
 | `501: Views are not supported on Lake Compute` | A Lake Compute model, or a model it reads, is a view | Make the staging layer an Iceberg table (Part 9) and the marts tables |
 | Wizard writes a view, Snowflake SQL, or a mart without the Lake Compute adapter | Wizard used another dialect or materialization | Ask it to start each mart with `{{ config(adapter='lakecompute', materialized='table') }}` and use DuckDB SQL, as the prompt says, then review the diff again |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors in a mart | A numeric source column arrived as text | Convert it with `try_cast(... as double)` before using it |
 
 ---

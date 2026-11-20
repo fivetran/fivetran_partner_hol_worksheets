@@ -561,6 +561,7 @@ Use these files:
 - Build `mart_retail_inventory_priorities` from the fact. Select the latest date per product/store, with `row_id` ascending as a deterministic tie-breaker. Use a null-aware structured encoding of both IDs before hashing the product/store key.
 - Carry the relevant fact columns through and calculate `needs_replenishment` as days of supply less than adjusted lead time. Do not use today's date to filter historical data.
 - Test unique/non-null weekly row IDs and latest keys, product/store relationships, typed dates/flags, latest-to-weekly row relationships and non-null replenishment inputs. Add a singular test for weekly row preservation, one latest row per pair and correct latest dates.
+- Use these exact output column names on `mart_retail_inventory_priorities`, because the aggregate checks later in this worksheet query them: `product_store_key`, `needs_replenishment`, `inventory_date`.
 
 1. Create `models/marts` and `tests` if needed. Write the fact SQL first: start with the
    staging input(s), give the output columns explicit names and implement the model
@@ -683,6 +684,7 @@ built, in your Dev database.
 | `dbtf debug` fails the Snowflake propagation test | The catalog integration from Part 4 is missing or its secret was regenerated | Recreate it from the current statement in **Catalog integration → Snowflake** |
 | A source table is not found | The landing database is not named after your Dev database, or `source_schema` is wrong | Name it like your Dev database with `_DEV` replaced by `_LANDING` (Part 4), and set `source_schema` to `<firstname>_<lastname>_pg_retail` |
 | `501: Views are not supported on Lake Compute` | A Lake Compute model, or a model it reads, is a view | Make the staging layer an Iceberg table (Part 10) and the marts tables |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors in a mart | A numeric source column arrived as text | Convert it with `try_cast(... as double)` before using it |
 
 ---

@@ -451,6 +451,7 @@ Use these files:
 - Build `mart_retail_inventory_priorities` from the fact. Select the latest date per product/store, with `row_id` ascending as a deterministic tie-breaker. Use a null-aware structured encoding of both IDs before hashing the product/store key.
 - Carry the relevant fact columns through and calculate `needs_replenishment` as days of supply less than adjusted lead time. Do not use today's date to filter historical data.
 - Test unique/non-null weekly row IDs and latest keys, product/store relationships, typed dates/flags, latest-to-weekly row relationships and non-null replenishment inputs. Add a singular test for weekly row preservation, one latest row per pair and correct latest dates.
+- Use these exact output column names on `mart_retail_inventory_priorities`, because the aggregate checks later in this worksheet query them: `product_store_key`, `needs_replenishment`, `inventory_date`.
 
 1. Create `models/marts` and `tests` if needed. Write the fact SQL first: start with the
    staging input(s), give the output columns explicit names and implement the model
@@ -615,6 +616,7 @@ straight from your data lake.
 | `dbtf debug` write test fails with `Schema ... does not exist` | Expected before your first build | Continue: `dbtf build` creates the schemas |
 | `501: Views are not supported on Lake Compute` | A model or folder is configured as a view | Set `+materialized: table` in `dbt_project.yml` or `materialized='table'` in the model |
 | A source table is not found | `source_schema` doesn't match your connector's schema, or the sync hasn't finished | Set `source_schema` to `<firstname>_<lastname>_pg_retail` and check the sync in Fivetran |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors on numeric columns | A numeric source column arrived in the lake as text | Convert it with `try_cast(... as double)` before using it |
 | DuckDB returns 401 from the token endpoint | Client ID or secret is wrong or stale | Copy the current **Client ID** and **Client secret** from **Catalog Integration → Base configuration** |
 

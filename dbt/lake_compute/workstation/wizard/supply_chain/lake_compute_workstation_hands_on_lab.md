@@ -454,6 +454,7 @@ Use these files:
 - Preserve `synced_at`. Set `requires_review` to `metric_value >= review_threshold`, initially 20. Missing metrics and their flags stay null; never silently turn them into zero or false.
 - Build `mart_supply_chain_review_summary` from the fact at one row per `group_key`. Include group name, total observations, measured observations, missing metric count, review count, unweighted mean metric and review share. Divide review count by measured observations with a zero-safe denominator and decimal arithmetic.
 - Test unique/non-null observation IDs and group keys, observation-to-staging key relationships and non-null counts. Add a singular test for source/fact row preservation, summary row-count reconciliation, measured + missing = total and review count no greater than measured count. Legitimately missing metrics must remain visible, not fail a blanket non-null test.
+- Use these exact output column names on `mart_supply_chain_review_summary`, because the aggregate checks later in this worksheet query them: `observation_count`, `measured_count`, `missing_metric_count`, `review_count`.
 
 1. From your project directory, parse the project. Wizard reads the compiled project in
    `target/`, so it needs this first:
@@ -486,6 +487,8 @@ try_cast(... as double) before arithmetic or comparisons, and use try_cast or
 try_strptime for dates and booleans.
 Follow the Model requirements immediately above (paste them with this prompt).
 Read review_threshold from dbt_project.yml with var('review_threshold').
+This project runs on dbt Fusion v2: nest generic test parameters such as `to`
+and `field` under `arguments:` in YAML.
 Preserve existing staging, sources, project configuration and packages.
 Document grains, units, null handling and the limits of the review rule.
 Propose the files and explain their logic before editing. Do not run commands,
@@ -657,6 +660,7 @@ straight from your data lake.
 | `dbtf debug` write test fails with `Schema ... does not exist` | Expected before your first build | Continue: `dbtf build` creates the schemas |
 | `501: Views are not supported on Lake Compute` | A model or folder is configured as a view | Set `+materialized: table` in `dbt_project.yml` or `materialized='table'` in the model |
 | A source table is not found | `source_schema` doesn't match your connector's schema, or the sync hasn't finished | Set `source_schema` to `<firstname>_<lastname>_pg_supply_chain` and check the sync in Fivetran |
+| `dbt1159` `Deprecated test arguments ... at top-level` when dbt parses the project | A generic test's parameters (`to`, `field`) sit directly under the test name, the dbt 1.x layout | Nest them under `arguments:`, as in `relationships: {arguments: {to: ref('model_name'), field: key_column}}`, then build again |
 | Conversion or comparison errors on numeric columns | A numeric source column arrived in the lake as text | Convert it with `try_cast(... as double)` before using it |
 | Wizard writes a view, or SQL that fails on Lake Compute | Wizard used another dialect or materialization | Ask it to use DuckDB SQL and `materialized='table'`, as the prompt says, then review the diff again |
 | `wizard` can't find the project or its models | `dbtf parse` hasn't run, or you started Wizard outside the project | Run `dbtf parse` in `~/lab-dbt`, then start `wizard` there |
